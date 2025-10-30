@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_sections_main_primaries",
+  "info": {
+    "displayName": "Main Primary",
+    "description": "Main primary section component"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  },
+  "config": {}
+}

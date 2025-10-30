@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "main-bodies",
+  "info": {
+    "singularName": "main-body",
+    "pluralName": "main-bodies",
+    "displayName": "Main Body"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "mainPrimaryContent": {
+      "type": "component",
+      "component": "sections.main-primary",
+      "repeatable": false
+    }
+  }
+}

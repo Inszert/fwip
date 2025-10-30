@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_portobello_image_text_combos",
+  "info": {
+    "displayName": "Image Text Combo"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "text": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
