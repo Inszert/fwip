@@ -652,6 +652,10 @@ export interface ApiPortobelloPortobello extends Struct.CollectionTypeSchema {
       'api::portobello.portobello'
     > &
       Schema.Attribute.Private;
+    portobelloHwd: Schema.Attribute.Component<
+      'portobello.portobello-hwd',
+      false
+    >;
     portobelloPrimary: Schema.Attribute.Component<
       'portobello.portobello-primary',
       false

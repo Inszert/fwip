@@ -37,6 +37,18 @@ export interface DefaultIngredient extends Struct.ComponentSchema {
   };
 }
 
+export interface PortobelloHwdOption extends Struct.ComponentSchema {
+  collectionName: 'components_portobello_hwd_options';
+  info: {
+    displayName: 'Hwd Option';
+  };
+  attributes: {
+    image: Schema.Attribute.Media<'images'>;
+    orientacion: Schema.Attribute.Enumeration<['height', 'width', 'depth']>;
+    text: Schema.Attribute.String;
+  };
+}
+
 export interface PortobelloImageTextCombo extends Struct.ComponentSchema {
   collectionName: 'components_portobello_image_text_combos';
   info: {
@@ -45,6 +57,20 @@ export interface PortobelloImageTextCombo extends Struct.ComponentSchema {
   attributes: {
     image: Schema.Attribute.Media<'images'>;
     text: Schema.Attribute.String;
+  };
+}
+
+export interface PortobelloPortobelloHwd extends Struct.ComponentSchema {
+  collectionName: 'components_portobello_portobello_hwds';
+  info: {
+    displayName: 'Portobello Hwd';
+  };
+  attributes: {
+    button: Schema.Attribute.Component<'basic.button', true>;
+    hwdOptions: Schema.Attribute.Component<'portobello.hwd-option', true>;
+    textField1: Schema.Attribute.String;
+    textField2: Schema.Attribute.String;
+    textField3: Schema.Attribute.String;
   };
 }
 
@@ -94,7 +120,9 @@ declare module '@strapi/strapi' {
       'basic.button': BasicButton;
       'basic.seo': BasicSeo;
       'default.ingredient': DefaultIngredient;
+      'portobello.hwd-option': PortobelloHwdOption;
       'portobello.image-text-combo': PortobelloImageTextCombo;
+      'portobello.portobello-hwd': PortobelloPortobelloHwd;
       'portobello.portobello-primary': PortobelloPortobelloPrimary;
       'portobello.portobello-secondary': PortobelloPortobelloSecondary;
       'sections.main-primary': SectionsMainPrimary;

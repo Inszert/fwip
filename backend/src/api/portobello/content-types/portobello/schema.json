@@ -20,6 +20,11 @@
       "type": "component",
       "component": "portobello.portobello-secondary",
       "repeatable": false
+    },
+    "portobelloHwd": {
+      "type": "component",
+      "component": "portobello.portobello-hwd",
+      "repeatable": false
     }
   }
 }

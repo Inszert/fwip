@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_portobello_portobello_hwds",
+  "info": {
+    "displayName": "Portobello Hwd"
+  },
+  "options": {},
+  "attributes": {
+    "textField1": {
+      "type": "string"
+    },
+    "textField2": {
+      "type": "string"
+    },
+    "textField3": {
+      "type": "string"
+    },
+    "button": {
+      "type": "component",
+      "component": "basic.button",
+      "repeatable": true
+    },
+    "hwdOptions": {
+      "type": "component",
+      "component": "portobello.hwd-option",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

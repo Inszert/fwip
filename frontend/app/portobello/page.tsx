@@ -2,11 +2,13 @@ import Header from "@/components/Header";
 import PortobelloSection from "@/components/PortobelloSection";
 import PurpleShowcase from "@/components/PurpleShowcase";
 import PromoSection from "@/components/PromoSection";
+import PortobelloHwdSection from "@/components/PortobelloHwdSection"; // nový import
 import {
   fetchHeaderData,
   fetchPortobelloData,
   fetchPurpleShowcaseData,
   fetchPromoSections,
+  fetchPortobelloHwdData, // nová funkcia
   HeaderData,
 } from "@/lib/strapi";
 
@@ -21,7 +23,8 @@ export default async function PortobelloPage() {
 
   const portobelloData = await fetchPortobelloData();
   const showcaseData = await fetchPurpleShowcaseData();
-  const promoSections = await fetchPromoSections(); // This returns an array of all sections
+  const promoSections = await fetchPromoSections(); 
+  const hwdData = await fetchPortobelloHwdData(); // načítanie HWD dát
 
   return (
     <main>
@@ -37,6 +40,13 @@ export default async function PortobelloPage() {
       {promoSections.map((promoSection, index) => (
         <PromoSection key={index} data={promoSection} />
       ))}
+
+      {/* HWD sekcia ako posledná */}
+      {hwdData
+        .filter((hwd) => hwd.portobelloHwd != null)
+        .map((hwd) => (
+          <PortobelloHwdSection key={hwd.id} data={hwd.portobelloHwd!} />
+        ))}
     </main>
   );
 }

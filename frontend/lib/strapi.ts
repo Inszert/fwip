@@ -397,3 +397,39 @@ export async function fetchPromoSections(): Promise<PromoSectionData[]> {
     return [];
   }
 }
+
+
+// lib/strapi.ts
+export interface HwdOption {
+  id: number;
+  text: string | null;
+  orientacion: string | null;
+  image: {
+    url: string;
+    width: number;
+    height: number;
+  } | null;
+}
+
+export interface PortobelloHwd {
+  id: number;
+  textField1: string;
+  textField2: string;
+  textField3: string;
+  button?: { text: string; url: string; color: string }[];
+  color?: string;
+  hwdOptions: HwdOption[];
+}
+
+export interface PortobelloHwdItem {
+  id: number;
+  portobelloHwd: PortobelloHwd | null;
+}
+
+export async function fetchPortobelloHwdData(): Promise<PortobelloHwdItem[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/portobellos?populate[portobelloHwd][populate][hwdOptions][populate]=image`
+  );
+  const json = await res.json();
+  return json.data;
+}
