@@ -28,7 +28,7 @@ const MainPrimary: React.FC<MainPrimaryProps> = ({ title, content, imageUrl }) =
 
               {/* Mobile text overlay */}
               <div className="absolute inset-0 flex flex-col justify-end md:hidden p-6">
-                <div className="bg-black bg-opacity-40 p-4 rounded-md">
+                <div className=" bg-opacity-40 p-4 rounded-md">
                   <h1 className="text-4xl font-extrabold uppercase text-white drop-shadow-lg mb-2">
                     {title}
                   </h1>

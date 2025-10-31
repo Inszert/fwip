@@ -47,6 +47,7 @@ export default function SignatureRecipes() {
       </div>
 
       <div className="relative z-10">
+        {/* Titulky */}
         <h2 className="text-6xl font-black text-white mb-6 tracking-tight drop-shadow-xl">
           OUR SIGNATURE
         </h2>
@@ -54,6 +55,7 @@ export default function SignatureRecipes() {
           ITALIAN RECIPES
         </h2>
 
+        {/* Ice cream cards */}
         <div className="flex flex-wrap justify-center gap-14 px-6">
           {iceCreams.map((ice) => (
             <div
@@ -112,7 +114,7 @@ export default function SignatureRecipes() {
                   );
                 })}
 
-              {/* Main gelato image with hover effect */}
+              {/* Main gelato image with hover effect - vyskočí viac */}
               <div
                 className="relative z-40 transition-all duration-[600ms] ease-out group-hover:-translate-y-40 group-hover:scale-[1.28]"
                 style={{
@@ -134,12 +136,13 @@ export default function SignatureRecipes() {
                 />
               </div>
 
-              {/* Info card with text on hover */}
+              {/* Info card with text on hover - užší a dlhší */}
               <div
-                className="absolute bottom-0 left-0 right-0 rounded-[2rem] shadow-2xl p-8 pt-32 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-[500ms] ease-out z-30"
+                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 rounded-[2rem] shadow-2xl p-8 pt-32 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-[500ms] ease-out z-30"
                 style={{
-                  backgroundColor: ice.color,
-                  height: "280px",
+                  backgroundColor: ice.color, // farbu stále môžeš nastavovať
+                  height: "300px",            // dlhší box
+                  width: "65%",               // užší
                 }}
               >
                 <div className="opacity-0 translate-y-5 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-[400ms] delay-150">
