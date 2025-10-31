@@ -7,17 +7,41 @@ interface MainPrimaryProps {
 const MainPrimary: React.FC<MainPrimaryProps> = ({ title, content, imageUrl }) => {
   return (
     <section
-      className="relative w-full overflow-x-hidden h-screen" // Changed to h-screen
+      className="relative w-full overflow-hidden h-screen"
       style={{ background: "linear-gradient(135deg, #40DDCB 0%, #2EC4B6 100%)" }}
     >
       <div className="flex w-full h-full">
-        {/* Reduced left spacer */}
+        {/* Left spacer only for PC */}
         <div className="hidden md:block flex-none" style={{ width: "5vw" }}></div>
-        
-        {/* Main content: text + image */}
-        <div className="flex flex-1 flex-row items-center h-full"> {/* Added h-full */}
-          {/* Text content - flexible width */}
-          <div className="flex flex-col justify-center px-8 md:px-12 lg:px-16 flex-1 text-left min-w-0 h-full"> {/* Added h-full */}
+
+        {/* Main content */}
+        <div className="flex flex-1 h-full flex-col md:flex-row">
+          
+          {/* Image container */}
+          {imageUrl && (
+            <div className="relative w-full h-full md:w-1/3 md:h-full flex-shrink-0">
+              <img
+                src={imageUrl}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+
+              {/* Mobile text overlay */}
+              <div className="absolute inset-0 flex flex-col justify-end md:hidden p-6">
+                <div className="bg-black bg-opacity-40 p-4 rounded-md">
+                  <h1 className="text-4xl font-extrabold uppercase text-white drop-shadow-lg mb-2">
+                    {title}
+                  </h1>
+                  <p className="text-2xl font-extrabold uppercase text-white drop-shadow-lg">
+                    {content}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Text content for PC */}
+          <div className="hidden md:flex flex-col justify-center px-8 md:px-12 lg:px-16 flex-1 text-left h-full">
             <h1 className="text-4xl md:text-5xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
               {title}
             </h1>
@@ -25,18 +49,6 @@ const MainPrimary: React.FC<MainPrimaryProps> = ({ title, content, imageUrl }) =
               {content}
             </p>
           </div>
-
-          {/* Image container - only show when imageUrl exists */}
-          {imageUrl && (
-            <div className="flex items-center justify-center flex-shrink-0 h-full" style={{ width: "33.333%" }}> {/* Removed fixed height */}
-              <img
-                src={imageUrl}
-                alt={title}
-                className="w-auto max-w-none h-full object-cover rounded-none shadow-none"
-                style={{ border: "none", background: "none" }}
-              />
-            </div>
-          )}
         </div>
       </div>
     </section>
