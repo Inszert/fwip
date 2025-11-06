@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_footer_optional_slots_s",
+  "info": {
+    "displayName": "optionalSlots "
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}

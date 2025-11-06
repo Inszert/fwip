@@ -433,3 +433,83 @@ export async function fetchPortobelloHwdData(): Promise<PortobelloHwdItem[]> {
   const json = await res.json();
   return json.data;
 }
+
+
+// lib/strapi.ts
+
+// Typ pre deti v rich text blocích
+export interface RichTextChild {
+  type: string;
+  text: string;
+}
+
+// Typ pre rich text blok
+export interface RichTextBlock {
+  type: string;
+  children: RichTextChild[];
+}
+
+// Typ pre jednotlivé položky v footer_opt (repeatable component)
+export interface OptionalSlot {
+  id: number;
+  Title: string;
+  description: RichTextBlock[];
+}
+
+// Typ pre jednotlivé tlačidlá v footer_btns (repeatable component)
+export interface BottomLink {
+  id: number;
+  text: string;
+  url: string | null;
+}
+
+// Typ dát footeru vracaných zo Strapi
+export interface FooterData {
+  phoneNumber: string;
+  location: string;
+  footer_opt: OptionalSlot[];
+  footer_btns: BottomLink[];
+}
+
+export interface FooterData {
+  id: number;
+  documentId: string;
+  phoneNumber: string;
+  location: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  footer_opt: OptionalSlot[];
+  footer_btns: BottomLink[];
+}
+
+export async function fetchFooterData(): Promise<FooterData | null> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+    const url = `${baseUrl}/api/footers?populate[footer_opt]=*&populate[footer_btns]=*`;
+    console.log("Fetching from URL:", url);
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Error ${res.status}`);
+
+    const json = await res.json();
+    console.log("Full JSON response:", JSON.stringify(json, null, 2));
+
+    if (json.data && json.data.length > 0) {
+      // Sa namiesto footer.attributes vráti priamo json.data[0]
+      const footer = json.data[0];
+      console.log("Footer element:", footer);
+
+      // V JSON je objekt priamo, takto to vrátime:
+      return footer as FooterData;
+      
+      // Ak chceš, len ak je isté, že tie polia sedí na FooterData
+    } else {
+      console.warn("No data array or empty in API response");
+      return null;
+    }
+  } catch (err) {
+    console.error("Fetch footer error:", err);
+    return null;
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "footers",
+  "info": {
+    "singularName": "footer",
+    "pluralName": "footers",
+    "displayName": "Footer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "phoneNumber": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "footer_opt": {
+      "type": "component",
+      "component": "footer.optional-slots",
+      "repeatable": true
+    },
+    "footer_btns": {
+      "type": "component",
+      "component": "footer.bottom-links",
+      "repeatable": true
+    }
+  }
+}

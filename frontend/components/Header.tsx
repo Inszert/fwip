@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link"; // Import Link for routing
 import { Button, HeaderImage } from "@/lib/strapi";
 
 interface HeaderProps {
@@ -22,7 +23,6 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
         aria-label="Toggle menu"
         type="button"
       >
-        {/* Hamburger icon with animation */}
         <div
           className={`w-6 h-0.5 bg-white mb-1 transition-transform duration-300 ${
             menuOpen ? "rotate-45 translate-y-1.5" : ""
@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
         />
       </button>
 
-      {/* Always-visible button texts - hidden on mobile, pointer events enabled for hover trigger */}
+      {/* Always-visible button texts - hidden on mobile */}
       <div className="hidden sm:flex absolute top-0 left-0 right-0 z-20 flex items-center justify-end pr-4 sm:pr-6 lg:pr-8 xl:pr-12 h-16">
         <div className="flex flex-wrap gap-4 sm:gap-6 justify-end">
           {buttons?.map((btn, i) => (
@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
         </div>
       </div>
 
-      {/* Header menu: toggle visibility on mobile, hover on desktop */}
+      {/* Header menu */}
       <header
         className={`
           absolute top-0 left-0 right-0 z-40
@@ -78,7 +78,10 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
             {/* Logo and subtitle section */}
             <div className="flex items-center gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0">
               {image && (
-                <div className="shrink-0 transition-transform duration-300 hover:scale-110 hover:rotate-3">
+                <Link
+                  href="/"
+                  className="shrink-0 transition-transform duration-300 hover:scale-110 hover:rotate-3"
+                >
                   <div className="relative">
                     <Image
                       src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${image.url}`}
@@ -90,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
                     />
                     <div className="absolute inset-0 bg-white/20 rounded-full blur-xl -z-10 scale-150"></div>
                   </div>
-                </div>
+                </Link>
               )}
               {subtitle && (
                 <div className="min-w-0 flex-1">
@@ -101,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
               )}
             </div>
 
-            {/* Buttons - always clickable */}
+            {/* Buttons section */}
             <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-end w-full sm:w-auto">
               {buttons?.map((btn, i) => (
                 <a
@@ -141,6 +144,7 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
             </div>
           </div>
         </div>
+
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none"></div>
       </header>
     </div>

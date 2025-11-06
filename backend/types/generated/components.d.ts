@@ -37,6 +37,28 @@ export interface DefaultIngredient extends Struct.ComponentSchema {
   };
 }
 
+export interface FooterBottomLinks extends Struct.ComponentSchema {
+  collectionName: 'components_footer_bottom_links';
+  info: {
+    displayName: 'bottomLinks';
+  };
+  attributes: {
+    text: Schema.Attribute.String;
+    url: Schema.Attribute.String;
+  };
+}
+
+export interface FooterOptionalSlots extends Struct.ComponentSchema {
+  collectionName: 'components_footer_optional_slots_s';
+  info: {
+    displayName: 'optionalSlots ';
+  };
+  attributes: {
+    description: Schema.Attribute.Blocks;
+    Title: Schema.Attribute.String;
+  };
+}
+
 export interface PortobelloHwdOption extends Struct.ComponentSchema {
   collectionName: 'components_portobello_hwd_options';
   info: {
@@ -120,6 +142,8 @@ declare module '@strapi/strapi' {
       'basic.button': BasicButton;
       'basic.seo': BasicSeo;
       'default.ingredient': DefaultIngredient;
+      'footer.bottom-links': FooterBottomLinks;
+      'footer.optional-slots': FooterOptionalSlots;
       'portobello.hwd-option': PortobelloHwdOption;
       'portobello.image-text-combo': PortobelloImageTextCombo;
       'portobello.portobello-hwd': PortobelloPortobelloHwd;
