@@ -738,6 +738,41 @@ export interface ApiPromoSectionPromoSection
   };
 }
 
+export interface ApiZariadeniaZariadenia extends Struct.CollectionTypeSchema {
+  collectionName: 'zariadenias';
+  info: {
+    displayName: 'zariadenia';
+    pluralName: 'zariadenias';
+    singularName: 'zariadenia';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::zariadenia.zariadenia'
+    > &
+      Schema.Attribute.Private;
+    main_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    text1: Schema.Attribute.String;
+    text2: Schema.Attribute.String;
+    text3: Schema.Attribute.Text;
+    units_part: Schema.Attribute.Component<'units.units', true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -1257,6 +1292,7 @@ declare module '@strapi/strapi' {
       'api::page.page': ApiPagePage;
       'api::portobello.portobello': ApiPortobelloPortobello;
       'api::promo-section.promo-section': ApiPromoSectionPromoSection;
+      'api::zariadenia.zariadenia': ApiZariadeniaZariadenia;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

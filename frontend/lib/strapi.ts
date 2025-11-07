@@ -513,3 +513,52 @@ export async function fetchFooterData(): Promise<FooterData | null> {
     return null;
   }
 }
+
+
+
+export interface ZariadeniaImage {
+  id: number;
+  url: string;
+  alternativeText: string | null;
+  width: number;
+  height: number;
+  formats: {
+    thumbnail: {
+      url: string;
+      width: number;
+      height: number;
+    };
+  };
+}
+
+export interface ZariadeniaData {
+  id: number;
+  text1: string;
+  text2: string;
+  text3: string;
+  main_image: ZariadeniaImage[];
+}
+
+export interface ZariadeniaResponse {
+  data: ZariadeniaData[];
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}
+
+export async function fetchZariadeniaData(): Promise<ZariadeniaResponse | null> {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/zariadenias?populate=main_image`
+    );
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching zariadenia data:', error);
+    return null;
+  }
+}

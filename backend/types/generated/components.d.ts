@@ -136,6 +136,20 @@ export interface SectionsMainPrimary extends Struct.ComponentSchema {
   };
 }
 
+export interface UnitsUnits extends Struct.ComponentSchema {
+  collectionName: 'components_units_units';
+  info: {
+    displayName: 'units';
+  };
+  attributes: {
+    button: Schema.Attribute.Component<'basic.button', false>;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    text1: Schema.Attribute.String;
+    text2: Schema.Attribute.String;
+    text3: Schema.Attribute.String;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -150,6 +164,7 @@ declare module '@strapi/strapi' {
       'portobello.portobello-primary': PortobelloPortobelloPrimary;
       'portobello.portobello-secondary': PortobelloPortobelloSecondary;
       'sections.main-primary': SectionsMainPrimary;
+      'units.units': UnitsUnits;
     }
   }
 }
