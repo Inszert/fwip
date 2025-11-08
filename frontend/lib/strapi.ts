@@ -537,6 +537,8 @@ export interface ZariadeniaData {
   text2: string;
   text3: string;
   main_image: ZariadeniaImage[];
+  units_part: UnitsPart[];
+  
 }
 
 export interface ZariadeniaResponse {
@@ -551,10 +553,30 @@ export interface ZariadeniaResponse {
   };
 }
 
+export interface Button {
+  text: string;
+  url: string | null;
+  color?: string;
+}
+export interface UnitsPart {
+  id: number;
+  text1: string;
+  text2: string;
+  text3: string;
+  image?: {
+    url: string;
+    alternativeText?: string | null;
+  };
+  button?: Button[];
+
+  
+}
+
+
 export async function fetchZariadeniaData(): Promise<ZariadeniaResponse | null> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/zariadenias?populate=main_image`
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/zariadenias?populate[main_image]=true&populate[units_part][populate]=*`
     );
     return await response.json();
   } catch (error) {
