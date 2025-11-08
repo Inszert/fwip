@@ -67,7 +67,27 @@ export async function fetchHeroVideo(): Promise<HeroVideo | null> {
     video: { url: hero.video.url },
   };
 }
+export async function fetchHeroVideoIceCream(): Promise<HeroVideo | null> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-video-ice-creams?populate=*`,
+    { cache: "no-store" }
+  );
 
+  if (!res.ok) throw new Error("Chyba pri načítaní hero videa");
+
+  const data = await res.json();
+  const hero = data.data[0];
+
+  if (!hero || !hero.video || !hero.video.length) return null;
+
+  return {
+    title: hero.title ?? undefined,
+    textField1: hero.textField1 ?? undefined,
+    textField2: hero.textField2 ?? undefined,
+    textField3: hero.textField3 ?? undefined,
+    video: { url: hero.video[0].url }, // <-- use the first video in the array
+  };
+}
 
 // lib/strapi.ts
 export interface Ingredient {
@@ -583,4 +603,66 @@ export async function fetchZariadeniaData(): Promise<ZariadeniaResponse | null> 
     console.error('Error fetching zariadenia data:', error);
     return null;
   }
+}
+
+
+
+
+
+
+
+
+
+// interfaces.ts
+export interface VideoSegment {
+  start_time: number;
+  end_time: number;
+}
+
+export interface VideoFile {
+  url: string;
+  name?: string;
+  mime?: string;
+}
+
+export interface MainBodyVideo {
+  video_separ: VideoFile;
+  data_for_sep: VideoSegment[];
+}
+
+export interface HeroVideoToSeparate {
+  main_body_video: MainBodyVideo;
+}
+
+// strapi.ts
+export async function fetchHeroVideoToSeparate(): Promise<HeroVideoToSeparate | null> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-video-ice-creams?populate[main_body_video][populate]=*`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) throw new Error("Error fetching hero video");
+
+  const data = await res.json();
+  const hero = data.data[0];
+
+  if (!hero?.main_body_video?.video_separ) return null;
+
+  // Build full URL for video
+  const videoUrl = hero.main_body_video.video_separ.url.startsWith("http")
+    ? hero.main_body_video.video_separ.url
+    : `${process.env.NEXT_PUBLIC_STRAPI_URL}${hero.main_body_video.video_separ.url}`;
+
+  // Map segment times
+  const segments: VideoSegment[] = hero.main_body_video.data_for_sep.map((seg: any) => ({
+    start_time: parseFloat(seg.start_time),
+    end_time: parseFloat(seg.end_time),
+  }));
+
+  return {
+    main_body_video: {
+      video_separ: { url: videoUrl },
+      data_for_sep: segments,
+    },
+  };
 }

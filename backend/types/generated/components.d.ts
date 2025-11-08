@@ -59,6 +59,30 @@ export interface FooterOptionalSlots extends Struct.ComponentSchema {
   };
 }
 
+export interface IceCreamTimestamps extends Struct.ComponentSchema {
+  collectionName: 'components_ice_cream_timestamps';
+  info: {
+    displayName: 'timestamps';
+  };
+  attributes: {
+    end_time: Schema.Attribute.String;
+    start_time: Schema.Attribute.String;
+  };
+}
+
+export interface IceCreamVideoToSeparateIce extends Struct.ComponentSchema {
+  collectionName: 'components_ice_cream_video_to_separate_ices';
+  info: {
+    displayName: 'video_to_separate_ice';
+  };
+  attributes: {
+    data_for_sep: Schema.Attribute.Component<'ice-cream.timestamps', true>;
+    video_separ: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+  };
+}
+
 export interface PortobelloHwdOption extends Struct.ComponentSchema {
   collectionName: 'components_portobello_hwd_options';
   info: {
@@ -158,6 +182,8 @@ declare module '@strapi/strapi' {
       'default.ingredient': DefaultIngredient;
       'footer.bottom-links': FooterBottomLinks;
       'footer.optional-slots': FooterOptionalSlots;
+      'ice-cream.timestamps': IceCreamTimestamps;
+      'ice-cream.video-to-separate-ice': IceCreamVideoToSeparateIce;
       'portobello.hwd-option': PortobelloHwdOption;
       'portobello.image-text-combo': PortobelloImageTextCombo;
       'portobello.portobello-hwd': PortobelloPortobelloHwd;

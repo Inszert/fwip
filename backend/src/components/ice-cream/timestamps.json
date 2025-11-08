@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_ice_cream_timestamps",
+  "info": {
+    "displayName": "timestamps"
+  },
+  "options": {},
+  "attributes": {
+    "start_time": {
+      "type": "string"
+    },
+    "end_time": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

@@ -42,11 +42,11 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
 
       {/* Always-visible button texts - hidden on mobile */}
       <div className="hidden sm:flex absolute top-0 left-0 right-0 z-20 flex items-center justify-end pr-4 sm:pr-6 lg:pr-8 xl:pr-12 h-16">
-        <div className="flex flex-wrap gap-4 sm:gap-6 justify-end">
+        <div className="flex flex-wrap gap-8 sm:gap-10 justify-end">
           {buttons?.map((btn, i) => (
             <span
               key={i}
-              className="font-extrabold text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-[-10px] cursor-default drop-shadow-lg"
+              className="font-extrabold text-white text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-[-10px] cursor-default drop-shadow-lg"
             >
               {btn.text}
             </span>

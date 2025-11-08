@@ -528,6 +528,42 @@ export interface ApiHeaderHeader extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiHeroVideoIceCreamHeroVideoIceCream
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'hero_video_ice_creams';
+  info: {
+    displayName: 'hero-video-ice-cream';
+    pluralName: 'hero-video-ice-creams';
+    singularName: 'hero-video-ice-cream';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::hero-video-ice-cream.hero-video-ice-cream'
+    > &
+      Schema.Attribute.Private;
+    main_body_video: Schema.Attribute.Component<
+      'ice-cream.video-to-separate-ice',
+      false
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    video: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+  };
+}
+
 export interface ApiHeroVideoHeroVideo extends Struct.CollectionTypeSchema {
   collectionName: 'hero-videos';
   info: {
@@ -1286,6 +1322,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::footer.footer': ApiFooterFooter;
       'api::header.header': ApiHeaderHeader;
+      'api::hero-video-ice-cream.hero-video-ice-cream': ApiHeroVideoIceCreamHeroVideoIceCream;
       'api::hero-video.hero-video': ApiHeroVideoHeroVideo;
       'api::ice-cream.ice-cream': ApiIceCreamIceCream;
       'api::main-body.main-body': ApiMainBodyMainBody;
