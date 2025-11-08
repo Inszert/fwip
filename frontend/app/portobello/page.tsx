@@ -39,11 +39,7 @@ export default async function PortobelloPage() {
 
   return (
     <main>
-      <Header
-        subtitle={headerData.subtitle}
-        buttons={headerData.button}
-        image={headerData.image}
-      />
+<Header />
       <PortobelloSection data={portobelloData} />
       <PurpleShowcase
         headline={showcaseData.headline}
@@ -63,28 +59,7 @@ export default async function PortobelloPage() {
         ))}
 
       {/* FOOTER added here */}
-      <Footer
-        phoneNumber={footerData?.phoneNumber || ""}
-        location={footerData?.location || ""}
-        optionalSlots={footerData?.footer_opt?.map(slot => (
-          <div key={slot.id}>
-            <h4 className="font-semibold mb-1">{slot.Title}</h4>
-            {slot.description.map((block, i) =>
-              block.type === "paragraph" ? (
-                <p key={i}>
-                  {block.children.map((child, ci) => (
-                    <React.Fragment key={ci}>{child.text}</React.Fragment>
-                  ))}
-                </p>
-              ) : null
-            )}
-          </div>
-        )) || []}
-        bottomLinks={footerData?.footer_btns?.map(({ id, text, url }) => ({
-          text,
-          href: url || "#",
-        })) || []}
-      />
+      <Footer/>
     </main>
   );
 }

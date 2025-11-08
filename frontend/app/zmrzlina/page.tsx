@@ -32,11 +32,7 @@ export default async function ZariadeniaPage() {
 
     return (
       <main className="min-h-screen flex flex-col justify-between bg-white">
-        <Header
-          subtitle={headerData.subtitle}
-          buttons={headerData.button}
-          image={headerData.image}
-        />
+<Header />
 
         {/* Original HeroVideo section */}
         {heroVideo?.video?.url && (
@@ -59,32 +55,8 @@ export default async function ZariadeniaPage() {
           />
         )}
 <SignatureRecipes />
-        <Footer
-          phoneNumber={footerData?.phoneNumber || ""}
-          location={footerData?.location || ""}
-          optionalSlots={
-            footerData?.footer_opt?.map((slot) => (
-              <div key={slot.id}>
-                <h4 className="font-semibold mb-1">{slot.Title}</h4>
-                {slot.description.map((block: any, i: number) =>
-                  block.type === "paragraph" ? (
-                    <p key={i}>
-                      {block.children.map((child: any, ci: number) => (
-                        <React.Fragment key={ci}>{child.text}</React.Fragment>
-                      ))}
-                    </p>
-                  ) : null
-                )}
-              </div>
-            )) || []
-          }
-          bottomLinks={
-            footerData?.footer_btns?.map(({ id, text, url }) => ({
-              text,
-              href: url || "#",
-            })) || []
-          }
-        />
+        <Footer/>
+        
       </main>
     );
   } catch (error) {

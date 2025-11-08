@@ -113,12 +113,7 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
               <source src={videoUrl} type="video/mp4" />
             </video>
 
-            <div className="absolute top-4 left-4 bg-black bg-opacity-50 text-white p-2 rounded-lg z-10 text-xs">
-              <div>Segment {index + 1}</div>
-              <div>
-                {segment.start_time}s - {segment.end_time}s
-              </div>
-            </div>
+
           </div>
         ))}
       </div>
