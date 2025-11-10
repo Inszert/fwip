@@ -1,4 +1,4 @@
-const STRAPI = process.env.NEXT_PUBLIC_STRAPI_URL || "http://192.168.1.40:1337";
+const STRAPI = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
 export interface Button {
   text: string;
@@ -18,6 +18,7 @@ export interface HeaderData {
   button?: Button[];
   image?: HeaderImage | null;
 }
+
 
 export async function fetchHeaderData(): Promise<HeaderData> {
   const res = await fetch(`${STRAPI}/api/headers?populate=*`);

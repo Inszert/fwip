@@ -66,14 +66,14 @@ export default async function ZariadeniaPage() {
 
   const paragraphs = zariadeniaData?.text3
     ? zariadeniaData.text3
-        .split(". ")
-        .filter(Boolean)
-        .map((p: string) => (p.endsWith(".") ? p : p + "."))
+      .split(". ")
+      .filter(Boolean)
+      .map((p: string) => (p.endsWith(".") ? p : p + "."))
     : [
-        "This is the first paragraph.",
-        "This is the second paragraph.",
-        "Finally, this is the last paragraph.",
-      ];
+      "This is the first paragraph.",
+      "This is the second paragraph.",
+      "Finally, this is the last paragraph.",
+    ];
 
   // Map API units to component type
   const mappedUnits: UnitPartMapped[] =
@@ -89,8 +89,9 @@ export default async function ZariadeniaPage() {
     })) || [];
 
   return (
+
     <main className="min-h-screen flex flex-col justify-between bg-white">
-<Header />
+      <Header />
 
       <TopSectionZariadenia
         backgroundImage={backgroundImageUrl}

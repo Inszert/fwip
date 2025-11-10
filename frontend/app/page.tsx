@@ -77,9 +77,7 @@ export default async function Home() {
   return (
     <main>
       <Header
-        subtitle={headerData.subtitle}
-        buttons={headerData.button}
-        image={headerData.image}
+
       />
 
       {heroVideo?.video?.url && (
@@ -105,10 +103,7 @@ export default async function Home() {
       <SignatureRecipes />
 
       <Footer
-        phoneNumber={footerData?.phoneNumber || ""}
-        location={footerData?.location || ""}
-        optionalSlots={optionalSlots}
-        bottomLinks={bottomLinks}
+
       />
     </main>
   );

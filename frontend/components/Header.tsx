@@ -1,22 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link"; // Import Link for routing
-import { Button, HeaderImage } from "@/lib/strapi";
+import Link from "next/link";
+import { fetchHeaderData, HeaderData } from "@/lib/strapi";
 
-interface HeaderProps {
-  subtitle?: string;
-  buttons?: Button[];
-  image?: HeaderImage | null;
-}
+const Header: React.FC = () => {
+  const [headerData, setHeaderData] = useState<HeaderData>({
+    subtitle: "",
+    button: [],
+    image: null,
+  });
 
-const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const loadHeader = async () => {
+      try {
+        const data = await fetchHeaderData();
+        setHeaderData(data);
+      } catch (error) {
+        console.error("Error fetching header data:", error);
+      }
+    };
+    loadHeader();
+  }, []);
+
+  const { subtitle, button, image } = headerData;
 
   return (
     <div className="relative w-full group">
-      {/* Hamburger button for mobile only */}
+      {/* Hamburger button for mobile */}
       <button
         className="sm:hidden z-50 p-3 text-white fixed top-4 right-4"
         onClick={() => setMenuOpen(!menuOpen)}
@@ -40,10 +54,10 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
         />
       </button>
 
-      {/* Always-visible button texts - hidden on mobile */}
+      {/* Desktop buttons (top-right corner) */}
       <div className="hidden sm:flex absolute top-0 left-0 right-0 z-20 flex items-center justify-end pr-4 sm:pr-6 lg:pr-8 xl:pr-12 h-16">
         <div className="flex flex-wrap gap-8 sm:gap-10 justify-end">
-          {buttons?.map((btn, i) => (
+          {button?.map((btn, i) => (
             <span
               key={i}
               className="font-extrabold text-white text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-[-10px] cursor-default drop-shadow-lg"
@@ -67,7 +81,6 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
           }
         `}
       >
-        {/* Decorative background elements */}
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute top-0 right-1/4 w-64 h-64 bg-white rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-white rounded-full blur-2xl"></div>
@@ -75,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="flex flex-col sm:flex-row justify-between items-center py-4 sm:py-5 gap-4 sm:gap-6">
-            {/* Logo and subtitle section */}
+            {/* Logo + Subtitle */}
             <div className="flex items-center gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0">
               {image && (
                 <Link
@@ -104,9 +117,9 @@ const Header: React.FC<HeaderProps> = ({ subtitle, buttons, image }) => {
               )}
             </div>
 
-            {/* Buttons section */}
+            {/* Navigation buttons */}
             <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-end w-full sm:w-auto">
-              {buttons?.map((btn, i) => (
+              {button?.map((btn, i) => (
                 <a
                   key={i}
                   href={btn.url || "#"}
