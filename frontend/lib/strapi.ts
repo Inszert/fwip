@@ -49,7 +49,8 @@ export async function fetchHeroVideo(): Promise<HeroVideo | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-videos?populate=*`,
     {
-      cache: "no-store", // disable Next.js cache for fresh content
+      
+       // disable Next.js cache for fresh content
     }
   );
 
@@ -71,7 +72,7 @@ export async function fetchHeroVideo(): Promise<HeroVideo | null> {
 export async function fetchHeroVideoIceCream(): Promise<HeroVideo | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-video-ice-creams?populate=*`,
-    { cache: "no-store" }
+  
   );
 
   if (!res.ok) throw new Error("Chyba pri načítaní hero videa");
@@ -275,7 +276,7 @@ export async function fetchPortobelloData(): Promise<PortobelloData> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/portobellos?populate=portobelloPrimary.image`,
-      { cache: "no-store" }
+     
     );
 
     if (!res.ok) throw new Error("Failed to fetch Portobello data");
@@ -301,9 +302,11 @@ export async function fetchPortobelloData(): Promise<PortobelloData> {
 }
 
 
-interface ImageData {
+export interface ImageData {
   url: string;
+  alternativeText?: string | null;
 }
+
 
 interface ImageTextComboItem {
   text?: string | null;
@@ -381,7 +384,7 @@ export async function fetchPromoSections(): Promise<PromoSectionData[]> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/promo-sections?populate=image`,
-      { cache: "no-store" }
+     
     );
     if (!res.ok) throw new Error("Failed to fetch PromoSection data");
 
@@ -639,7 +642,7 @@ export interface HeroVideoToSeparate {
 export async function fetchHeroVideoToSeparate(): Promise<HeroVideoToSeparate | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-video-ice-creams?populate[main_body_video][populate]=*`,
-    { cache: "no-store" }
+  
   );
 
   if (!res.ok) throw new Error("Error fetching hero video");
@@ -667,3 +670,109 @@ export async function fetchHeroVideoToSeparate(): Promise<HeroVideoToSeparate | 
     },
   };
 }
+
+
+// strapi.tsx
+
+export interface ImageDataFull {
+  id: number;
+  url: string;
+  alternativeText: string | null;
+  name: string;
+  formats?: Record<string, { url: string }>;
+}
+
+export interface FirstHeroSectionItem {
+  id: number;
+  text1: string;
+  text2: string;
+  text3: string;
+  bg_color: string;
+  text1_color: string;
+  text2_color: string;
+  text3_color: string;
+  image: ImageDataFull[];
+}
+
+export interface PlaceData {
+  id: number;
+  landing_text1: string;
+  lending_text2: string;
+  lending_image: ImageDataFull | null;
+  first_hero_section: FirstHeroSectionItem[];
+}
+
+export const fetchPlaceData = async (): Promise<PlaceData | null> => {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+    if (!baseUrl) throw new Error("NEXT_PUBLIC_STRAPI_URL not defined");
+
+    const response = await fetch(
+      `${baseUrl}/api/places?populate[0]=lending_image&populate[1]=first_hero_section.image`
+    );
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const json = await response.json();
+    if (json.data && json.data.length > 0) {
+      return json.data[0];
+    }
+    return null;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
+
+export const getImageUrl = (
+  image: ImageDataFull | null,
+  size: "small" | "medium" | "large" | "original" = "original"
+): string | null => {
+  if (!image) return null;
+  let imgUrl = image.url;
+
+  if (size !== "original" && image.formats && image.formats[size]) {
+    imgUrl = image.formats[size].url;
+  }
+
+  return imgUrl.startsWith("http")
+    ? imgUrl
+    : `${process.env.NEXT_PUBLIC_STRAPI_URL}${imgUrl}`;
+};
+
+
+
+// strapi.tsx
+
+export interface ContactFormData {
+  Business_name: string;
+  Fname: string;
+  Lname: string;
+  emial: string;
+  phone_number: string;
+  postal_code: string;
+  message: string;
+}
+
+export const submitContactForm = async (data: ContactFormData): Promise<{ success: boolean; error?: string }> => {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+    if (!baseUrl) throw new Error("Strapi base URL is not configured");
+
+    const response = await fetch(`${baseUrl}/api/contact-formulars`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data }),
+    });
+
+    if (response.ok) {
+      return { success: true };
+    } else {
+      const errorData = await response.json();
+      return { success: false, error: errorData.error?.message || "Failed to send message" };
+    }
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+};

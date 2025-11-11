@@ -467,6 +467,41 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiContactFormularContactFormular
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'contact_formulars';
+  info: {
+    displayName: 'Contact_formular';
+    pluralName: 'contact-formulars';
+    singularName: 'contact-formular';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Business_name: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    emial: Schema.Attribute.Email;
+    Fname: Schema.Attribute.String;
+    Lname: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::contact-formular.contact-formular'
+    > &
+      Schema.Attribute.Private;
+    message: Schema.Attribute.RichText;
+    phone_number: Schema.Attribute.String;
+    postal_code: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiFooterFooter extends Struct.CollectionTypeSchema {
   collectionName: 'footers';
   info: {
@@ -693,6 +728,36 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     seo: Schema.Attribute.Component<'basic.seo', false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPlacePlace extends Struct.CollectionTypeSchema {
+  collectionName: 'places';
+  info: {
+    displayName: 'Place';
+    pluralName: 'places';
+    singularName: 'place';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    first_hero_section: Schema.Attribute.Component<'places.places-hero', true>;
+    landing_text1: Schema.Attribute.String;
+    lending_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    lending_text2: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::place.place'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1320,6 +1385,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::contact-formular.contact-formular': ApiContactFormularContactFormular;
       'api::footer.footer': ApiFooterFooter;
       'api::header.header': ApiHeaderHeader;
       'api::hero-video-ice-cream.hero-video-ice-cream': ApiHeroVideoIceCreamHeroVideoIceCream;
@@ -1327,6 +1393,7 @@ declare module '@strapi/strapi' {
       'api::ice-cream.ice-cream': ApiIceCreamIceCream;
       'api::main-body.main-body': ApiMainBodyMainBody;
       'api::page.page': ApiPagePage;
+      'api::place.place': ApiPlacePlace;
       'api::portobello.portobello': ApiPortobelloPortobello;
       'api::promo-section.promo-section': ApiPromoSectionPromoSection;
       'api::zariadenia.zariadenia': ApiZariadeniaZariadenia;

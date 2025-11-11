@@ -38,7 +38,7 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
             });
           });
         },
-        { threshold: 0.2 }
+        { threshold: 0.01 }
       );
       observer.observe(video);
       observers.push(observer);

@@ -83,6 +83,26 @@ export interface IceCreamVideoToSeparateIce extends Struct.ComponentSchema {
   };
 }
 
+export interface PlacesPlacesHero extends Struct.ComponentSchema {
+  collectionName: 'components_places_places_heroes';
+  info: {
+    displayName: 'places-hero';
+  };
+  attributes: {
+    bg_color: Schema.Attribute.String;
+    image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    text1: Schema.Attribute.String;
+    text1_color: Schema.Attribute.String;
+    text2: Schema.Attribute.String;
+    text2_color: Schema.Attribute.String;
+    text3: Schema.Attribute.String;
+    text3_color: Schema.Attribute.String;
+  };
+}
+
 export interface PortobelloHwdOption extends Struct.ComponentSchema {
   collectionName: 'components_portobello_hwd_options';
   info: {
@@ -184,6 +204,7 @@ declare module '@strapi/strapi' {
       'footer.optional-slots': FooterOptionalSlots;
       'ice-cream.timestamps': IceCreamTimestamps;
       'ice-cream.video-to-separate-ice': IceCreamVideoToSeparateIce;
+      'places.places-hero': PlacesPlacesHero;
       'portobello.hwd-option': PortobelloHwdOption;
       'portobello.image-text-combo': PortobelloImageTextCombo;
       'portobello.portobello-hwd': PortobelloPortobelloHwd;

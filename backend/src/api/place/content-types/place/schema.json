@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "places",
+  "info": {
+    "singularName": "place",
+    "pluralName": "places",
+    "displayName": "Place"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "landing_text1": {
+      "type": "string"
+    },
+    "lending_text2": {
+      "type": "string"
+    },
+    "lending_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "first_hero_section": {
+      "type": "component",
+      "component": "places.places-hero",
+      "repeatable": true
+    }
+  }
+}
