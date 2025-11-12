@@ -791,3 +791,16 @@ export async function fetchSteps() {
   const data = await response.json();
   return data.data; // returning the array inside data property
 }
+
+
+export async function fetchPortobelloMiddles() {
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+  const endpoint = `${baseUrl}/api/portobello-middles?populate=*`;
+
+  const response = await fetch(endpoint);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch portobello middles data: ${response.status} ${response.statusText}`);
+  }
+  const data = await response.json();
+  return data.data; // returns array of items or object depending on your API setup
+}

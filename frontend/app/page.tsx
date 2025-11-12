@@ -79,7 +79,7 @@ export default async function Home() {
       <Header />
 
       {heroVideo?.video?.url && (
-        <section className="mb-8">
+       
           <HeroVideoBackground
             key={heroVideo.video.url}
             videoUrl={heroVideo.video.url}
@@ -87,7 +87,7 @@ export default async function Home() {
             textField2={heroVideo.textField2}
             textField3={heroVideo.textField3}
           />
-        </section>
+  
       )}
 
       <SignatureRecipes />

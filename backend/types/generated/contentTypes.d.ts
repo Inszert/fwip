@@ -764,6 +764,47 @@ export interface ApiPlacePlace extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPortobelloMiddlePortobelloMiddle
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'portobello_middles';
+  info: {
+    displayName: 'portobello_middle';
+    pluralName: 'portobello-middles';
+    singularName: 'portobello-middle';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    backgorund: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::portobello-middle.portobello-middle'
+    > &
+      Schema.Attribute.Private;
+    points: Schema.Attribute.Component<'portobello.portobello-primary', true>;
+    publishedAt: Schema.Attribute.DateTime;
+    sorunding_elements: Schema.Attribute.Component<'default.ingredient', true>;
+    text1: Schema.Attribute.String;
+    text2: Schema.Attribute.String;
+    text3: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPortobelloPortobello extends Struct.CollectionTypeSchema {
   collectionName: 'portobellos';
   info: {
@@ -1421,6 +1462,7 @@ declare module '@strapi/strapi' {
       'api::main-body.main-body': ApiMainBodyMainBody;
       'api::page.page': ApiPagePage;
       'api::place.place': ApiPlacePlace;
+      'api::portobello-middle.portobello-middle': ApiPortobelloMiddlePortobelloMiddle;
       'api::portobello.portobello': ApiPortobelloPortobello;
       'api::promo-section.promo-section': ApiPromoSectionPromoSection;
       'api::steps.steps': ApiStepsSteps;

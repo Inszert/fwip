@@ -40,7 +40,7 @@ export interface DefaultIngredient extends Struct.ComponentSchema {
     displayName: 'Ingredient';
   };
   attributes: {
-    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images'>;
     rotation: Schema.Attribute.Integer;
     size: Schema.Attribute.Integer;
     x: Schema.Attribute.Integer;

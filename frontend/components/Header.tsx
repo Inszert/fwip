@@ -64,7 +64,7 @@ const Header: React.FC = () => {
         if (rgb && rgb.length >= 3) {
           const [r, g, b] = rgb.map(Number);
           const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-          if (brightness > 130) light++; // citlivý prah
+          if (brightness > 180) light++; // citlivý prah
         }
       }
 

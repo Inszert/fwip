@@ -59,9 +59,7 @@ export default function StepBubbles({ steps }: Props) {
       </div>
 
       {/* Video Bubbles Section */}
-      <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 lg:gap-16 max-w-7xl mx-auto justify-items-center"
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 lg:gap-16 max-w-7xl mx-auto justify-items-center">
         {videos.map((video, index) => (
           <div key={video.id || index} className="flex flex-col items-center w-full">
             <Bubble video={video} stepText={video.text} />
@@ -80,15 +78,21 @@ interface BubbleProps {
 function Bubble({ video, stepText }: BubbleProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [showFallback, setShowFallback] = useState(false);
 
-  const handleMouseOver = async () => {
+  const videoUrl = video?.video?.url
+    ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${video.video.url}`
+    : "";
+
+  const handleMouseOver = () => {
     setIsHovered(true);
-    if (videoRef.current && isVideoLoaded && !showFallback) {
+    if (videoRef.current && videoUrl) {
       try {
-        videoRef.current.currentTime = 0;
-        await videoRef.current.play();
+        videoRef.current.load(); // ensures browser treats it as user-initiated
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => setShowFallback(true));
+        }
       } catch {
         setShowFallback(true);
       }
@@ -103,24 +107,10 @@ function Bubble({ video, stepText }: BubbleProps) {
     }
   };
 
-  const handleVideoLoaded = () => {
-    setIsVideoLoaded(true);
-    setShowFallback(false);
-  };
-
-  const handleVideoError = () => {
-    setIsVideoLoaded(false);
-    setShowFallback(true);
-  };
-
-  const videoUrl = video?.video?.url
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${video.video.url}`
-    : "";
-
   if (showFallback || !videoUrl) {
     return (
       <div className="flex flex-col items-center group">
-        <div className="relative rounded-full border-8 border-gray-200 w-64 h-64 flex items-center justify-center overflow-hidden shadow-2xl bg-gradient-to-br from-blue-50 to-pink-50 transition-all duration-500 group-hover:border-blue-300 group-hover:shadow-2xl">
+        <div className="relative rounded-full border-8 border-gray-200 w-64 h-64 flex items-center justify-center overflow-hidden shadow-2xl bg-gradient-to-br from-blue-50 to-pink-50">
           <div className="text-center px-4">
             <p className="font-bold text-2xl text-gray-800 mb-3">{stepText}</p>
           </div>
@@ -144,21 +134,17 @@ function Bubble({ video, stepText }: BubbleProps) {
         className="flex flex-col items-center cursor-pointer transition-transform duration-500 group-hover:scale-105"
         tabIndex={0}
       >
-        <div className="relative rounded-full border-8 border-gray-200 w-64 h-64 flex items-center justify-center overflow-hidden shadow-2xl transition-all duration-500 group-hover:border-blue-300 group-hover:shadow-2xl">
-          {/* Slightly zoomed-in video */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <video
-              ref={videoRef}
-              src={videoUrl}
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              className="w-[94%] h-[94%] object-cover rounded-full"
-              onLoadedData={handleVideoLoaded}
-              onError={handleVideoError}
-            />
-          </div>
+        <div className="relative rounded-full border-8 border-gray-200 w-64 h-64 flex items-center justify-center overflow-hidden shadow-2xl">
+          <video
+            ref={videoRef}
+            src={videoUrl}
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover rounded-full"
+            onError={() => setShowFallback(true)}
+          />
 
           {/* Overlay */}
           <div
@@ -166,19 +152,12 @@ function Bubble({ video, stepText }: BubbleProps) {
               isHovered ? "opacity-0" : "opacity-100"
             }`}
           >
-            <div className="text-center text-white px-4">
-              <p className="font-bold text-2xl drop-shadow-lg mb-3">{stepText}</p>
-            </div>
+            <p className="font-bold text-2xl text-white drop-shadow-lg">{stepText}</p>
           </div>
 
-          {/* Static background */}
-          {!isHovered && (
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-pink-100 -z-10" />
-          )}
+          {!isHovered && <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-pink-100 -z-10" />}
         </div>
       </div>
-
-      {/* Step text below bubble */}
       <div className="text-center mt-8">
         <h3 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
           {stepText}
