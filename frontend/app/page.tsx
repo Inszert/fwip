@@ -2,9 +2,9 @@ import React from "react";
 import Header from "@/components/Header";
 import HeroVideoBackground from "@/components/HeroVideoBackground";
 import SignatureRecipes from "@/components/SignatureRecipes";
-import MainPrimary from "@/components/MainPrimary";
 import Footer from "@/components/Footer";
-
+import StepBubbles from "@/components/StepsOfUse";
+import { fetchSteps } from "@/lib/strapi";
 import {
   fetchHeaderData,
   fetchHeroVideo,
@@ -14,7 +14,6 @@ import {
   HeroVideo as HeroVideoType,
 } from "@/lib/strapi";
 
-// Typy pre rich text
 interface RichTextChild {
   type: string;
   text: string;
@@ -25,7 +24,6 @@ interface RichTextBlock {
   children: RichTextChild[];
 }
 
-// Funkcia na renderovanie Blokov rich textu
 const renderRichText = (blocks: RichTextBlock[]) => {
   return blocks.map((block, i) => {
     if (block.type === "paragraph") {
@@ -46,16 +44,18 @@ export default async function Home() {
   let heroVideo: HeroVideoType | null = null;
   let mainBody: any = null;
   let footerData = null;
+  let steps = null;
 
   try {
-    headerData = await fetchHeaderData();
-    heroVideo = await fetchHeroVideo();
-    const mainData = await fetchMainBody();
-    mainBody = mainData?.data?.[0]?.mainPrimaryContent || null;
+    [headerData, heroVideo, mainBody, footerData, steps] = await Promise.all([
+      fetchHeaderData(),
+      fetchHeroVideo(),
+      fetchMainBody().then(data => data?.data?.[0]?.mainPrimaryContent || null),
+      fetchFooterData(),
+      fetchSteps()
+    ]);
 
-    footerData = await fetchFooterData();
-
-    console.log("Fetched footer data:", footerData);
+    console.log("Steps data:", steps);
   } catch (err) {
     console.error("Error loading data:", err);
   }
@@ -76,9 +76,7 @@ export default async function Home() {
 
   return (
     <main>
-      <Header
-
-      />
+      <Header />
 
       {heroVideo?.video?.url && (
         <section className="mb-8">
@@ -91,11 +89,17 @@ export default async function Home() {
           />
         </section>
       )}
-<SignatureRecipes/>
 
-      <Footer
+      <SignatureRecipes />
 
-      />
+      {/* StepBubbles section */}
+      {steps && (
+        <section className="mb-12">
+          <StepBubbles steps={steps} />
+        </section>
+      )}
+
+      <Footer />
     </main>
   );
 }

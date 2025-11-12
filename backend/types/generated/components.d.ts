@@ -23,6 +23,17 @@ export interface BasicSeo extends Struct.ComponentSchema {
   };
 }
 
+export interface DefaultCircularVideo extends Struct.ComponentSchema {
+  collectionName: 'components_default_circular_videos';
+  info: {
+    displayName: 'circular_video';
+  };
+  attributes: {
+    text: Schema.Attribute.String;
+    video: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+  };
+}
+
 export interface DefaultIngredient extends Struct.ComponentSchema {
   collectionName: 'components_basic_ingredients';
   info: {
@@ -199,6 +210,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'basic.button': BasicButton;
       'basic.seo': BasicSeo;
+      'default.circular-video': DefaultCircularVideo;
       'default.ingredient': DefaultIngredient;
       'footer.bottom-links': FooterBottomLinks;
       'footer.optional-slots': FooterOptionalSlots;

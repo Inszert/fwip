@@ -776,3 +776,18 @@ export const submitContactForm = async (data: ContactFormData): Promise<{ succes
     return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
   }
 };
+
+
+
+
+export async function fetchSteps() {
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+  const endpoint = `${baseUrl}/api/stepss?populate[video][populate]=*`;
+
+  const response = await fetch(endpoint);
+  if (!response.ok) {
+    throw new Error('Failed to fetch steps');
+  }
+  const data = await response.json();
+  return data.data; // returning the array inside data property
+}
