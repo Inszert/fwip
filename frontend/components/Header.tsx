@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchHeaderData, HeaderData } from "@/lib/strapi";
 
-// Configurable setting - change to false if you don't want fixed header
 const FIXED_HEADER = true;
 const SIGNATURE_COLOR = "#40DDCB";
 
@@ -29,65 +28,67 @@ const Header: React.FC = () => {
     }
     loadData();
 
-    // Check if we're over light background
-    const checkBackground = () => {
-      const header = document.querySelector('header');
-      if (!header) return;
+    const header = document.querySelector("header");
+    if (!header) return;
 
-      const headerRect = header.getBoundingClientRect();
-      
-      // Sample multiple points below the header
-      const samplePoints = [
-        { x: window.innerWidth / 4, y: headerRect.bottom + 30 },
-        { x: window.innerWidth / 2, y: headerRect.bottom + 30 },
-        { x: (window.innerWidth / 4) * 3, y: headerRect.bottom + 30 },
-        { x: window.innerWidth / 4, y: headerRect.bottom + 70 },
-        { x: window.innerWidth / 2, y: headerRect.bottom + 70 },
-        { x: (window.innerWidth / 4) * 3, y: headerRect.bottom + 70 }
-      ];
+    let ticking = false;
 
-      let lightPoints = 0;
-
-      samplePoints.forEach(point => {
-        const element = document.elementFromPoint(point.x, point.y);
-        if (element) {
-          const style = window.getComputedStyle(element);
-          const bgColor = style.backgroundColor;
-          
-          // Convert RGB to hex and check if it's a light color
-          if (bgColor) {
-            const rgb = bgColor.match(/\d+/g);
-            if (rgb && rgb.length >= 3) {
-              const [r, g, b] = rgb.map(Number);
-              // Calculate brightness (0-255)
-              const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-              // VERY LOW THRESHOLD - swap even on slightly light backgrounds
-              if (brightness > 80) { // Changed from 128 to 80
-                lightPoints++;
-              }
-            }
-          }
+    // Helper: získa prvý nepriehľadný background color na elementoch nad bodom
+    const getBackgroundAtPoint = (x: number, y: number) => {
+      let el = document.elementFromPoint(x, y) as HTMLElement | null;
+      while (el && el !== document.body) {
+        const bg = window.getComputedStyle(el).backgroundColor;
+        if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") {
+          return bg;
         }
-      });
-
-      // If at least 2 points are light, switch colors (even more sensitive)
-      setIsLightBackground(lightPoints >= 2); // Changed from majority to just 2 points
+        el = el.parentElement;
+      }
+      return window.getComputedStyle(document.body).backgroundColor;
     };
 
-    // Check on scroll and resize
-    window.addEventListener('scroll', checkBackground);
-    window.addEventListener('resize', checkBackground);
-    
-    // Check more frequently
-    const interval = setInterval(checkBackground, 200);
-    
-    // Initial check
-    setTimeout(checkBackground, 300);
+    const checkBackground = () => {
+      if (!header) return;
+
+      const rect = header.getBoundingClientRect();
+      const y = rect.bottom + 40; // pár px pod header
+      const xPositions = [
+        window.innerWidth / 4,
+        window.innerWidth / 2,
+        (window.innerWidth * 3) / 4,
+      ];
+
+      let light = 0;
+      for (const x of xPositions) {
+        const bgColor = getBackgroundAtPoint(x, y);
+        const rgb = bgColor.match(/\d+/g);
+        if (rgb && rgb.length >= 3) {
+          const [r, g, b] = rgb.map(Number);
+          const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+          if (brightness > 130) light++; // citlivý prah
+        }
+      }
+
+      setIsLightBackground(light >= 2);
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          checkBackground();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", checkBackground);
+
+    setTimeout(checkBackground, 100); // initial check
 
     return () => {
-      window.removeEventListener('scroll', checkBackground);
-      window.removeEventListener('resize', checkBackground);
-      clearInterval(interval);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", checkBackground);
     };
   }, []);
 
@@ -96,17 +97,33 @@ const Header: React.FC = () => {
   const otherButtons = button?.filter((btn) => btn.color !== "pink") || [];
 
   const textColor = isLightBackground ? "text-[#40DDCB]" : "text-white";
-  const subtitleHoverColor = isLightBackground ? "group-hover:text-[#40DDCB]/80" : "group-hover:text-blue-100";
+  const subtitleHoverColor = isLightBackground
+    ? "group-hover:text-[#40DDCB]/80"
+    : "group-hover:text-blue-100";
   const borderColor = isLightBackground ? "border-[#40DDCB]" : "border-transparent";
-  const blueButtonHoverBg = isLightBackground ? "group-hover:bg-[#40DDCB]" : "group-hover:bg-blue-500";
-  const blueButtonHoverText = isLightBackground ? "group-hover:text-white" : "group-hover:text-white";
-  const blueButtonHoverBorder = isLightBackground ? "group-hover:border-[#40DDCB]" : "group-hover:border-blue-400";
-  const otherButtonHoverBg = isLightBackground ? "group-hover:bg-[#40DDCB]/20" : "group-hover:bg-white/20";
-  const otherButtonHoverBorder = isLightBackground ? "group-hover:border-[#40DDCB]/30" : "group-hover:border-white/30";
+  const blueButtonHoverBg = isLightBackground
+    ? "group-hover:bg-[#40DDCB]"
+    : "group-hover:bg-blue-500";
+  const blueButtonHoverText = isLightBackground
+    ? "group-hover:text-white"
+    : "group-hover:text-white";
+  const blueButtonHoverBorder = isLightBackground
+    ? "group-hover:border-[#40DDCB]"
+    : "group-hover:border-blue-400";
+  const otherButtonHoverBg = isLightBackground
+    ? "group-hover:bg-[#40DDCB]/20"
+    : "group-hover:bg-white/20";
+  const otherButtonHoverBorder = isLightBackground
+    ? "group-hover:border-[#40DDCB]/30"
+    : "group-hover:border-white/30";
   const hamburgerColor = isLightBackground ? "bg-[#40DDCB]" : "bg-white";
 
   return (
-    <header className={`group ${FIXED_HEADER ? 'fixed' : 'static'} top-0 left-0 right-0 z-50 bg-transparent py-5 transition-all duration-300`}>
+    <header
+      className={`group ${
+        FIXED_HEADER ? "fixed" : "static"
+      } top-0 left-0 right-0 z-50 bg-transparent py-5 transition-all duration-300`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo + Subtitle */}
@@ -127,7 +144,9 @@ const Header: React.FC = () => {
               </Link>
             )}
             {subtitle && (
-              <p className={`font-extrabold tracking-wide ${textColor} text-2xl drop-shadow-lg ${subtitleHoverColor} transition-all duration-300`}>
+              <p
+                className={`font-extrabold tracking-wide ${textColor} text-2xl drop-shadow-lg ${subtitleHoverColor} transition-colors duration-300`}
+              >
                 {subtitle}
               </p>
             )}
@@ -135,7 +154,6 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6">
-            {/* Other Buttons */}
             {otherButtons.length > 0 && (
               <div className="flex items-center gap-4">
                 {otherButtons.map((btn, index) => (
@@ -144,10 +162,10 @@ const Header: React.FC = () => {
                     href={btn.url || "#"}
                     className={`px-5 py-3 font-bold cursor-pointer flex items-center justify-center min-h-[48px]
                       text-base transition-all duration-200 ease-out rounded-xl border ${textColor} ${borderColor} ${
-                        btn.color === "blue"
-                          ? `bg-transparent ${blueButtonHoverBg} ${blueButtonHoverText} ${blueButtonHoverBorder} hover:scale-102 active:scale-95`
-                          : `bg-transparent ${otherButtonHoverBg} ${otherButtonHoverBorder} hover:scale-102 active:scale-95`
-                      }`}
+                      btn.color === "blue"
+                        ? `bg-transparent ${blueButtonHoverBg} ${blueButtonHoverText} ${blueButtonHoverBorder} hover:scale-102 active:scale-95`
+                        : `bg-transparent ${otherButtonHoverBg} ${otherButtonHoverBorder} hover:scale-102 active:scale-95`
+                    }`}
                   >
                     {btn.text}
                   </a>
@@ -155,7 +173,6 @@ const Header: React.FC = () => {
               </div>
             )}
 
-            {/* Pink Buttons */}
             {pinkButtons.length > 0 && (
               <div className="flex items-center gap-4">
                 {pinkButtons.map((btn, index) => (
@@ -232,9 +249,11 @@ const Header: React.FC = () => {
       </div>
 
       {/* Bottom Border Gradient */}
-      <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent ${
-        isLightBackground ? "via-[#40DDCB]/50" : "via-blue-400/50"
-      } to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+      <div
+        className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent ${
+          isLightBackground ? "via-[#40DDCB]/50" : "via-blue-400/50"
+        } to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+      ></div>
     </header>
   );
 };

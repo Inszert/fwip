@@ -93,11 +93,8 @@ export default async function Home() {
       <SignatureRecipes />
 
       {/* StepBubbles section */}
-      {steps && (
-        <section className="mb-12">
           <StepBubbles steps={steps} />
-        </section>
-      )}
+
 
       <Footer />
     </main>
