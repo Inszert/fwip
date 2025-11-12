@@ -91,16 +91,7 @@ export default async function Home() {
           />
         </section>
       )}
-
-      {mainBody && (
-        <MainPrimary
-          title={mainBody.title}
-          content={mainBody.content}
-          imageUrl={`${process.env.NEXT_PUBLIC_STRAPI_URL}${mainBody.image?.url}`}
-        />
-      )}
-
-      <SignatureRecipes />
+<SignatureRecipes/>
 
       <Footer
 

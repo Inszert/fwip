@@ -59,10 +59,14 @@ const ModernForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-2xl w-full mx-auto my-12 bg-white bg-opacity-95 rounded-3xl shadow-2xl p-8 md:p-12 space-y-7 font-sans overflow-hidden"
-      style={{ border: `2px solid ${SIGNATURE_COLOR}`, boxSizing: "border-box" }}
+      className="max-w-2xl w-full mx-auto my-24 rounded-3xl shadow-2xl p-8 md:p-12 space-y-7 font-sans overflow-hidden"
+      style={{ 
+        backgroundColor: "#40DDCB",
+        border: `2px solid ${SIGNATURE_COLOR}`, 
+        boxSizing: "border-box" 
+      }}
     >
-      <div className="flex items-center text-lg font-bold mb-2" style={{ color: SIGNATURE_COLOR }}>
+      <div className="flex items-center text-lg font-bold mb-2" style={{ color: "white" }}>
         <span role="img" aria-label="user" className="mr-2" style={{ fontSize: "1.7em" }}>
           👤
         </span>
@@ -70,7 +74,7 @@ const ModernForm: React.FC = () => {
       </div>
 
       {/* Business Name */}
-      <div className="flex items-center bg-gray-100 rounded-full pr-3 pl-3 w-full">
+      <div className="flex items-center bg-white rounded-full pr-3 pl-3 w-full">
         <label htmlFor="businessName" className="sr-only">
           Business name
         </label>
@@ -91,7 +95,7 @@ const ModernForm: React.FC = () => {
 
       {/* Name */}
       <div className="flex flex-col md:flex-row gap-4 w-full">
-        <div className="flex items-center bg-gray-100 rounded-full pr-3 pl-3 flex-1 w-full">
+        <div className="flex items-center bg-white rounded-full pr-3 pl-3 flex-1 w-full">
           <label htmlFor="firstName" className="sr-only">
             First name
           </label>
@@ -109,7 +113,7 @@ const ModernForm: React.FC = () => {
             required
           />
         </div>
-        <div className="flex items-center bg-gray-100 rounded-full pr-3 pl-3 flex-1 w-full">
+        <div className="flex items-center bg-white rounded-full pr-3 pl-3 flex-1 w-full">
           <label htmlFor="lastName" className="sr-only">
             Last name
           </label>
@@ -131,7 +135,7 @@ const ModernForm: React.FC = () => {
 
       {/* Email & Phone */}
       <div className="flex flex-col md:flex-row gap-4 w-full">
-        <div className="flex items-center bg-gray-100 rounded-full pr-3 pl-3 flex-1 w-full">
+        <div className="flex items-center bg-white rounded-full pr-3 pl-3 flex-1 w-full">
           <label htmlFor="email" className="sr-only">
             Email
           </label>
@@ -149,7 +153,7 @@ const ModernForm: React.FC = () => {
             required
           />
         </div>
-        <div className="flex items-center bg-gray-100 rounded-full pr-3 pl-3 flex-1 w-full">
+        <div className="flex items-center bg-white rounded-full pr-3 pl-3 flex-1 w-full">
           <label htmlFor="phone" className="sr-only">
             Mobile phone
           </label>
@@ -169,7 +173,7 @@ const ModernForm: React.FC = () => {
       </div>
 
       {/* Postal code */}
-      <div className="flex items-center bg-gray-100 rounded-full pr-3 pl-3 w-full">
+      <div className="flex items-center bg-white rounded-full pr-3 pl-3 w-full">
         <label htmlFor="postal" className="sr-only">
           Postal code or zip code
         </label>
@@ -188,7 +192,7 @@ const ModernForm: React.FC = () => {
       </div>
 
       {/* Message */}
-      <div className="flex items-center bg-gray-100 rounded-full pr-3 pl-3 w-full">
+      <div className="flex items-center bg-white rounded-full pr-3 pl-3 w-full">
         <label htmlFor="message" className="sr-only">
           What can we do for you?
         </label>
@@ -222,8 +226,8 @@ const ModernForm: React.FC = () => {
       </div>
 
       {/* Success/Error messages */}
-      {success && <p className="text-green-600 font-semibold">{success}</p>}
-      {error && <p className="text-red-600 font-semibold">{error}</p>}
+      {success && <p className="text-green-800 font-semibold">{success}</p>}
+      {error && <p className="text-red-800 font-semibold">{error}</p>}
     </form>
   );
 };

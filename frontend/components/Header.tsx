@@ -5,162 +5,237 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchHeaderData, HeaderData } from "@/lib/strapi";
 
+// Configurable setting - change to false if you don't want fixed header
+const FIXED_HEADER = true;
+const SIGNATURE_COLOR = "#40DDCB";
+
 const Header: React.FC = () => {
   const [headerData, setHeaderData] = useState<HeaderData>({
     subtitle: "",
     button: [],
     image: null,
   });
-
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLightBackground, setIsLightBackground] = useState(false);
 
   useEffect(() => {
-    const loadHeader = async () => {
+    async function loadData() {
       try {
         const data = await fetchHeaderData();
         setHeaderData(data);
-      } catch (error) {
-        console.error("Error fetching header data:", error);
+      } catch {
+        console.error("Failed to fetch header data");
       }
+    }
+    loadData();
+
+    // Check if we're over light background
+    const checkBackground = () => {
+      const header = document.querySelector('header');
+      if (!header) return;
+
+      const headerRect = header.getBoundingClientRect();
+      
+      // Sample multiple points below the header
+      const samplePoints = [
+        { x: window.innerWidth / 4, y: headerRect.bottom + 30 },
+        { x: window.innerWidth / 2, y: headerRect.bottom + 30 },
+        { x: (window.innerWidth / 4) * 3, y: headerRect.bottom + 30 },
+        { x: window.innerWidth / 4, y: headerRect.bottom + 70 },
+        { x: window.innerWidth / 2, y: headerRect.bottom + 70 },
+        { x: (window.innerWidth / 4) * 3, y: headerRect.bottom + 70 }
+      ];
+
+      let lightPoints = 0;
+
+      samplePoints.forEach(point => {
+        const element = document.elementFromPoint(point.x, point.y);
+        if (element) {
+          const style = window.getComputedStyle(element);
+          const bgColor = style.backgroundColor;
+          
+          // Convert RGB to hex and check if it's a light color
+          if (bgColor) {
+            const rgb = bgColor.match(/\d+/g);
+            if (rgb && rgb.length >= 3) {
+              const [r, g, b] = rgb.map(Number);
+              // Calculate brightness (0-255)
+              const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+              // VERY LOW THRESHOLD - swap even on slightly light backgrounds
+              if (brightness > 80) { // Changed from 128 to 80
+                lightPoints++;
+              }
+            }
+          }
+        }
+      });
+
+      // If at least 2 points are light, switch colors (even more sensitive)
+      setIsLightBackground(lightPoints >= 2); // Changed from majority to just 2 points
     };
-    loadHeader();
+
+    // Check on scroll and resize
+    window.addEventListener('scroll', checkBackground);
+    window.addEventListener('resize', checkBackground);
+    
+    // Check more frequently
+    const interval = setInterval(checkBackground, 200);
+    
+    // Initial check
+    setTimeout(checkBackground, 300);
+
+    return () => {
+      window.removeEventListener('scroll', checkBackground);
+      window.removeEventListener('resize', checkBackground);
+      clearInterval(interval);
+    };
   }, []);
 
   const { subtitle, button, image } = headerData;
+  const pinkButtons = button?.filter((btn) => btn.color === "pink") || [];
+  const otherButtons = button?.filter((btn) => btn.color !== "pink") || [];
+
+  const textColor = isLightBackground ? "text-[#40DDCB]" : "text-white";
+  const subtitleHoverColor = isLightBackground ? "group-hover:text-[#40DDCB]/80" : "group-hover:text-blue-100";
+  const borderColor = isLightBackground ? "border-[#40DDCB]" : "border-transparent";
+  const blueButtonHoverBg = isLightBackground ? "group-hover:bg-[#40DDCB]" : "group-hover:bg-blue-500";
+  const blueButtonHoverText = isLightBackground ? "group-hover:text-white" : "group-hover:text-white";
+  const blueButtonHoverBorder = isLightBackground ? "group-hover:border-[#40DDCB]" : "group-hover:border-blue-400";
+  const otherButtonHoverBg = isLightBackground ? "group-hover:bg-[#40DDCB]/20" : "group-hover:bg-white/20";
+  const otherButtonHoverBorder = isLightBackground ? "group-hover:border-[#40DDCB]/30" : "group-hover:border-white/30";
+  const hamburgerColor = isLightBackground ? "bg-[#40DDCB]" : "bg-white";
 
   return (
-    <div className="relative w-full group">
-      {/* Hamburger button for mobile */}
-      <button
-        className="sm:hidden z-50 p-3 text-white fixed top-4 right-4"
-        onClick={() => setMenuOpen(!menuOpen)}
-        aria-label="Toggle menu"
-        type="button"
-      >
-        <div
-          className={`w-6 h-0.5 bg-white mb-1 transition-transform duration-300 ${
-            menuOpen ? "rotate-45 translate-y-1.5" : ""
-          }`}
-        />
-        <div
-          className={`w-6 h-0.5 bg-white mb-1 transition-opacity duration-300 ${
-            menuOpen ? "opacity-0" : "opacity-100"
-          }`}
-        />
-        <div
-          className={`w-6 h-0.5 bg-white transition-transform duration-300 ${
-            menuOpen ? "-rotate-45 -translate-y-1.5" : ""
-          }`}
-        />
-      </button>
+    <header className={`group ${FIXED_HEADER ? 'fixed' : 'static'} top-0 left-0 right-0 z-50 bg-transparent py-5 transition-all duration-300`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          {/* Logo + Subtitle */}
+          <div className="flex items-center gap-4 flex-shrink-0">
+            {image && (
+              <Link
+                href="/"
+                className="relative transition-transform duration-200 hover:scale-110 active:scale-95"
+              >
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${image.url}`}
+                  alt={image.alternativeText || "Logo"}
+                  width={60}
+                  height={60}
+                  className="object-contain transition-all duration-200 w-16 h-16"
+                  unoptimized
+                />
+              </Link>
+            )}
+            {subtitle && (
+              <p className={`font-extrabold tracking-wide ${textColor} text-2xl drop-shadow-lg ${subtitleHoverColor} transition-all duration-300`}>
+                {subtitle}
+              </p>
+            )}
+          </div>
 
-      {/* Desktop buttons (top-right corner) */}
-      <div className="hidden sm:flex absolute top-0 left-0 right-0 z-20 flex items-center justify-end pr-4 sm:pr-6 lg:pr-8 xl:pr-12 h-16">
-        <div className="flex flex-wrap gap-8 sm:gap-10 justify-end">
-          {button?.map((btn, i) => (
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-6">
+            {/* Other Buttons */}
+            {otherButtons.length > 0 && (
+              <div className="flex items-center gap-4">
+                {otherButtons.map((btn, index) => (
+                  <a
+                    key={`other-${index}`}
+                    href={btn.url || "#"}
+                    className={`px-5 py-3 font-bold cursor-pointer flex items-center justify-center min-h-[48px]
+                      text-base transition-all duration-200 ease-out rounded-xl border ${textColor} ${borderColor} ${
+                        btn.color === "blue"
+                          ? `bg-transparent ${blueButtonHoverBg} ${blueButtonHoverText} ${blueButtonHoverBorder} hover:scale-102 active:scale-95`
+                          : `bg-transparent ${otherButtonHoverBg} ${otherButtonHoverBorder} hover:scale-102 active:scale-95`
+                      }`}
+                  >
+                    {btn.text}
+                  </a>
+                ))}
+              </div>
+            )}
+
+            {/* Pink Buttons */}
+            {pinkButtons.length > 0 && (
+              <div className="flex items-center gap-4">
+                {pinkButtons.map((btn, index) => (
+                  <a
+                    key={`pink-${index}`}
+                    href={btn.url || "#"}
+                    className="px-6 py-3 bg-pink-500 text-white border border-pink-400 font-bold text-base rounded-xl cursor-pointer flex items-center justify-center min-h-[48px] transition-all duration-200 ease-out hover:scale-102 hover:bg-pink-600 active:scale-95"
+                  >
+                    {btn.text}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden relative w-12 h-12 flex flex-col items-center justify-center transition-all duration-200 active:scale-95"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
             <span
-              key={i}
-              className="font-extrabold text-white text-base sm:text-lg md:text-xl lg:text-2xl tracking-wider transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-[-10px] cursor-default drop-shadow-lg"
-            >
-              {btn.text}
-            </span>
-          ))}
+              className={`w-7 h-0.5 transition-all duration-200 ${
+                menuOpen ? "rotate-45 translate-y-1.5 bg-current" : hamburgerColor
+              }`}
+            ></span>
+            <span
+              className={`w-7 h-0.5 my-1.5 transition-all duration-200 ${
+                menuOpen ? "opacity-0 bg-current" : hamburgerColor
+              }`}
+            ></span>
+            <span
+              className={`w-7 h-0.5 transition-all duration-200 ${
+                menuOpen ? "-rotate-45 -translate-y-1.5 bg-current" : hamburgerColor
+              }`}
+            ></span>
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`lg:hidden transition-all duration-300 ease-out overflow-hidden ${
+            menuOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
+          }`}
+        >
+          <nav className="flex flex-col gap-3 pb-4">
+            {otherButtons.map((btn, index) => (
+              <a
+                key={`other-mobile-${index}`}
+                href={btn.url || "#"}
+                className={`w-full px-6 py-4 font-bold text-base cursor-pointer flex items-center justify-center min-h-[48px] transition-all duration-200 rounded-xl ${
+                  btn.color === "blue"
+                    ? `bg-blue-500 text-white border border-blue-400 hover:bg-blue-600 active:scale-95`
+                    : `bg-white/20 ${textColor} border border-white/30 backdrop-blur-sm hover:bg-white/30 active:scale-95`
+                }`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {btn.text}
+              </a>
+            ))}
+
+            {pinkButtons.map((btn, index) => (
+              <a
+                key={`pink-mobile-${index}`}
+                href={btn.url || "#"}
+                className="w-full px-6 py-4 bg-pink-500 text-white border border-pink-400 font-bold text-base rounded-xl cursor-pointer flex items-center justify-center min-h-[48px] transition-all duration-200 hover:bg-pink-600 active:scale-95"
+                onClick={() => setMenuOpen(false)}
+              >
+                {btn.text}
+              </a>
+            ))}
+          </nav>
         </div>
       </div>
 
-      {/* Header menu */}
-      <header
-        className={`
-          absolute top-0 left-0 right-0 z-40
-          bg-gradient-to-r from-[#40DDCB] via-[#3DD4C4] to-[#2EC4B6] text-white shadow-lg
-          transform transition-all duration-500 ease-in-out
-          ${
-            menuOpen
-              ? "translate-y-0 opacity-100 pointer-events-auto"
-              : "sm:group-hover:translate-y-0 sm:group-hover:opacity-100 sm:group-hover:pointer-events-auto -translate-y-full opacity-0 pointer-events-none"
-          }
-        `}
-      >
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute top-0 right-1/4 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-white rounded-full blur-2xl"></div>
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
-          <div className="flex flex-col sm:flex-row justify-between items-center py-4 sm:py-5 gap-4 sm:gap-6">
-            {/* Logo + Subtitle */}
-            <div className="flex items-center gap-3 sm:gap-4 lg:gap-5 flex-1 min-w-0">
-              {image && (
-                <Link
-                  href="/"
-                  className="shrink-0 transition-transform duration-300 hover:scale-110 hover:rotate-3"
-                >
-                  <div className="relative">
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${image.url}`}
-                      alt={image.alternativeText || "Logo"}
-                      height={60}
-                      width={60}
-                      className="object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.2)] w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16"
-                      unoptimized
-                    />
-                    <div className="absolute inset-0 bg-white/20 rounded-full blur-xl -z-10 scale-150"></div>
-                  </div>
-                </Link>
-              )}
-              {subtitle && (
-                <div className="min-w-0 flex-1">
-                  <p className="text-base sm:text-lg lg:text-xl font-semibold text-white tracking-wide drop-shadow-md line-clamp-2">
-                    {subtitle}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Navigation buttons */}
-            <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-end w-full sm:w-auto">
-              {button?.map((btn, i) => (
-                <a
-                  key={i}
-                  href={btn.url || "#"}
-                  className={`
-                    relative px-4 sm:px-6 lg:px-7 py-2 sm:py-3 font-semibold text-white
-                    transition-all duration-300 ease-out
-                    border-2 border-white
-                    overflow-visible
-                    hover:scale-105 hover:shadow-xl
-                    min-h-[44px] flex items-center justify-center
-                    w-full sm:w-auto
-                    cursor-pointer
-                    ${
-                      btn.color === "blue"
-                        ? "bg-blue-500/90 border-blue-400 hover:bg-blue-600/90 hover:border-blue-500"
-                        : btn.color === "pink"
-                        ? "bg-pink-500/90 border-pink-400 hover:bg-pink-600/90 hover:border-pink-500"
-                        : "bg-white/10 backdrop-blur-sm hover:bg-white/20"
-                    }
-                  `}
-                  style={{
-                    borderRadius:
-                      btn.color === "blue"
-                        ? "12px"
-                        : btn.color === "pink"
-                        ? "20px 4px 20px 4px"
-                        : "4px 20px 4px 20px",
-                  }}
-                >
-                  <span className="relative z-10 text-sm sm:text-base text-center">
-                    {btn.text}
-                  </span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none"></div>
-      </header>
-    </div>
+      {/* Bottom Border Gradient */}
+      <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent ${
+        isLightBackground ? "via-[#40DDCB]/50" : "via-blue-400/50"
+      } to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+    </header>
   );
 };
 
