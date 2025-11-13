@@ -12,7 +12,10 @@ import {
   fetchFooterData,
   HeaderData,
   HeroVideo as HeroVideoType,
+  fetchPortobelloMiddles
 } from "@/lib/strapi";
+
+import PortobelloGreen from '@/components/GreenSection';
 
 interface RichTextChild {
   type: string;
@@ -45,17 +48,20 @@ export default async function Home() {
   let mainBody: any = null;
   let footerData = null;
   let steps = null;
+  let portobelloData = null;
 
   try {
-    [headerData, heroVideo, mainBody, footerData, steps] = await Promise.all([
+    [headerData, heroVideo, mainBody, footerData, steps, portobelloData] = await Promise.all([
       fetchHeaderData(),
       fetchHeroVideo(),
       fetchMainBody().then(data => data?.data?.[0]?.mainPrimaryContent || null),
       fetchFooterData(),
-      fetchSteps()
+      fetchSteps(),
+      fetchPortobelloMiddles()
     ]);
 
     console.log("Steps data:", steps);
+    console.log("Portobello middle data:", portobelloData);
   } catch (err) {
     console.error("Error loading data:", err);
   }
@@ -79,22 +85,24 @@ export default async function Home() {
       <Header />
 
       {heroVideo?.video?.url && (
-       
-          <HeroVideoBackground
-            key={heroVideo.video.url}
-            videoUrl={heroVideo.video.url}
-            textField1={heroVideo.textField1}
-            textField2={heroVideo.textField2}
-            textField3={heroVideo.textField3}
-          />
-  
+        <HeroVideoBackground
+          key={heroVideo.video.url}
+          videoUrl={heroVideo.video.url}
+          textField1={heroVideo.textField1}
+          textField2={heroVideo.textField2}
+          textField3={heroVideo.textField3}
+        />
       )}
 
       <SignatureRecipes />
 
       {/* StepBubbles section */}
-          <StepBubbles steps={steps} />
+      <StepBubbles steps={steps} />
 
+      {/* PortobelloGreen section - only render if data exists */}
+      {portobelloData && portobelloData.length > 0 && (
+        <PortobelloGreen data={portobelloData[0]} />
+      )}
 
       <Footer />
     </main>

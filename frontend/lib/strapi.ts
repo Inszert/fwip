@@ -795,7 +795,7 @@ export async function fetchSteps() {
 
 export async function fetchPortobelloMiddles() {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-  const endpoint = `${baseUrl}/api/portobello-middles?populate=*`;
+  const endpoint = `${baseUrl}/api/portobello-middles?populate[0]=backgorund&populate[1]=image&populate[2]=sorunding_elements&populate[3]=sorunding_elements.image&populate[4]=points&populate[5]=points.image`;
 
   const response = await fetch(endpoint);
   if (!response.ok) {
