@@ -804,3 +804,16 @@ export async function fetchPortobelloMiddles() {
   const data = await response.json();
   return data.data; // returns array of items or object depending on your API setup
 }
+
+
+export async function fetchComparisons() {
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+  const endpoint = `${baseUrl}/api/comparisons?populate[button][populate]=*&populate[types][populate]=*&populate[property][populate]=*`;
+
+  const response = await fetch(endpoint);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch comparisons: ${response.status} ${response.statusText}`);
+  }
+  const data = await response.json();
+  return data.data; // returns array or object depending on your API
+}

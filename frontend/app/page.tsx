@@ -5,6 +5,7 @@ import SignatureRecipes from "@/components/SignatureRecipes";
 import Footer from "@/components/Footer";
 import StepBubbles from "@/components/StepsOfUse";
 import { fetchSteps } from "@/lib/strapi";
+import ComparisonTableSection from "@/components/Comaprison";
 import {
   fetchHeaderData,
   fetchHeroVideo,
@@ -12,7 +13,8 @@ import {
   fetchFooterData,
   HeaderData,
   HeroVideo as HeroVideoType,
-  fetchPortobelloMiddles
+  fetchPortobelloMiddles,
+  fetchComparisons
 } from "@/lib/strapi";
 
 import PortobelloGreen from '@/components/GreenSection';
@@ -74,6 +76,9 @@ export default async function Home() {
       </div>
     )) || [];
 
+
+    const comparisons = await fetchComparisons();
+
   const bottomLinks =
     footerData?.footer_btns?.map(({ id, text, url }) => ({
       text,
@@ -103,7 +108,7 @@ export default async function Home() {
       {portobelloData && portobelloData.length > 0 && (
         <PortobelloGreen data={portobelloData[0]} />
       )}
-
+    <ComparisonTableSection data={comparisons[0]} />;
       <Footer />
     </main>
   );
