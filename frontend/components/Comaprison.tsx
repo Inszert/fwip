@@ -109,28 +109,20 @@ export default function Comparison({ data }: Props) {
 
         {/* Comparison Table */}
         <div className="w-full lg:w-3/5">
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
             {/* Header Row */}
             <div className="grid grid-cols-5">
-              {/* Features Header - Neutral background */}
-              <div className="p-6 font-semibold border-r border-gray-100 flex items-center text-gray-700 bg-gray-50">
+              <div className="p-6 font-semibold flex items-center text-gray-700 bg-gray-50">
                 Features
               </div>
-              
-              {/* Type Headers - Last column with signature color */}
               {types.map((type: ComparisonType, idx: number) => (
                 <div
                   key={type.id}
                   className={`p-6 text-center font-semibold ${
-                    idx < types.length - 1 ? "border-r border-gray-100" : "border-r border-white/30"
-                  } ${
-                    // Apply signature color only to the last column
-                    idx === types.length - 1 
-                      ? "text-white"
-                      : "text-gray-700 bg-gray-50"
+                    idx === types.length - 1 ? "text-white" : "text-gray-700 bg-gray-50"
                   }`}
                   style={{
-                    background: idx === types.length - 1 
+                    background: idx === types.length - 1
                       ? `linear-gradient(180deg, ${SIGNATURE_COLOR}, ${SIGNATURE_COLOR}CC)`
                       : undefined,
                   }}
@@ -147,14 +139,10 @@ export default function Comparison({ data }: Props) {
                               : type.image[0].url
                           }
                           alt={type.name || "Logo"}
-                          className={`h-12 w-auto ${
-                            idx === types.length - 1 ? "filter brightness-0 invert" : ""
-                          }`}
+                          className={`h-12 w-auto ${idx === types.length - 1 ? "filter brightness-0 invert" : ""}`}
                         />
                       </div>
-                      {type.name && (
-                        <span className="text-sm font-medium">{type.name}</span>
-                      )}
+                      {type.name && <span className="text-sm font-medium">{type.name}</span>}
                     </div>
                   ) : (
                     <span className="text-lg">{type.name}</span>
@@ -163,68 +151,39 @@ export default function Comparison({ data }: Props) {
               ))}
             </div>
 
-            {/* Feature Rows */}
-            <div className="divide-y divide-gray-100">
+            {/* Feature Rows - removed divide-y */}
+            <div>
               {properties.map((prop: ComparisonProperty) => (
                 <div
                   key={prop.id}
                   className="grid grid-cols-5 transition-colors hover:bg-gray-50/50"
                 >
-                  {/* Feature Name - Neutral background */}
-                  <div className="p-6 font-semibold text-gray-700 border-r border-gray-100 flex items-center bg-white">
+                  <div className="p-6 font-semibold text-gray-700 flex items-center bg-white">
                     {prop.property}
                   </div>
-                  
-                  {/* Results - Last column with signature color background */}
-                  {prop.result.map((res: PropertyResult, i: number) => (
-                    <div
-                      key={res.id}
-                      className={`p-6 flex items-center justify-center ${
-                        i < prop.result.length - 1 ? "border-r border-gray-100" : "border-r border-white/30"
-                      } ${
-                        // Apply background color only to the last column
-                        i === prop.result.length - 1 
-                          ? ""
-                          : "bg-white"
-                      }`}
-                      style={{
-                        backgroundColor: i === prop.result.length - 1 
-                          ? SIGNATURE_COLOR
-                          : undefined,
-                      }}
-                    >
+                  {prop.result.map((res: PropertyResult, i: number) => {
+                    const hasImage = types[i].image && types[i].image.length > 0;
+                    return (
                       <div
-                        className="flex items-center justify-center w-8 h-8 rounded-lg"
-                        style={{
-                          backgroundColor: res.result
-                            ? i === prop.result.length - 1 
-                              ? "white"
-                              : `${SIGNATURE_COLOR}20`
-                            : i === prop.result.length - 1
-                            ? "rgba(255,255,255,0.2)"
-                            : "#f3f4f6",
-                        }}
+                        key={res.id}
+                        className="p-6 flex items-center justify-center"
+                        style={{ backgroundColor: hasImage ? `${SIGNATURE_COLOR}10` : "transparent" }}
                       >
-                        {res.result ? (
-                          <CheckIcon />
-                        ) : (
-                          i === prop.result.length - 1 ? (
-                            <svg
-                              className="w-5 h-5 text-white"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                          ) : (
-                            <CrossIcon />
-                          )
-                        )}
+                        <div
+                          className="flex items-center justify-center w-8 h-8 rounded-lg"
+                          style={{
+                            backgroundColor: res.result
+                              ? hasImage
+                                ? `${SIGNATURE_COLOR}20`
+                                : "#d1d5db"
+                              : "#f3f4f6",
+                          }}
+                        >
+                          {res.result ? <CheckIcon /> : <CrossIcon />}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ))}
             </div>

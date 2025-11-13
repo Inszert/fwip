@@ -10,6 +10,19 @@
     },
     "end_time": {
       "type": "string"
+    },
+    "text1": {
+      "type": "string"
+    },
+    "text2": {
+      "type": "string"
+    },
+    "side": {
+      "type": "enumeration",
+      "enum": [
+        "right",
+        "left"
+      ]
     }
   },
   "config": {}

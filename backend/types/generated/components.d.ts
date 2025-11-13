@@ -112,7 +112,10 @@ export interface IceCreamTimestamps extends Struct.ComponentSchema {
   };
   attributes: {
     end_time: Schema.Attribute.String;
+    side: Schema.Attribute.Enumeration<['right', 'left']>;
     start_time: Schema.Attribute.String;
+    text1: Schema.Attribute.String;
+    text2: Schema.Attribute.String;
   };
 }
 
