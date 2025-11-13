@@ -467,6 +467,38 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiComparisonComparison extends Struct.CollectionTypeSchema {
+  collectionName: 'comparisons';
+  info: {
+    displayName: 'Comparison';
+    pluralName: 'comparisons';
+    singularName: 'comparison';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    button: Schema.Attribute.Component<'basic.button', false>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::comparison.comparison'
+    > &
+      Schema.Attribute.Private;
+    property: Schema.Attribute.Component<'basic.property-list', true>;
+    publishedAt: Schema.Attribute.DateTime;
+    text1: Schema.Attribute.String;
+    text2: Schema.Attribute.String;
+    types: Schema.Attribute.Component<'basic.list-for-comparison', true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiContactFormularContactFormular
   extends Struct.CollectionTypeSchema {
   collectionName: 'contact_formulars';
@@ -1453,6 +1485,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::comparison.comparison': ApiComparisonComparison;
       'api::contact-formular.contact-formular': ApiContactFormularContactFormular;
       'api::footer.footer': ApiFooterFooter;
       'api::header.header': ApiHeaderHeader;

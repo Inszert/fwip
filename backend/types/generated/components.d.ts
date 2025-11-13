@@ -12,6 +12,41 @@ export interface BasicButton extends Struct.ComponentSchema {
   };
 }
 
+export interface BasicListForComparison extends Struct.ComponentSchema {
+  collectionName: 'components_basic_list_for_comparisons';
+  info: {
+    displayName: 'List_for_comparison';
+  };
+  attributes: {
+    image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    name: Schema.Attribute.String;
+  };
+}
+
+export interface BasicPropertyList extends Struct.ComponentSchema {
+  collectionName: 'components_basic_property_lists';
+  info: {
+    displayName: 'property_list';
+  };
+  attributes: {
+    property: Schema.Attribute.String;
+    result: Schema.Attribute.Component<'basic.result-comperison', true>;
+  };
+}
+
+export interface BasicResultComperison extends Struct.ComponentSchema {
+  collectionName: 'components_basic_result_comperisons';
+  info: {
+    displayName: 'result_comperison';
+  };
+  attributes: {
+    result: Schema.Attribute.Boolean;
+  };
+}
+
 export interface BasicSeo extends Struct.ComponentSchema {
   collectionName: 'components_basic_seos';
   info: {
@@ -209,6 +244,9 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'basic.button': BasicButton;
+      'basic.list-for-comparison': BasicListForComparison;
+      'basic.property-list': BasicPropertyList;
+      'basic.result-comperison': BasicResultComperison;
       'basic.seo': BasicSeo;
       'default.circular-video': DefaultCircularVideo;
       'default.ingredient': DefaultIngredient;

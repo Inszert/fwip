@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_basic_property_lists",
+  "info": {
+    "displayName": "property_list"
+  },
+  "options": {},
+  "attributes": {
+    "property": {
+      "type": "string"
+    },
+    "result": {
+      "type": "component",
+      "component": "basic.result-comperison",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}
