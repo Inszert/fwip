@@ -5,6 +5,9 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 interface VideoSegment {
   start_time: number;
   end_time: number;
+  text1: string | null;
+  text2: string | null;
+  side: string | null; // "left", "right", or null
 }
 
 interface CutVideoIceCreamProps {
@@ -91,13 +94,59 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
     return () => pauseTimeouts.forEach(clearTimeout);
   }, [visibleIndices]);
 
+  // Function to render text content for a segment
+  const renderSegmentText = (segment: VideoSegment, index: number) => {
+    if (!segment.text1 && !segment.text2) return null;
+
+    const textContent = (
+      <div className="relative z-10 max-w-2xl p-8">
+        {segment.text1 && (
+          <h2 className="text-7xl font-black text-white mb-6 leading-tight tracking-wide">
+            {segment.text1}
+          </h2>
+        )}
+        {segment.text2 && (
+          <p className="text-2xl text-white opacity-90 leading-relaxed">
+            {segment.text2}
+          </p>
+        )}
+      </div>
+    );
+
+    // Determine positioning based on side - positioned very close to center
+    switch (segment.side) {
+      case "left":
+        return (
+          <div className="absolute inset-0 flex items-center justify-start p-8">
+            <div className="ml-48">
+              {textContent}
+            </div>
+          </div>
+        );
+      case "right":
+        return (
+          <div className="absolute inset-0 flex items-center justify-end p-8">
+            <div className="mr-48">
+              {textContent}
+            </div>
+          </div>
+        );
+      default:
+        // Default to center if no side specified
+        return (
+          <div className="absolute inset-0 flex items-center justify-center p-8">
+            {textContent}
+          </div>
+        );
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="flex flex-col w-full">
         {segments.map((segment, index) => (
           <div key={index} className="w-full h-screen bg-black relative">
             <video
-              // Use callback ref carefully to avoid resetting video element on each render
               ref={(el) => {
                 videoRefs.current[index] = el;
               }}
@@ -108,12 +157,12 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
               preload="auto"
               onTimeUpdate={() => handleTimeUpdate(index, segment)}
               style={{ backgroundColor: "#000000" }}
-              // omit onLoadedData to avoid unnecessary resets; handled in effect above
             >
               <source src={videoUrl} type="video/mp4" />
             </video>
-
-
+            
+            {/* Text overlay */}
+            {renderSegmentText(segment, index)}
           </div>
         ))}
       </div>

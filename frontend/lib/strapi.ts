@@ -618,9 +618,12 @@ export async function fetchZariadeniaData(): Promise<ZariadeniaResponse | null> 
 
 
 // interfaces.ts
-export interface VideoSegment {
+interface VideoSegment {
   start_time: number;
   end_time: number;
+  text1: string | null;
+  text2: string | null;
+  side: string | null; // "left", "right", or null
 }
 
 export interface VideoFile {
@@ -638,11 +641,9 @@ export interface HeroVideoToSeparate {
   main_body_video: MainBodyVideo;
 }
 
-// strapi.ts
 export async function fetchHeroVideoToSeparate(): Promise<HeroVideoToSeparate | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-video-ice-creams?populate[main_body_video][populate]=*`,
-  
   );
 
   if (!res.ok) throw new Error("Error fetching hero video");
@@ -657,11 +658,16 @@ export async function fetchHeroVideoToSeparate(): Promise<HeroVideoToSeparate | 
     ? hero.main_body_video.video_separ.url
     : `${process.env.NEXT_PUBLIC_STRAPI_URL}${hero.main_body_video.video_separ.url}`;
 
-  // Map segment times
+  // Map segment times WITH text fields and side
   const segments: VideoSegment[] = hero.main_body_video.data_for_sep.map((seg: any) => ({
     start_time: parseFloat(seg.start_time),
     end_time: parseFloat(seg.end_time),
+    text1: seg.text1 || null,
+    text2: seg.text2 || null,
+    side: seg.side || null,
   }));
+
+  console.log("Mapped segments:", segments); // Add this to debug
 
   return {
     main_body_video: {
