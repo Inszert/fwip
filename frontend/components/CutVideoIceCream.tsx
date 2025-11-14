@@ -94,52 +94,52 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
     return () => pauseTimeouts.forEach(clearTimeout);
   }, [visibleIndices]);
 
-  // Function to render text content for a segment
-  const renderSegmentText = (segment: VideoSegment, index: number) => {
-    if (!segment.text1 && !segment.text2) return null;
+// Function to render text content for a segment
+const renderSegmentText = (segment: VideoSegment, index: number) => {
+  if (!segment.text1 && !segment.text2) return null;
 
-    const textContent = (
-      <div className="relative z-10 max-w-2xl p-8">
-        {segment.text1 && (
-          <h2 className="text-7xl font-black text-white mb-6 leading-tight tracking-wide">
-            {segment.text1}
-          </h2>
-        )}
-        {segment.text2 && (
-          <p className="text-2xl text-white opacity-90 leading-relaxed">
-            {segment.text2}
-          </p>
-        )}
-      </div>
-    );
+  const textContent = (
+    <div className="relative z-15 max-w-2xl p-8">
+      {segment.text1 && (
+        <h2 className="text-9xl font-black text-white mb-6 tracking-wide scale-y-155 relative -top-10">
+          {segment.text1}
+        </h2>
+      )}
+      {segment.text2 && (
+        <p className="text-2xl text-white opacity-90 leading-relaxed">
+          {segment.text2}
+        </p>
+      )}
+    </div>
+  );
 
-    // Determine positioning based on side - positioned very close to center
-    switch (segment.side) {
-      case "left":
-        return (
-          <div className="absolute inset-0 flex items-center justify-start p-8">
-            <div className="ml-48">
-              {textContent}
-            </div>
-          </div>
-        );
-      case "right":
-        return (
-          <div className="absolute inset-0 flex items-center justify-end p-8">
-            <div className="mr-48">
-              {textContent}
-            </div>
-          </div>
-        );
-      default:
-        // Default to center if no side specified
-        return (
-          <div className="absolute inset-0 flex items-center justify-center p-8">
+  // Determine positioning based on side - positioned very close to center
+  switch (segment.side) {
+    case "left":
+      return (
+        <div className="absolute inset-0 flex items-center justify-start p-8">
+          <div className="ml-70">
             {textContent}
           </div>
-        );
-    }
-  };
+        </div>
+      );
+    case "right":
+      return (
+        <div className="absolute inset-0 flex items-center justify-end p-8 -top-8">
+          <div className="mr-48">
+            {textContent}
+          </div>
+        </div>
+      );
+    default:
+      // Default to center if no side specified
+      return (
+        <div className="absolute inset-0 flex items-center justify-center p-8">
+          {textContent}
+        </div>
+      );
+  }
+};
 
   return (
     <div className="w-full">

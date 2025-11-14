@@ -98,15 +98,15 @@ export default async function Home() {
           textField3={heroVideo.textField3}
         />
       )}
-      {portobelloData && portobelloData.length > 0 && (
-        <PortobelloGreen data={portobelloData[0]} />
-      )}
+
       <SignatureRecipes />
             {/* PortobelloGreen section - only render if data exists */}
 
       {/* StepBubbles section */}
       <StepBubbles steps={steps} />
-
+      {portobelloData && portobelloData.length > 0 && (
+        <PortobelloGreen data={portobelloData[0]} />
+      )}
 
     <ComparisonTableSection data={comparisons[0]} />
       <Footer />

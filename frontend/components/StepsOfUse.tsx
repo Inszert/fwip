@@ -34,7 +34,7 @@ export default function StepBubbles({ steps }: Props) {
 
   if (!stepsData || stepsData.length === 0) {
     return (
-      <section className="min-h-screen bg-white flex items-center justify-center">
+      <section className="min-h-screen bg-white flex items-center justify-center font-inter">
         <p className="text-center text-gray-500 text-xl">No steps available</p>
       </section>
     );
@@ -46,14 +46,14 @@ export default function StepBubbles({ steps }: Props) {
   const videos = mainStep.video || [];
 
   return (
-    <section className="min-h-screen bg-white py-20 px-6">
+    <section className="min-h-screen bg-white py-20 px-6 font-inter">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto mb-16 text-left max-w-3xl">
-        <h1 className="text-6xl md:text-7xl font-extrabold leading-tight bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
+        <h1 className="text-6xl md:text-7xl font-bold leading-tight bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent font-inter">
           {mainText1}
         </h1>
         <div className="w-32 h-1.5 bg-gradient-to-r from-blue-500 to-pink-400 my-8 rounded-full"></div>
-        <p className="text-2xl md:text-3xl text-gray-800 font-semibold leading-relaxed">
+        <p className="text-2xl md:text-3xl text-gray-800 font-medium leading-relaxed font-inter">
           {mainText2}
         </p>
       </div>
@@ -160,11 +160,11 @@ function Bubble({ video, stepText }: BubbleProps) {
       <div className="flex flex-col items-center group">
         <div className="relative rounded-full border-8 border-gray-200 w-64 h-64 flex items-center justify-center overflow-hidden shadow-2xl bg-gradient-to-br from-blue-50 to-pink-50">
           <div className="text-center px-4">
-            <p className="font-bold text-2xl text-gray-800 mb-3">{stepText}</p>
+            <p className="font-semibold text-2xl text-gray-800 mb-3 font-inter">{stepText}</p>
           </div>
         </div>
         <div className="text-center mt-8">
-          <h3 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
+          <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent font-inter">
             {stepText}
           </h3>
         </div>
@@ -206,14 +206,14 @@ function Bubble({ video, stepText }: BubbleProps) {
               isHovered ? "opacity-0" : "opacity-100"
             }`}
           >
-            <p className="font-bold text-2xl text-white drop-shadow-lg">{stepText}</p>
+            <p className="font-semibold text-2xl text-white drop-shadow-lg font-inter">{stepText}</p>
           </div>
 
           {!isHovered && <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-pink-100 -z-10" />}
         </div>
       </div>
       <div className="text-center mt-8">
-        <h3 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
+        <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent font-inter">
           {stepText}
         </h3>
       </div>

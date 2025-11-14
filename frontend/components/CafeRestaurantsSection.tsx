@@ -68,13 +68,13 @@ const CafeRestaurantsSection: React.FC = () => {
                 }`}
               >
                 <h3
-                  className="text-3xl md:text-5xl font-bold mb-4"
+                  className="text-3xl md:text-3xl font-bold mb-4"
                   style={{ color: item.text1_color }}
                 >
                   {item.text1}
                 </h3>
                 <h4
-                  className="text-2xl md:text-4xl mb-4"
+                  className="text-2xl md:text-6xl mb-4 font-bold "
                   style={{ color: item.text2_color }}
                 >
                   {item.text2}
