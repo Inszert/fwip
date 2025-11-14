@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { fetchHeaderData, HeaderData } from "@/lib/strapi";
 
 const FIXED_HEADER = true;
@@ -16,6 +17,18 @@ const Header: React.FC = () => {
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLightBackground, setIsLightBackground] = useState(false);
+  const [activePage, setActivePage] = useState("");
+  
+  const pathname = usePathname();
+
+  // Update active page when route changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Store current path in sessionStorage
+      sessionStorage.setItem('currentPage', pathname);
+      setActivePage(pathname);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     async function loadData() {
@@ -27,6 +40,14 @@ const Header: React.FC = () => {
       }
     }
     loadData();
+
+    // Get initial active page from sessionStorage
+    if (typeof window !== 'undefined') {
+      const storedPage = sessionStorage.getItem('currentPage');
+      if (storedPage) {
+        setActivePage(storedPage);
+      }
+    }
 
     const header = document.querySelector("header");
     if (!header) return;
@@ -96,11 +117,25 @@ const Header: React.FC = () => {
   const pinkButtons = button?.filter((btn) => btn.color === "pink") || [];
   const otherButtons = button?.filter((btn) => btn.color !== "pink") || [];
 
+  // Helper function to check if a button is the active page
+  const isActivePage = (buttonUrl: string) => {
+    if (!buttonUrl || !activePage) return false;
+    
+    // Remove leading/trailing slashes and compare
+    const normalizedButtonUrl = buttonUrl.replace(/^\/+|\/+$/g, '');
+    const normalizedActivePage = activePage.replace(/^\/+|\/+$/g, '');
+    
+    return normalizedButtonUrl === normalizedActivePage || 
+           (normalizedActivePage === '' && normalizedButtonUrl === '');
+  };
+
   const textColor = isLightBackground ? "text-[#40DDCB]" : "text-white";
+  const activeTextColor = isLightBackground ? "text-white" : "text-[#40DDCB]";
   const subtitleHoverColor = isLightBackground
     ? "group-hover:text-[#40DDCB]/80"
     : "group-hover:text-blue-100";
   const borderColor = isLightBackground ? "border-[#40DDCB]" : "border-transparent";
+  const activeBorderColor = isLightBackground ? "border-white" : "border-[#40DDCB]";
   const blueButtonHoverBg = isLightBackground
     ? "group-hover:bg-[#40DDCB]"
     : "group-hover:bg-blue-500";
@@ -117,6 +152,11 @@ const Header: React.FC = () => {
     ? "group-hover:border-[#40DDCB]/30"
     : "group-hover:border-white/30";
   const hamburgerColor = isLightBackground ? "bg-[#40DDCB]" : "bg-white";
+
+  // Active state styles
+  const activeButtonBg = isLightBackground ? "bg-[#40DDCB]" : "bg-white";
+  const activeButtonText = isLightBackground ? "text-white" : "text-[#40DDCB]";
+  const activeButtonBorder = isLightBackground ? "border-white" : "border-[#40DDCB]";
 
   return (
     <header
@@ -156,34 +196,54 @@ const Header: React.FC = () => {
           <div className="hidden lg:flex items-center gap-6">
             {otherButtons.length > 0 && (
               <div className="flex items-center gap-4">
-                {otherButtons.map((btn, index) => (
-                  <a
-                    key={`other-${index}`}
-                    href={btn.url || "#"}
-                    className={`px-5 py-3 font-bold cursor-pointer flex items-center justify-center min-h-[48px]
-                      text-base transition-all duration-200 ease-out rounded-xl border ${textColor} ${borderColor} ${
-                      btn.color === "blue"
-                        ? `bg-transparent ${blueButtonHoverBg} ${blueButtonHoverText} ${blueButtonHoverBorder} hover:scale-102 active:scale-95`
-                        : `bg-transparent ${otherButtonHoverBg} ${otherButtonHoverBorder} hover:scale-102 active:scale-95`
-                    }`}
-                  >
-                    {btn.text}
-                  </a>
-                ))}
+                {otherButtons.map((btn, index) => {
+                  const isActive = isActivePage(btn.url || "");
+                  return (
+                    <a
+                      key={`other-${index}`}
+                      href={btn.url || "#"}
+                      className={`px-5 py-3 font-bold cursor-pointer flex items-center justify-center min-h-[48px]
+                        text-base transition-all duration-200 ease-out rounded-xl border ${
+                          isActive 
+                            ? `${activeButtonBg} ${activeButtonText} ${activeButtonBorder}`
+                            : `${textColor} ${borderColor} ${
+                                btn.color === "blue"
+                                  ? `bg-transparent ${blueButtonHoverBg} ${blueButtonHoverText} ${blueButtonHoverBorder} hover:scale-102 active:scale-95`
+                                  : `bg-transparent ${otherButtonHoverBg} ${otherButtonHoverBorder} hover:scale-102 active:scale-95`
+                              }`
+                        }`}
+                    >
+                      {btn.text}
+                      {isActive && (
+                        <span className="ml-2 w-2 h-2 rounded-full bg-current animate-pulse"></span>
+                      )}
+                    </a>
+                  );
+                })}
               </div>
             )}
 
             {pinkButtons.length > 0 && (
               <div className="flex items-center gap-4">
-                {pinkButtons.map((btn, index) => (
-                  <a
-                    key={`pink-${index}`}
-                    href={btn.url || "#"}
-                    className="px-6 py-3 bg-pink-500 text-white border border-pink-400 font-bold text-base rounded-xl cursor-pointer flex items-center justify-center min-h-[48px] transition-all duration-200 ease-out hover:scale-102 hover:bg-pink-600 active:scale-95"
-                  >
-                    {btn.text}
-                  </a>
-                ))}
+                {pinkButtons.map((btn, index) => {
+                  const isActive = isActivePage(btn.url || "");
+                  return (
+                    <a
+                      key={`pink-${index}`}
+                      href={btn.url || "#"}
+                      className={`px-6 py-3 font-bold text-base rounded-xl cursor-pointer flex items-center justify-center min-h-[48px] transition-all duration-200 ease-out border ${
+                        isActive
+                          ? "bg-pink-600 text-white border-pink-300 scale-105"
+                          : "bg-pink-500 text-white border-pink-400 hover:scale-102 hover:bg-pink-600"
+                      } active:scale-95`}
+                    >
+                      {btn.text}
+                      {isActive && (
+                        <span className="ml-2 w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                      )}
+                    </a>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -219,31 +279,49 @@ const Header: React.FC = () => {
           }`}
         >
           <nav className="flex flex-col gap-3 pb-4">
-            {otherButtons.map((btn, index) => (
-              <a
-                key={`other-mobile-${index}`}
-                href={btn.url || "#"}
-                className={`w-full px-6 py-4 font-bold text-base cursor-pointer flex items-center justify-center min-h-[48px] transition-all duration-200 rounded-xl ${
-                  btn.color === "blue"
-                    ? `bg-blue-500 text-white border border-blue-400 hover:bg-blue-600 active:scale-95`
-                    : `bg-white/20 ${textColor} border border-white/30 backdrop-blur-sm hover:bg-white/30 active:scale-95`
-                }`}
-                onClick={() => setMenuOpen(false)}
-              >
-                {btn.text}
-              </a>
-            ))}
+            {otherButtons.map((btn, index) => {
+              const isActive = isActivePage(btn.url || "");
+              return (
+                <a
+                  key={`other-mobile-${index}`}
+                  href={btn.url || "#"}
+                  className={`w-full px-6 py-4 font-bold text-base cursor-pointer flex items-center justify-center min-h-[48px] transition-all duration-200 rounded-xl border ${
+                    isActive
+                      ? "bg-[#40DDCB] text-white border-[#40DDCB] scale-105"
+                      : btn.color === "blue"
+                      ? `bg-blue-500 text-white border border-blue-400 hover:bg-blue-600 active:scale-95`
+                      : `bg-white/20 ${textColor} border border-white/30 backdrop-blur-sm hover:bg-white/30 active:scale-95`
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {btn.text}
+                  {isActive && (
+                    <span className="ml-2 w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                  )}
+                </a>
+              );
+            })}
 
-            {pinkButtons.map((btn, index) => (
-              <a
-                key={`pink-mobile-${index}`}
-                href={btn.url || "#"}
-                className="w-full px-6 py-4 bg-pink-500 text-white border border-pink-400 font-bold text-base rounded-xl cursor-pointer flex items-center justify-center min-h-[48px] transition-all duration-200 hover:bg-pink-600 active:scale-95"
-                onClick={() => setMenuOpen(false)}
-              >
-                {btn.text}
-              </a>
-            ))}
+            {pinkButtons.map((btn, index) => {
+              const isActive = isActivePage(btn.url || "");
+              return (
+                <a
+                  key={`pink-mobile-${index}`}
+                  href={btn.url || "#"}
+                  className={`w-full px-6 py-4 font-bold text-base rounded-xl cursor-pointer flex items-center justify-center min-h-[48px] transition-all duration-200 border ${
+                    isActive
+                      ? "bg-pink-600 text-white border-pink-300 scale-105"
+                      : "bg-pink-500 text-white border border-pink-400 hover:bg-pink-600 active:scale-95"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {btn.text}
+                  {isActive && (
+                    <span className="ml-2 w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                  )}
+                </a>
+              );
+            })}
           </nav>
         </div>
       </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 interface Video {
   id: number;
@@ -79,35 +79,83 @@ function Bubble({ video, stepText }: BubbleProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [showFallback, setShowFallback] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const isPlayingRef = useRef(false);
 
   const videoUrl = video?.video?.url
     ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${video.video.url}`
     : "";
 
-  const handleMouseOver = () => {
+  // Reset states when videoUrl changes
+  useEffect(() => {
+    setHasError(false);
+    setShowFallback(false);
+    isPlayingRef.current = false;
+  }, [videoUrl]);
+
+  const handleMouseOver = async () => {
     setIsHovered(true);
-    if (videoRef.current && videoUrl) {
+    if (videoRef.current && videoUrl && !hasError && !isPlayingRef.current) {
       try {
-        videoRef.current.load(); // ensures browser treats it as user-initiated
-        const playPromise = videoRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => setShowFallback(true));
+        isPlayingRef.current = true;
+        
+        // Ensure video is loaded and ready
+        if (videoRef.current.readyState < 3) {
+          videoRef.current.load();
         }
-      } catch {
+        
+        videoRef.current.currentTime = 0;
+        
+        // Use await to properly handle the promise
+        await videoRef.current.play();
+        
+      } catch (error) {
+        console.error("Video play failed:", error);
+        setHasError(true);
         setShowFallback(true);
+        isPlayingRef.current = false;
       }
     }
   };
 
   const handleMouseOut = () => {
     setIsHovered(false);
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+    if (videoRef.current && isPlayingRef.current) {
+      isPlayingRef.current = false;
+      
+      // Use a small timeout to ensure play() has completed
+      setTimeout(() => {
+        if (videoRef.current && !isPlayingRef.current) {
+          try {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
+          } catch (error) {
+            console.error("Video pause error:", error);
+          }
+        }
+      }, 50);
     }
   };
 
-  if (showFallback || !videoUrl) {
+  const handleVideoError = () => {
+    console.error("Video failed to load");
+    setHasError(true);
+    setShowFallback(true);
+    isPlayingRef.current = false;
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
+      isPlayingRef.current = false;
+    };
+  }, []);
+
+  if (showFallback || hasError || !videoUrl) {
     return (
       <div className="flex flex-col items-center group">
         <div className="relative rounded-full border-8 border-gray-200 w-64 h-64 flex items-center justify-center overflow-hidden shadow-2xl bg-gradient-to-br from-blue-50 to-pink-50">
@@ -143,7 +191,13 @@ function Bubble({ video, stepText }: BubbleProps) {
             playsInline
             preload="metadata"
             className="absolute inset-0 w-full h-full object-cover rounded-full"
-            onError={() => setShowFallback(true)}
+            onError={handleVideoError}
+            onPlay={() => {
+              isPlayingRef.current = true;
+            }}
+            onPause={() => {
+              isPlayingRef.current = false;
+            }}
           />
 
           {/* Overlay */}
