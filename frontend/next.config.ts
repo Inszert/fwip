@@ -11,7 +11,7 @@ const nextConfig = {
     ],
   },
   experimental: {
-    turbo: false, // vypne Turbopack, zabráni LightningCSS chybe
+    turbo: false // vypne Turbopack
   },
 };
 
