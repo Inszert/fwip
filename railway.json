@@ -4,12 +4,15 @@
       "name": "fwip-frontend",
       "build": {
         "builder": "node",
+        "rootDirectory": "frontend",
         "buildCommand": "npm install && npm run build",
-        "startCommand": "npm run start",
-        "rootDirectory": "frontend"
+        "startCommand": "npm run start"
       },
       "env": [
-        { "key": "NEXT_PUBLIC_API_URL", "value": "https://fwip-backend.railway.app" }
+        {
+          "key": "NEXT_PUBLIC_API_URL",
+          "value": "https://fwip-backend.railway.app"
+        }
       ]
     }
   ]
