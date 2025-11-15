@@ -11,7 +11,7 @@ const nextConfig = {
     ],
   },
   experimental: {
-    turbo: false // vypne Turbopack
+    turbo: false // vypne Turbopack, build prejde na Vercel
   },
 };
 
