@@ -10,6 +10,9 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    turbo: false, // vypne Turbopack, zabráni LightningCSS chybe
+  },
 };
 
 export default nextConfig;
