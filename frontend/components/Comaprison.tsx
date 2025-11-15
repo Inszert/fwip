@@ -39,7 +39,7 @@ interface ComparisonData {
 // SVG Icons
 const CheckIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="w-4 h-4 sm:w-5 sm:h-5"
     fill="none"
     stroke={SIGNATURE_COLOR}
     strokeWidth="2.5"
@@ -51,7 +51,7 @@ const CheckIcon = () => (
 
 const CrossIcon = () => (
   <svg
-    className="w-5 h-5 text-gray-400"
+    className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400"
     fill="none"
     stroke="currentColor"
     strokeWidth="2.5"
@@ -70,16 +70,16 @@ export default function Comparison({ data }: Props) {
   const properties: ComparisonProperty[] = data.property;
 
   return (
-    <section className="w-full h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center py-16">
-      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-6 lg:px-8 items-start gap-12">
+    <section className="w-full bg-gradient-to-br from-gray-50 to-white py-12 sm:py-16 lg:py-20">
+      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 items-start gap-8 lg:gap-12 xl:gap-16">
         {/* Left Side */}
-        <div className="w-full lg:w-2/5">
-          <div className="max-w-md">
-            <h2 className="text-4xl lg:text-5xl font-bold leading-tight mb-6 text-gray-900 tracking-tight">
-              {data.text1.split(" ").map((word: string) =>
+        <div className="w-full lg:w-2/5 mb-8 lg:mb-0">
+          <div className="max-w-md mx-auto lg:mx-0">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6 text-gray-900 tracking-tight">
+              {data.text1.split(" ").map((word: string, index: number) =>
                 word.toUpperCase() === "FWIP" ? (
                   <span
-                    key={word}
+                    key={index}
                     className="px-1 rounded-lg"
                     style={{
                       color: SIGNATURE_COLOR,
@@ -89,14 +89,16 @@ export default function Comparison({ data }: Props) {
                     {word}
                   </span>
                 ) : (
-                  <span key={word}>{word} </span>
+                  <span key={index}>{word} </span>
                 )
               )}
             </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">{data.text2}</p>
+            <p className="text-base sm:text-lg text-gray-600 mb-8 leading-relaxed">
+              {data.text2}
+            </p>
             <a
               href={data.button.url}
-              className="inline-flex items-center justify-center text-white px-8 py-4 rounded-xl text-base font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-base font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
               style={{
                 backgroundColor: SIGNATURE_COLOR,
                 boxShadow: `0 4px 14px ${SIGNATURE_COLOR}55`,
@@ -109,16 +111,16 @@ export default function Comparison({ data }: Props) {
 
         {/* Comparison Table */}
         <div className="w-full lg:w-3/5">
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="bg-white rounded-xl lg:rounded-2xl shadow-lg overflow-hidden">
             {/* Header Row */}
             <div className="grid grid-cols-5">
-              <div className="p-6 font-semibold flex items-center text-gray-700 bg-gray-50">
+              <div className="p-4 sm:p-6 font-semibold flex items-center text-gray-700 bg-gray-50 text-sm sm:text-base">
                 Features
               </div>
               {types.map((type: ComparisonType, idx: number) => (
                 <div
                   key={type.id}
-                  className={`p-6 text-center font-semibold ${
+                  className={`p-4 sm:p-6 text-center font-semibold ${
                     idx === types.length - 1 ? "text-white" : "text-gray-700 bg-gray-50"
                   }`}
                   style={{
@@ -128,8 +130,8 @@ export default function Comparison({ data }: Props) {
                   }}
                 >
                   {type.image && type.image.length > 0 ? (
-                    <div className="flex flex-col items-center space-y-3">
-                      <div className={`p-3 rounded-xl ${
+                    <div className="flex flex-col items-center space-y-2 sm:space-y-3">
+                      <div className={`p-2 sm:p-3 rounded-lg ${
                         idx === types.length - 1 ? "bg-white/20 backdrop-blur-sm" : "bg-gray-100"
                       }`}>
                         <img
@@ -139,26 +141,32 @@ export default function Comparison({ data }: Props) {
                               : type.image[0].url
                           }
                           alt={type.name || "Logo"}
-                          className={`h-12 w-auto ${idx === types.length - 1 ? "filter brightness-0 invert" : ""}`}
+                          className={`h-8 sm:h-10 lg:h-12 w-auto ${idx === types.length - 1 ? "filter brightness-0 invert" : ""}`}
                         />
                       </div>
-                      {type.name && <span className="text-sm font-medium">{type.name}</span>}
+                      {type.name && (
+                        <span className="text-xs sm:text-sm font-medium break-words">
+                          {type.name}
+                        </span>
+                      )}
                     </div>
                   ) : (
-                    <span className="text-lg">{type.name}</span>
+                    <span className="text-sm sm:text-base lg:text-lg break-words">
+                      {type.name}
+                    </span>
                   )}
                 </div>
               ))}
             </div>
 
-            {/* Feature Rows - removed divide-y */}
+            {/* Feature Rows */}
             <div>
               {properties.map((prop: ComparisonProperty) => (
                 <div
                   key={prop.id}
                   className="grid grid-cols-5 transition-colors hover:bg-gray-50/50"
                 >
-                  <div className="p-6 font-semibold text-gray-700 flex items-center bg-white">
+                  <div className="p-4 sm:p-6 font-medium text-gray-700 flex items-center bg-white text-sm sm:text-base break-words">
                     {prop.property}
                   </div>
                   {prop.result.map((res: PropertyResult, i: number) => {
@@ -166,7 +174,7 @@ export default function Comparison({ data }: Props) {
                     return (
                       <div
                         key={res.id}
-                        className="p-6 flex items-center justify-center"
+                        className="p-4 sm:p-6 flex items-center justify-center"
                         style={{ backgroundColor: hasImage ? `${SIGNATURE_COLOR}10` : "transparent" }}
                       >
                         <div
