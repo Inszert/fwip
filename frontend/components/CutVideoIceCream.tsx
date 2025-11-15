@@ -94,52 +94,62 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
     return () => pauseTimeouts.forEach(clearTimeout);
   }, [visibleIndices]);
 
-// Function to render text content for a segment
-const renderSegmentText = (segment: VideoSegment, index: number) => {
-  if (!segment.text1 && !segment.text2) return null;
+  // Function to render text content for a segment
+  const renderSegmentText = (segment: VideoSegment, index: number) => {
+    if (!segment.text1 && !segment.text2) return null;
 
-  const textContent = (
-    <div className="relative z-15 max-w-2xl p-8">
-      {segment.text1 && (
-        <h2 className="text-9xl font-black text-white mb-6 tracking-wide scale-y-155 relative -top-10">
-          {segment.text1}
-        </h2>
-      )}
-      {segment.text2 && (
-        <p className="text-2xl text-white opacity-90 leading-relaxed">
-          {segment.text2}
-        </p>
-      )}
-    </div>
-  );
+    const textContent = (
+      <div className="relative z-15 max-w-2xl p-4 lg:p-8">
+        {segment.text1 && (
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-black text-white mb-4 lg:mb-6 tracking-wide scale-y-155 relative lg:-top-10">
+            {segment.text1}
+          </h2>
+        )}
+        {segment.text2 && (
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white opacity-90 leading-relaxed">
+            {segment.text2}
+          </p>
+        )}
+      </div>
+    );
 
-  // Determine positioning based on side - positioned very close to center
-  switch (segment.side) {
-    case "left":
-      return (
-        <div className="absolute inset-0 flex items-center justify-start p-8">
-          <div className="ml-70">
+    // Mobile layout - text positioned higher
+    const mobileLayout = (
+      <div className="lg:hidden absolute inset-0 flex items-start justify-center pt-20 sm:pt-24 md:pt-32 px-4">
+        {textContent}
+      </div>
+    );
+
+    // Desktop layout - original positioning
+    const desktopLayout = (
+      <div className="hidden lg:block">
+        {segment.side === "left" ? (
+          <div className="absolute inset-0 flex items-center justify-start p-8">
+            <div className="ml-70">
+              {textContent}
+            </div>
+          </div>
+        ) : segment.side === "right" ? (
+          <div className="absolute inset-0 flex items-center justify-end p-8 -top-8">
+            <div className="mr-48">
+              {textContent}
+            </div>
+          </div>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center p-8">
             {textContent}
           </div>
-        </div>
-      );
-    case "right":
-      return (
-        <div className="absolute inset-0 flex items-center justify-end p-8 -top-8">
-          <div className="mr-48">
-            {textContent}
-          </div>
-        </div>
-      );
-    default:
-      // Default to center if no side specified
-      return (
-        <div className="absolute inset-0 flex items-center justify-center p-8">
-          {textContent}
-        </div>
-      );
-  }
-};
+        )}
+      </div>
+    );
+
+    return (
+      <>
+        {mobileLayout}
+        {desktopLayout}
+      </>
+    );
+  };
 
   return (
     <div className="w-full">
