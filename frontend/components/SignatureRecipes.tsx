@@ -39,13 +39,18 @@ export default function SignatureRecipes() {
   // Check if we need slider mode based on container width
   useEffect(() => {
     const checkLayout = () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || iceCreams.length === 0) return;
       
       const containerWidth = containerRef.current.offsetWidth;
       const cardWidth = 200; // width of each card
       const gap = 16; // gap between cards
-      const cardsPerRow = Math.floor((containerWidth - 48) / (cardWidth + gap)); // 48px for padding
+      const padding = 48; // total horizontal padding
       
+      // Calculate how many cards can fit in the container
+      const availableWidth = containerWidth - padding;
+      const cardsPerRow = Math.floor(availableWidth / (cardWidth + gap));
+      
+      // Only use slider mode if we can't fit all cards in one row
       setIsSliderMode(cardsPerRow < iceCreams.length);
     };
 
@@ -118,6 +123,8 @@ export default function SignatureRecipes() {
                 setHoveredCard={setHoveredCard}
                 mousePos={mousePos}
                 handleMouseMove={handleMouseMove}
+                isActive={true}
+                isSliderMode={false}
               />
             ))}
           </div>
@@ -149,6 +156,7 @@ export default function SignatureRecipes() {
                     mousePos={mousePos}
                     handleMouseMove={handleMouseMove}
                     isActive={index === activeIndex}
+                    isSliderMode={true}
                   />
                 </div>
               ))}
@@ -214,7 +222,7 @@ export default function SignatureRecipes() {
   );
 }
 
-// Updated IceCreamCard component for slider mode
+// IceCreamCard component with adjusted Y-axis positioning for ingredients
 function IceCreamCard({
   ice,
   hoveredCard,
@@ -222,8 +230,22 @@ function IceCreamCard({
   mousePos,
   handleMouseMove,
   isActive = true,
+  isSliderMode = false,
 }: any) {
   const ingredients: Ingredient[] = ice.ingredients || [];
+
+  // Function to adjust ingredient Y position for slider mode
+  const getAdjustedIngredientPosition = (ingredient: any) => {
+    if (!isSliderMode) {
+      return ingredient; // Return original in grid mode
+    }
+    
+    // In slider mode, reduce the Y position to bring ingredients closer to center
+    return {
+      ...ingredient,
+      y: ingredient.y * 0.2, // Reduce Y position by 40% to bring closer to center
+    };
+  };
 
   return (
     <div
@@ -233,7 +255,7 @@ function IceCreamCard({
       onMouseLeave={() => isActive && setHoveredCard(null)}
       onMouseMove={(e) => isActive && handleMouseMove(e, ice.id)}
     >
-      {/* Ingredients orbiting - only show for active card */}
+      {/* Ingredients orbiting - only show for active card in slider mode, always show in grid mode */}
       {ingredients.map((ingredient: any, idx: number) => {
         let imgUrl = ingredient.url || "";
         if (imgUrl && !imgUrl.startsWith("http")) {
@@ -241,8 +263,9 @@ function IceCreamCard({
         }
         if (!imgUrl) return null;
 
-        const parallaxX = (ingredient.parallaxSpeed || 0.12) * (1 + idx * 0.05);
-        const parallaxY = (ingredient.parallaxSpeed || 0.12) * (1 + idx * 0.05);
+        const adjustedIngredient = getAdjustedIngredientPosition(ingredient);
+        const parallaxX = (adjustedIngredient.parallaxSpeed || 0.12) * (1 + idx * 0.05);
+        const parallaxY = (adjustedIngredient.parallaxSpeed || 0.12) * (1 + idx * 0.05);
         const directionX = idx % 2 === 0 ? 1 : -1;
         const directionY = idx % 2 === 0 ? 1 : -1;
 
@@ -252,17 +275,17 @@ function IceCreamCard({
             className="absolute pointer-events-none"
             style={{
               left: "50%",
-              top: "130px",
-              width: `${ingredient.size}px`,
-              height: `${ingredient.size}px`,
+              top: "130px", // Keep the same top position
+              width: `${adjustedIngredient.size}px`,
+              height: `${adjustedIngredient.size}px`,
               transform: `translate(
-                calc(-50% + ${ingredient.x}px - ${
+                calc(-50% + ${adjustedIngredient.x}px - ${
                 hoveredCard === ice.id ? mousePos.x * parallaxX * directionX : 0
               }px),
-                calc(-50% + ${ingredient.y}px - ${
+                calc(-50% + ${adjustedIngredient.y}px - ${
                 hoveredCard === ice.id ? mousePos.y * parallaxY * directionY : 0
               }px)
-              ) rotate(${ingredient.rotation || 0}deg) scale(${
+              ) rotate(${adjustedIngredient.rotation || 0}deg) scale(${
                 hoveredCard === ice.id ? 1 : 0.8
               })`,
               opacity: hoveredCard === ice.id ? 0.95 : 0,
@@ -276,8 +299,8 @@ function IceCreamCard({
             <Image
               src={imgUrl}
               alt="ingredient"
-              width={ingredient.size}
-              height={ingredient.size}
+              width={adjustedIngredient.size}
+              height={adjustedIngredient.size}
               className="object-contain rounded-2xl"
               style={{ imageRendering: "auto" }}
               unoptimized
@@ -286,13 +309,12 @@ function IceCreamCard({
         );
       })}
 
-      {/* Main gelato image with hover effect - only for active card */}
+      {/* Main gelato image with hover effect */}
       <div
-        className="relative z-40 transition-all duration-[600ms] ease-out"
+        className="relative z-40 transition-all duration-[600ms] ease-out group-hover:-translate-y-50 group-hover:scale-[1.25]"
         style={{
           transformStyle: "preserve-3d",
           transition: "all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55)",
-          transform: isActive && hoveredCard === ice.id ? 'translateY(-50px) scale(1.25)' : 'none',
         }}
       >
         <Image
@@ -300,23 +322,40 @@ function IceCreamCard({
           alt={ice.name}
           width={180}
           height={180}
-          className="rounded-2xl transition-all duration-[600ms]"
+          className="rounded-2xl transition-all duration-[600ms] group-hover:[transform:rotateY(20deg)_rotateZ(-12deg)]"
           style={{
             transformStyle: "preserve-3d",
             filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.4))",
-            transform: isActive && hoveredCard === ice.id ? 'rotateY(20deg) rotateZ(-12deg)' : 'none',
           }}
           unoptimized
         />
       </div>
 
-      {/* Glowing base - only for active card */}
+      {/* Info card with text on hover - only in grid mode */}
+      {!isSliderMode && (
+        <div
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 rounded-[2rem] shadow-2xl p-6 pt-16 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-[500ms] ease-out z-30"
+          style={{
+            backgroundColor: ice.color,
+            height: "200px",
+            width: "110%",
+          }}
+        >
+          <div className="opacity-0 -translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-[400ms] delay-150">
+            <h3 className="text-2xl font-bold text-white uppercase tracking-wide mb-1">
+              {ice.name}
+            </h3>
+            <p className="text-white/90 leading-relaxed text-sm font-normal">
+              {ice.description}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Glowing base */}
       <div
-        className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-8 rounded-full blur-xl transition-all duration-[500ms] z-0"
-        style={{ 
-          backgroundColor: ice.color,
-          opacity: isActive && hoveredCard === ice.id ? 0.5 : 0,
-        }}
+        className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-8 rounded-full opacity-0 group-hover:opacity-50 blur-xl transition-all duration-[500ms] z-0"
+        style={{ backgroundColor: ice.color }}
       ></div>
     </div>
   );
