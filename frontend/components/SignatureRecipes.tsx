@@ -40,13 +40,13 @@ export default function SignatureRecipes() {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-[#40DDCB] to-[#2EC4B6] py-28 text-center overflow-hidden">
+    <section className="relative bg-gradient-to-br from-[#40DDCB] to-[#2EC4B6] h-screen min-h-[100vh] py-28 text-center overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 h-full flex flex-col justify-center">
         {/* Titles */}
         <h2 className="text-6xl font-black text-white mb-6 tracking-tight drop-shadow-xl">
           OUR SIGNATURE
