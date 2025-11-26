@@ -76,8 +76,9 @@ export default async function Home() {
       </div>
     )) || [];
 
-
-    const comparisons = await fetchComparisons();
+  // Safe fetch for comparisons
+  let comparisons = await fetchComparisons().catch(() => [{}]);
+  if (!comparisons || comparisons.length === 0) comparisons = [{}];
 
   const bottomLinks =
     footerData?.footer_btns?.map(({ id, text, url }) => ({
@@ -100,18 +101,15 @@ export default async function Home() {
       )}
 
       <SignatureRecipes />
-            {/* PortobelloGreen section - only render if data exists */}
 
-      {/* StepBubbles section */}
       <StepBubbles steps={steps} />
       {portobelloData && portobelloData.length > 0 && (
         <PortobelloGreen data={portobelloData[0]} />
       )}
 
-    <ComparisonTableSection data={comparisons[0]} />
-      <Footer />
+      <ComparisonTableSection data={comparisons[0] || {}} />
 
-      
+      <Footer />
     </main>
   );
 }

@@ -174,7 +174,7 @@ const Header: React.FC = () => {
                 className="relative transition-transform duration-200 hover:scale-110 active:scale-95"
               >
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${image.url}`}
+                  src={image.url}
                   
                   alt={image.alternativeText || "Logo"}
                   width={60}

@@ -28,12 +28,12 @@ interface Button {
 }
 
 interface ComparisonData {
-  id: number;
-  text1: string;
-  text2: string;
-  button: Button;
-  types: ComparisonType[];
-  property: ComparisonProperty[];
+  id?: number;
+  text1?: string;
+  text2?: string;
+  button?: Button;
+  types?: ComparisonType[];
+  property?: ComparisonProperty[];
 }
 
 // SVG Icons
@@ -62,12 +62,15 @@ const CrossIcon = () => (
 );
 
 interface Props {
-  data: ComparisonData;
+  data?: ComparisonData;
 }
 
 export default function Comparison({ data }: Props) {
-  const types: ComparisonType[] = data.types;
-  const properties: ComparisonProperty[] = data.property;
+  const types: ComparisonType[] = data?.types || [];
+  const properties: ComparisonProperty[] = data?.property || [];
+  const text1 = data?.text1 || "";
+  const text2 = data?.text2 || "";
+  const button = data?.button || { id: 0, text: "", url: "#" };
 
   return (
     <section className="w-full bg-gradient-to-br from-gray-50 to-white py-12 sm:py-16 lg:py-20">
@@ -76,7 +79,7 @@ export default function Comparison({ data }: Props) {
         <div className="w-full lg:w-2/5 mb-8 lg:mb-0">
           <div className="max-w-md mx-auto lg:mx-0">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6 text-gray-900 tracking-tight">
-              {data.text1.split(" ").map((word: string, index: number) =>
+              {text1.split(" ").map((word: string, index: number) =>
                 word.toUpperCase() === "FWIP" ? (
                   <span
                     key={index}
@@ -94,17 +97,17 @@ export default function Comparison({ data }: Props) {
               )}
             </h2>
             <p className="text-base sm:text-lg text-gray-600 mb-8 leading-relaxed">
-              {data.text2}
+              {text2}
             </p>
             <a
-              href={data.button.url}
+              href={button.url}
               className="inline-flex items-center justify-center text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-base font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
               style={{
                 backgroundColor: SIGNATURE_COLOR,
                 boxShadow: `0 4px 14px ${SIGNATURE_COLOR}55`,
               }}
             >
-              {data.button.text}
+              {button.text}
             </a>
           </div>
         </div>
@@ -124,16 +127,19 @@ export default function Comparison({ data }: Props) {
                     idx === types.length - 1 ? "text-white" : "text-gray-700 bg-gray-50"
                   }`}
                   style={{
-                    background: idx === types.length - 1
-                      ? `linear-gradient(180deg, ${SIGNATURE_COLOR}, ${SIGNATURE_COLOR}CC)`
-                      : undefined,
+                    background:
+                      idx === types.length - 1
+                        ? `linear-gradient(180deg, ${SIGNATURE_COLOR}, ${SIGNATURE_COLOR}CC)`
+                        : undefined,
                   }}
                 >
                   {type.image && type.image.length > 0 ? (
                     <div className="flex flex-col items-center space-y-2 sm:space-y-3">
-                      <div className={`p-2 sm:p-3 rounded-lg ${
-                        idx === types.length - 1 ? "bg-white/20 backdrop-blur-sm" : "bg-gray-100"
-                      }`}>
+                      <div
+                        className={`p-2 sm:p-3 rounded-lg ${
+                          idx === types.length - 1 ? "bg-white/20 backdrop-blur-sm" : "bg-gray-100"
+                        }`}
+                      >
                         <img
                           src={
                             process.env.NEXT_PUBLIC_STRAPI_URL
@@ -141,7 +147,9 @@ export default function Comparison({ data }: Props) {
                               : type.image[0].url
                           }
                           alt={type.name || "Logo"}
-                          className={`h-8 sm:h-10 lg:h-12 w-auto ${idx === types.length - 1 ? "filter brightness-0 invert" : ""}`}
+                          className={`h-8 sm:h-10 lg:h-12 w-auto ${
+                            idx === types.length - 1 ? "filter brightness-0 invert" : ""
+                          }`}
                         />
                       </div>
                       {type.name && (
@@ -170,7 +178,7 @@ export default function Comparison({ data }: Props) {
                     {prop.property}
                   </div>
                   {prop.result.map((res: PropertyResult, i: number) => {
-                    const hasImage = types[i].image && types[i].image.length > 0;
+                    const hasImage = types[i]?.image && types[i].image.length > 0;
                     return (
                       <div
                         key={res.id}

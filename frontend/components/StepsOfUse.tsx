@@ -82,9 +82,8 @@ function Bubble({ video, stepText }: BubbleProps) {
   const [hasError, setHasError] = useState(false);
   const isPlayingRef = useRef(false);
 
-  const videoUrl = video?.video?.url
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${video.video.url}`
-    : "";
+const videoUrl = video?.video?.url || "";
+
 
   // Reset states when videoUrl changes
   useEffect(() => {
