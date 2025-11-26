@@ -110,6 +110,8 @@ export default async function Home() {
 
     <ComparisonTableSection data={comparisons[0]} />
       <Footer />
+
+      
     </main>
   );
 }
