@@ -5,10 +5,10 @@ export default [
     name: 'strapi::security',
     config: {
       contentSecurityPolicy: {
-        useDefaults: true,
         directives: {
-          'media-src': ["'self'", 'data:', 'blob:', 'https://res.cloudinary.com'],
-          'img-src': ["'self'", 'data:', 'blob:', 'https://res.cloudinary.com' ],
+          'img-src': ["'self'", "data:", "blob:", "https://market-assets.strapi.io", "https://res.cloudinary.com"],
+          'media-src': ["'self'", "data:", "blob:", "https://res.cloudinary.com"],
+          upgradeInsecureRequests: null,
         },
       },
     },
