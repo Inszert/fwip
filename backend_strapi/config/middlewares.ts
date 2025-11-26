@@ -8,7 +8,7 @@ export default [
         useDefaults: true,
         directives: {
           'media-src': ["'self'", 'data:', 'blob:', 'https://res.cloudinary.com'],
-          'img-src': ["'self'", 'data:', 'blob:', 'https://res.cloudinary.com', 'https://market-assets.strapi.io'],
+          'img-src': ["'self'", 'data:', 'blob:', 'https://res.cloudinary.com' ],
         },
       },
     },
