@@ -5,13 +5,11 @@ export default [
     name: 'strapi::security',
     config: {
       contentSecurityPolicy: {
+        useDefaults: true,
         directives: {
-          'img-src': ["'self'", "data:", "blob:", "https://res.cloudinary.com"],
-          'media-src': ["'self'", "data:", "blob:", "https://res.cloudinary.com"],
-          upgradeInsecureRequests: null,
-        },
+         'img-src': ["'self'", "data:", "blob:", "https://res.cloudinary.com"],
+          'media-src': ["'self'", "data:", "blob:", "https://res.cloudinary.com"],},
       },
-      hsts: false, // <-- disable HSTS entirely
     },
   },
   'strapi::cors',
