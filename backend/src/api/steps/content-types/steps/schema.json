@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stepss",
+  "info": {
+    "singularName": "steps",
+    "pluralName": "stepss",
+    "displayName": "Steps"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "text1": {
+      "type": "string"
+    },
+    "text2": {
+      "type": "string"
+    },
+    "video": {
+      "type": "component",
+      "component": "default.circular-video",
+      "repeatable": true
+    }
+  }
+}

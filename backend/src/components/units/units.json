@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_units_units",
+  "info": {
+    "displayName": "units"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "text1": {
+      "type": "string"
+    },
+    "text2": {
+      "type": "string"
+    },
+    "text3": {
+      "type": "string"
+    },
+    "button": {
+      "type": "component",
+      "component": "basic.button",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

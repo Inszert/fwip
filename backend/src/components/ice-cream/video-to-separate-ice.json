@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_ice_cream_video_to_separate_ices",
+  "info": {
+    "displayName": "video_to_separate_ice"
+  },
+  "options": {},
+  "attributes": {
+    "video_separ": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "data_for_sep": {
+      "type": "component",
+      "component": "ice-cream.timestamps",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

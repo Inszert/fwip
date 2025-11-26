@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "portobello_middles",
+  "info": {
+    "singularName": "portobello-middle",
+    "pluralName": "portobello-middles",
+    "displayName": "portobello_middle"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "text1": {
+      "type": "string"
+    },
+    "text2": {
+      "type": "string"
+    },
+    "text3": {
+      "type": "string"
+    },
+    "backgorund": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "sorunding_elements": {
+      "type": "component",
+      "component": "default.ingredient",
+      "repeatable": true
+    },
+    "points": {
+      "type": "component",
+      "component": "portobello.portobello-primary",
+      "repeatable": true
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_portobello_portobello_secondaries",
+  "info": {
+    "displayName": "Portobello Secondary"
+  },
+  "options": {},
+  "attributes": {
+    "subtitle": {
+      "type": "string"
+    },
+    "imageTextCombo": {
+      "type": "component",
+      "component": "portobello.image-text-combo",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}
