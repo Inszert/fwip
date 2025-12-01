@@ -10,8 +10,10 @@ const nextConfig = {
       },
     ],
   },
+  // Force Webpack build
   experimental: {
-    turbo: false, // ← vypne Turbopack
+    serverComponentsExternalPackages: ["@tailwindcss/node"],
+    forceSwcTransforms: true, // trochu pomáha pri LightningCSS
   },
 };
 
