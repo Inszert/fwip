@@ -634,8 +634,10 @@ export interface VideoFile {
   mime?: string;
 }
 
+
 export interface MainBodyVideo {
   video_separ: VideoFile;
+  
   data_for_sep: VideoSegment[];
 }
 
