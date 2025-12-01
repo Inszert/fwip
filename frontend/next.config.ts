@@ -10,7 +10,7 @@ const nextConfig = {
       },
     ],
   },
-  serverExternalPackages: ["some-package-if-needed"], // nahraď podľa potreby
+  serverExternalPackages: ["@tailwindcss/node"], // nahraď podľa potreby
 };
 
 export default nextConfig;
