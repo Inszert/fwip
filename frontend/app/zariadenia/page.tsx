@@ -61,7 +61,7 @@ export default async function ZariadeniaPage() {
   }
 
   const backgroundImageUrl = zariadeniaData?.main_image?.[0]?.url
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${zariadeniaData.main_image[0].url}`
+    ? `${zariadeniaData.main_image[0].url}`
     : "/images/default-bg.jpg";
 
   const paragraphs = zariadeniaData?.text3
@@ -70,9 +70,9 @@ export default async function ZariadeniaPage() {
       .filter(Boolean)
       .map((p: string) => (p.endsWith(".") ? p : p + "."))
     : [
-      "This is the first paragraph.",
-      "This is the second paragraph.",
-      "Finally, this is the last paragraph.",
+      " ",
+      " ",
+      " ",
     ];
 
   // Map API units to component type
@@ -95,8 +95,8 @@ export default async function ZariadeniaPage() {
 
       <TopSectionZariadenia
         backgroundImage={backgroundImageUrl}
-        title={zariadeniaData?.text1 || "Zariadenia Title"}
-        subtitle={zariadeniaData?.text2 || "Zariadenia Subtitle"}
+        title={zariadeniaData?.text1 || ""}
+        subtitle={zariadeniaData?.text2 || ""}
         paragraphs={paragraphs}
       />
 

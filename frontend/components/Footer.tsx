@@ -47,15 +47,16 @@ const Footer: React.FC = () => {
             <h4 className="font-semibold mb-1.5 text-lg border-b border-white/30 pb-1">
               {slot.Title}
             </h4>
-            {slot.description.map((block: any, i: number) =>
-              block.type === "paragraph" ? (
-                <p key={i} className="text-white/90 leading-relaxed text-sm">
-                  {block.children.map((child: any, ci: number) => (
-                    <React.Fragment key={ci}>{child.text}</React.Fragment>
-                  ))}
-                </p>
-              ) : null
-            )}
+{slot.description?.map((block: any, i: number) =>
+  block.type === "paragraph" ? (
+    <p key={i} className="text-white/90 leading-relaxed text-sm">
+      {block.children?.map((child: any, ci: number) => (
+        <React.Fragment key={ci}>{child.text}</React.Fragment>
+      ))}
+    </p>
+  ) : null
+)}
+
           </div>
         ))}
       </div>

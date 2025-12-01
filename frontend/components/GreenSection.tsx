@@ -73,7 +73,7 @@ export default function PortobelloGreen({ data }: Props) {
     setMouseOffset({ x: 0, y: 0 });
   };
 
-  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "";
+  const baseUrl = "";
 
   const bgImageUrl = data.image?.[0]?.url 
     ? `${baseUrl}${data.image[0].url}` 

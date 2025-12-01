@@ -35,7 +35,10 @@ export default function PortobelloHwdSection({ data }: Props) {
           {activeOption && activeOption.image && activeOption.image.url ? (
             <img
               key={`img-${activeIndex}`}
-              src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${activeOption.image.url}`}
+              src={activeOption.image.url}
+              
+              
+              
               alt={activeOption.text || "Product image"}
               className="object-contain transition-all duration-300 ease-in-out w-full h-full max-h-[70vh]"
               onError={(e) => {
@@ -132,7 +135,7 @@ export default function PortobelloHwdSection({ data }: Props) {
             {activeOption && activeOption.image && activeOption.image.url ? (
               <img
                 key={`img-${activeIndex}`}
-                src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${activeOption.image.url}`}
+                src={activeOption.image.url}
                 alt={activeOption.text || "Product image"}
                 className="object-contain transition-all duration-300 ease-in-out"
                 style={{

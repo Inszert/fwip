@@ -45,7 +45,7 @@ const PurpleCenteredCard: React.FC<ZariadeniaCardProps> = ({ units }) => {
                 <div className="bg-[#17e4e4] rounded-full w-[280px] h-[280px] flex items-center justify-center relative shadow-xl overflow-visible">
                   {unit.image && (
                     <img
-                      src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${unit.image.url}`}
+                      src={unit.image.url}
                       alt={unit.image.alternativeText || unit.text1}
                       className="absolute w-[310px] h-[310px] object-cover rounded-full -top-[15px]"
                     />

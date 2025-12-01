@@ -35,7 +35,7 @@ const HeroVideoBackground: React.FC<HeroVideoBackgroundProps> = ({
       style={{ backgroundColor: "#40DDCB" }}
     >
       <video
-        src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${videoUrl}`}
+        src={videoUrl}
         autoPlay
         muted
         loop

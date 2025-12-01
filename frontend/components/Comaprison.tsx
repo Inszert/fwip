@@ -142,9 +142,8 @@ export default function Comparison({ data }: Props) {
                       >
                         <img
                           src={
-                            process.env.NEXT_PUBLIC_STRAPI_URL
-                              ? process.env.NEXT_PUBLIC_STRAPI_URL + type.image[0].url
-                              : type.image[0].url
+                            
+                               type.image[0].url
                           }
                           alt={type.name || "Logo"}
                           className={`h-8 sm:h-10 lg:h-12 w-auto ${

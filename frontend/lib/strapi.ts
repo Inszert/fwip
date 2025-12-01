@@ -292,7 +292,7 @@ export async function fetchPortobelloData(): Promise<PortobelloData> {
       textField3: item?.textField3 || "",
       image: item?.image
         ? {
-            url: `${process.env.NEXT_PUBLIC_STRAPI_URL}${item.image.url}`,
+            url: item.image.url,
             alternativeText: item.image.alternativeText || "",
           }
         : null,
@@ -339,7 +339,7 @@ export async function fetchPurpleShowcaseData() {
     (secondarySection?.imageTextCombo || [])
       .filter((item: ImageTextComboItem) => item?.image)
       .map((item: ImageTextComboItem) => ({
-        iconUrl: item.image?.url ? `${apiUrl}${item.image.url}` : undefined,
+        iconUrl: item.image?.url ? item.image.url : undefined,
         heading: item.text
           ? item.text.split(" ").slice(0, 3).join(" ")
           : "",
@@ -744,7 +744,7 @@ export const getImageUrl = (
 
   return imgUrl.startsWith("http")
     ? imgUrl
-    : `${process.env.NEXT_PUBLIC_STRAPI_URL}${imgUrl}`;
+    : imgUrl;
 };
 
 
