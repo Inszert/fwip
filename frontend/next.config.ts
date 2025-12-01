@@ -10,11 +10,7 @@ const nextConfig = {
       },
     ],
   },
-  // Force Webpack build
-  experimental: {
-    serverComponentsExternalPackages: ["@tailwindcss/node"],
-    forceSwcTransforms: true, // trochu pomáha pri LightningCSS
-  },
+  serverExternalPackages: ["some-package-if-needed"], // nahraď podľa potreby
 };
 
 export default nextConfig;
