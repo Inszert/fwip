@@ -14,6 +14,7 @@ export default function SignatureRecipes() {
   const [iceCreams, setIceCreams] = useState<IceCream[]>([]);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [mousePos, setMousePos] = useState<MousePosition>({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
   const [isSliderMode, setIsSliderMode] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,21 +37,28 @@ export default function SignatureRecipes() {
     loadData();
   }, []);
 
-  // Check if we need slider mode based on container width
+  // Check for mobile and layout
   useEffect(() => {
     const checkLayout = () => {
+      const isMobileView = window.innerWidth < 768;
+      setIsMobile(isMobileView);
+      
+      // For mobile, always use slider mode
+      if (isMobileView) {
+        setIsSliderMode(true);
+        return;
+      }
+
       if (!containerRef.current || iceCreams.length === 0) return;
       
       const containerWidth = containerRef.current.offsetWidth;
-      const cardWidth = 200; // width of each card
-      const gap = 16; // gap between cards
-      const padding = 48; // total horizontal padding
+      const cardWidth = 200;
+      const gap = 16;
+      const padding = 48;
       
-      // Calculate how many cards can fit in the container
       const availableWidth = containerWidth - padding;
       const cardsPerRow = Math.floor(availableWidth / (cardWidth + gap));
       
-      // Only use slider mode if we can't fit all cards in one row
       setIsSliderMode(cardsPerRow < iceCreams.length);
     };
 
@@ -79,7 +87,7 @@ export default function SignatureRecipes() {
   }, [isSliderMode, iceCreams]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, cardId: number) => {
-    if (hoveredCard !== cardId) return;
+    if (hoveredCard !== cardId || isMobile) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
@@ -88,23 +96,31 @@ export default function SignatureRecipes() {
 
   const goToSlide = (index: number) => {
     setActiveIndex(index);
-    setHoveredCard(iceCreams[index].id);
+    setHoveredCard(iceCreams[index]?.id || null);
     
-    // Reset auto-slide timer
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
   };
 
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>, cardId: number) => {
+    if (hoveredCard !== cardId || !isMobile) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = touch.clientX - rect.left - rect.width / 2;
+    const y = touch.clientY - rect.top - rect.height / 2;
+    setMousePos({ x, y });
+  };
+
   return (
-    <section className="relative bg-gradient-to-br from-[#40DDCB] to-[#2EC4B6] h-screen min-h-[100vh] py-28 text-center overflow-hidden">
+    <section className="relative bg-gradient-to-br from-[#40DDCB] to-[#2EC4B6] min-h-screen py-28 text-center overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
       </div>
 
-      <div ref={containerRef} className="relative z-10 h-full flex flex-col justify-center">
-        {/* Titles */}
+      <div ref={containerRef} className="relative z-10 h-full flex flex-col justify-center px-6">
+        {/* Titles - Original PC version */}
         <h2 className="text-6xl font-black text-white mb-6 tracking-tight drop-shadow-xl">
           OUR SIGNATURE
         </h2>
@@ -114,7 +130,7 @@ export default function SignatureRecipes() {
 
         {/* GRID MODE - when all cards fit in one line */}
         {!isSliderMode && (
-          <div className="flex flex-wrap justify-center gap-4 px-6">
+          <div className="flex flex-wrap justify-center gap-4">
             {iceCreams.map((ice) => (
               <IceCreamCard
                 key={ice.id}
@@ -123,8 +139,10 @@ export default function SignatureRecipes() {
                 setHoveredCard={setHoveredCard}
                 mousePos={mousePos}
                 handleMouseMove={handleMouseMove}
+                handleTouchMove={handleTouchMove}
                 isActive={true}
                 isSliderMode={false}
+                isMobile={isMobile}
               />
             ))}
           </div>
@@ -132,18 +150,20 @@ export default function SignatureRecipes() {
 
         {/* SLIDER MODE - when cards don't fit in one line */}
         {isSliderMode && (
-          <div className="relative w-full overflow-hidden px-6">
+          <div className={`relative w-full overflow-hidden ${isMobile ? 'px-0' : 'px-6'}`}>
             {/* Slider container */}
             <div
               className="flex transition-transform duration-500 ease-out"
               style={{
-                transform: `translateX(calc(50% - ${activeIndex * 216}px - 108px))`,
+                transform: isMobile 
+                  ? `translateX(calc(50% - ${activeIndex * 240}px - 120px))`
+                  : `translateX(calc(50% - ${activeIndex * 216}px - 108px))`,
               }}
             >
               {iceCreams.map((ice, index) => (
                 <div
                   key={ice.id}
-                  className="flex-shrink-0 w-[200px] mx-2 transition-all duration-300"
+                  className={`flex-shrink-0 ${isMobile ? 'w-[220px]' : 'w-[200px]'} mx-2 transition-all duration-300`}
                   style={{
                     opacity: index === activeIndex ? 1 : 0.4,
                     transform: index === activeIndex ? 'scale(1)' : 'scale(0.85)',
@@ -155,37 +175,57 @@ export default function SignatureRecipes() {
                     setHoveredCard={setHoveredCard}
                     mousePos={mousePos}
                     handleMouseMove={handleMouseMove}
+                    handleTouchMove={handleTouchMove}
                     isActive={index === activeIndex}
                     isSliderMode={true}
+                    isMobile={isMobile}
                   />
                 </div>
               ))}
             </div>
 
-            {/* Active card info (always visible in slider mode) */}
-            <div className="mt-8 max-w-md mx-auto">
-              <div
-                className="rounded-[2rem] shadow-2xl p-6 transition-all duration-500"
-                style={{
-                  backgroundColor: iceCreams[activeIndex]?.color || '#ffffff',
-                }}
-              >
-                <h3 className="text-2xl font-bold text-white uppercase tracking-wide mb-3">
-                  {iceCreams[activeIndex]?.name}
-                </h3>
-                <p className="text-white/90 leading-relaxed text-sm font-normal">
-                  {iceCreams[activeIndex]?.description}
-                </p>
+            {/* Active card info - Original PC style, adjusted for mobile */}
+            {isMobile ? (
+              <div className="mt-6 px-4">
+                <div
+                  className="rounded-xl shadow-2xl p-4 transition-all duration-500"
+                  style={{
+                    backgroundColor: iceCreams[activeIndex]?.color || '#ffffff',
+                  }}
+                >
+                  <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-1">
+                    {iceCreams[activeIndex]?.name}
+                  </h3>
+                  <p className="text-white/90 leading-relaxed text-xs font-normal">
+                    {iceCreams[activeIndex]?.description}
+                  </p>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="mt-8 max-w-md mx-auto">
+                <div
+                  className="rounded-[2rem] shadow-2xl p-6 transition-all duration-500"
+                  style={{
+                    backgroundColor: iceCreams[activeIndex]?.color || '#ffffff',
+                  }}
+                >
+                  <h3 className="text-2xl font-bold text-white uppercase tracking-wide mb-3">
+                    {iceCreams[activeIndex]?.name}
+                  </h3>
+                  <p className="text-white/90 leading-relaxed text-sm font-normal">
+                    {iceCreams[activeIndex]?.description}
+                  </p>
+                </div>
+              </div>
+            )}
 
-            {/* Navigation dots */}
-            <div className="flex justify-center mt-6 space-x-3">
+            {/* Navigation dots - Smaller on mobile */}
+            <div className={`flex justify-center ${isMobile ? 'mt-4 space-x-1.5' : 'mt-6 space-x-3'}`}>
               {iceCreams.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`${isMobile ? 'w-1.5 h-1.5' : 'w-3 h-3'} rounded-full transition-all duration-300 ${
                     index === activeIndex 
                       ? 'bg-white scale-125' 
                       : 'bg-white/40 hover:bg-white/60'
@@ -195,26 +235,30 @@ export default function SignatureRecipes() {
               ))}
             </div>
 
-            {/* Navigation arrows */}
-            <button
-              onClick={() => goToSlide((activeIndex - 1 + iceCreams.length) % iceCreams.length)}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-3 transition-all duration-300 backdrop-blur-sm"
-              aria-label="Previous slide"
-            >
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            
-            <button
-              onClick={() => goToSlide((activeIndex + 1) % iceCreams.length)}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-3 transition-all duration-300 backdrop-blur-sm"
-              aria-label="Next slide"
-            >
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+            {/* Navigation arrows - hidden on mobile, original on PC */}
+            {!isMobile && (
+              <>
+                <button
+                  onClick={() => goToSlide((activeIndex - 1 + iceCreams.length) % iceCreams.length)}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-3 transition-all duration-300 backdrop-blur-sm"
+                  aria-label="Previous slide"
+                >
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                
+                <button
+                  onClick={() => goToSlide((activeIndex + 1) % iceCreams.length)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-3 transition-all duration-300 backdrop-blur-sm"
+                  aria-label="Next slide"
+                >
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -222,40 +266,49 @@ export default function SignatureRecipes() {
   );
 }
 
-// IceCreamCard component with adjusted Y-axis positioning for ingredients
+// IceCreamCard component - Original PC version with mobile optimizations
 function IceCreamCard({
   ice,
   hoveredCard,
   setHoveredCard,
   mousePos,
   handleMouseMove,
+  handleTouchMove,
   isActive = true,
   isSliderMode = false,
+  isMobile = false,
 }: any) {
   const ingredients: Ingredient[] = ice.ingredients || [];
+  const [isTouching, setIsTouching] = useState(false);
 
-  // Function to adjust ingredient Y position for slider mode
-  const getAdjustedIngredientPosition = (ingredient: any) => {
-    if (!isSliderMode) {
-      return ingredient; // Return original in grid mode
+  // Handle touch events for mobile
+  const handleTouchStart = () => {
+    if (!isActive) return;
+    setIsTouching(true);
+    setHoveredCard(ice.id);
+  };
+
+  const handleTouchEnd = () => {
+    setIsTouching(false);
+    if (isSliderMode) {
+      // Don't set to null in slider mode to keep ingredients visible
+      return;
     }
-    
-    // In slider mode, reduce the Y position to bring ingredients closer to center
-    return {
-      ...ingredient,
-      y: ingredient.y * 0.2, // Reduce Y position by 40% to bring closer to center
-    };
+    setHoveredCard(null);
   };
 
   return (
     <div
-      className="group relative w-[200px] h-[250px] flex flex-col items-center justify-start pt-8"
+      className={`group relative ${isMobile ? 'w-full h-[200px]' : 'w-[200px] h-[250px]'} flex flex-col items-center justify-start ${isMobile ? 'pt-4' : 'pt-8'}`}
       style={{ perspective: "1200px" }}
-      onMouseEnter={() => isActive && setHoveredCard(ice.id)}
-      onMouseLeave={() => isActive && setHoveredCard(null)}
-      onMouseMove={(e) => isActive && handleMouseMove(e, ice.id)}
+      onMouseEnter={() => isActive && !isMobile && setHoveredCard(ice.id)}
+      onMouseLeave={() => isActive && !isMobile && !isSliderMode && setHoveredCard(null)}
+      onMouseMove={(e) => isActive && !isMobile && handleMouseMove(e, ice.id)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={(e) => isActive && handleTouchMove(e, ice.id)}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* Ingredients orbiting - only show for active card in slider mode, always show in grid mode */}
+      {/* Ingredients orbiting */}
       {ingredients.map((ingredient: any, idx: number) => {
         let imgUrl = ingredient.url || "";
         if (imgUrl && !imgUrl.startsWith("http")) {
@@ -263,11 +316,18 @@ function IceCreamCard({
         }
         if (!imgUrl) return null;
 
-        const adjustedIngredient = getAdjustedIngredientPosition(ingredient);
+        // Adjust for mobile to prevent overflow
+        const adjustedIngredient = isMobile 
+          ? { ...ingredient, y: ingredient.y * 0.3 }
+          : ingredient;
+          
         const parallaxX = (adjustedIngredient.parallaxSpeed || 0.12) * (1 + idx * 0.05);
         const parallaxY = (adjustedIngredient.parallaxSpeed || 0.12) * (1 + idx * 0.05);
         const directionX = idx % 2 === 0 ? 1 : -1;
         const directionY = idx % 2 === 0 ? 1 : -1;
+
+        const isHovered = hoveredCard === ice.id;
+        const shouldShow = isHovered || (isSliderMode && isActive);
 
         return (
           <div
@@ -275,20 +335,20 @@ function IceCreamCard({
             className="absolute pointer-events-none"
             style={{
               left: "50%",
-              top: "130px", // Keep the same top position
-              width: `${adjustedIngredient.size}px`,
-              height: `${adjustedIngredient.size}px`,
+              top: isMobile ? "90px" : "130px",
+              width: `${isMobile ? Math.min(adjustedIngredient.size, 50) : adjustedIngredient.size}px`,
+              height: `${isMobile ? Math.min(adjustedIngredient.size, 50) : adjustedIngredient.size}px`,
               transform: `translate(
                 calc(-50% + ${adjustedIngredient.x}px - ${
-                hoveredCard === ice.id ? mousePos.x * parallaxX * directionX : 0
+                isHovered ? mousePos.x * parallaxX * directionX : 0
               }px),
                 calc(-50% + ${adjustedIngredient.y}px - ${
-                hoveredCard === ice.id ? mousePos.y * parallaxY * directionY : 0
+                isHovered ? mousePos.y * parallaxY * directionY : 0
               }px)
               ) rotate(${adjustedIngredient.rotation || 0}deg) scale(${
-                hoveredCard === ice.id ? 1 : 0.8
+                shouldShow ? 1 : 0.8
               })`,
-              opacity: hoveredCard === ice.id ? 0.95 : 0,
+              opacity: shouldShow ? 0.95 : 0,
               transitionProperty: "opacity, transform",
               transitionDuration: "300ms, 100ms",
               transitionTimingFunction: "ease-out, ease-out",
@@ -299,8 +359,8 @@ function IceCreamCard({
             <Image
               src={imgUrl}
               alt="ingredient"
-              width={adjustedIngredient.size}
-              height={adjustedIngredient.size}
+              width={isMobile ? Math.min(adjustedIngredient.size, 50) : adjustedIngredient.size}
+              height={isMobile ? Math.min(adjustedIngredient.size, 50) : adjustedIngredient.size}
               className="object-contain rounded-2xl"
               style={{ imageRendering: "auto" }}
               unoptimized
@@ -309,7 +369,7 @@ function IceCreamCard({
         );
       })}
 
-      {/* Main gelato image with hover effect */}
+      {/* Main gelato image with hover effect - Original PC version */}
       <div
         className="relative z-40 transition-all duration-[600ms] ease-out group-hover:-translate-y-50 group-hover:scale-[1.25]"
         style={{
@@ -319,9 +379,9 @@ function IceCreamCard({
       >
         <Image
           src={ice.image}
-          alt={ice.name}
-          width={180}
-          height={180}
+          alt={ice.name || "ice cream"}
+          width={isMobile ? 120 : 180}
+          height={isMobile ? 120 : 180}
           className="rounded-2xl transition-all duration-[600ms] group-hover:[transform:rotateY(20deg)_rotateZ(-12deg)]"
           style={{
             transformStyle: "preserve-3d",
@@ -331,8 +391,8 @@ function IceCreamCard({
         />
       </div>
 
-      {/* Info card with text on hover - only in grid mode */}
-      {!isSliderMode && (
+      {/* Info card with text on hover - only in grid mode and not on mobile */}
+      {!isSliderMode && !isMobile && (
         <div
           className="absolute bottom-0 left-1/2 transform -translate-x-1/2 rounded-[2rem] shadow-2xl p-6 pt-16 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-[500ms] ease-out z-30"
           style={{
@@ -352,11 +412,13 @@ function IceCreamCard({
         </div>
       )}
 
-      {/* Glowing base */}
-      <div
-        className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-8 rounded-full opacity-0 group-hover:opacity-50 blur-xl transition-all duration-[500ms] z-0"
-        style={{ backgroundColor: ice.color }}
-      ></div>
+      {/* Glowing base - Original PC version, removed on mobile */}
+      {!isMobile && (
+        <div
+          className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-8 rounded-full opacity-0 group-hover:opacity-50 blur-xl transition-all duration-[500ms] z-0"
+          style={{ backgroundColor: ice.color }}
+        ></div>
+      )}
     </div>
   );
 }
