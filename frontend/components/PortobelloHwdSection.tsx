@@ -36,9 +36,6 @@ export default function PortobelloHwdSection({ data }: Props) {
             <img
               key={`img-${activeIndex}`}
               src={activeOption.image.url}
-              
-              
-              
               alt={activeOption.text || "Product image"}
               className="object-contain transition-all duration-300 ease-in-out w-full h-full max-h-[70vh]"
               onError={(e) => {
@@ -109,7 +106,7 @@ export default function PortobelloHwdSection({ data }: Props) {
         </div>
       </div>
 
-      {/* Desktop Layout - EXACTLY AS ORIGINAL */}
+      {/* Desktop Layout - MODIFIED: Image pushed more to the right */}
       <div className="hidden lg:flex flex-row items-center h-full w-full">
         {/* LEFT SIDE: Dimensions + Image */}
         <div className="flex flex-row items-center h-full w-2/3 gap-4">
@@ -131,7 +128,8 @@ export default function PortobelloHwdSection({ data }: Props) {
             })}
           </div>
 
-          <div className="flex items-center justify-start h-full flex-1 -ml-[36rem]">
+          {/* Image container pushed more to the right */}
+          <div className="flex items-center justify-start h-full flex-1 -ml-[25rem] mr-8"> {/* Changed -ml from -36rem to -30rem and added mr-8 */}
             {activeOption && activeOption.image && activeOption.image.url ? (
               <img
                 key={`img-${activeIndex}`}
@@ -142,6 +140,7 @@ export default function PortobelloHwdSection({ data }: Props) {
                   height: "90vh",
                   width: "90vw",
                   maxWidth: "none",
+                  marginLeft: "2rem", // Additional margin to push right
                 }}
                 onError={(e) => {
                   console.error("Image failed to load:", e);
@@ -153,10 +152,13 @@ export default function PortobelloHwdSection({ data }: Props) {
           </div>
         </div>
 
-        {/* RIGHT SIDE: Content */}
+        {/* RIGHT SIDE: Content - Adjusted position */}
         <div
           className="absolute right-0 top-0 h-full flex flex-col items-start justify-center"
-          style={{ left: "75%", transform: "translateX(-50%)" }}
+          style={{ 
+            left: "80%", // Changed from 75% to 80% to push content more right
+            transform: "translateX(-50%)" 
+          }}
         >
           {data.button?.[0] && (
             <a

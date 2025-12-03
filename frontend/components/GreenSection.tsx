@@ -98,8 +98,8 @@ export default function PortobelloGreen({ data }: Props) {
     >
       <div className="w-full max-w-7xl mx-auto h-full flex flex-col justify-between relative">
 
-        {/* Main image stays fixed - responsive height */}
-        <div className="absolute bottom-0 left-0 w-full h-[60%] sm:h-[70%] lg:h-[75%] flex justify-center items-end pointer-events-none">
+        {/* Main image - Bigger on both PC and mobile */}
+        <div className="absolute bottom-0 left-0 w-full h-[70%] sm:h-[80%] lg:h-[85%] flex justify-center items-end pointer-events-none">
           {bgImageUrl ? (
             <div className="relative flex justify-center items-end w-full h-full">
               {/* Ingredients - behind the main image on mobile */}
@@ -119,11 +119,11 @@ export default function PortobelloGreen({ data }: Props) {
                     style={{
                       left: `${left}%`,
                       top: `${top}%`,
-                      width: `${Math.max(size * 0.7, 80)}px`,
-                      height: `${Math.max(size * 0.7, 80)}px`,
+                      width: `${Math.max(size * (isMobile ? 0.9 : 1.1), isMobile ? 90 : 120)}px`, // Bigger on both
+                      height: `${Math.max(size * (isMobile ? 0.9 : 1.1), isMobile ? 90 : 120)}px`, // Bigger on both
                       transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
                       transition: "left 0.2s ease, top 0.2s ease, transform 0.2s ease",
-                      zIndex: isMobile ? 5 : 20, // Behind on mobile, in front on desktop
+                      zIndex: isMobile ? 5 : 20,
                     }}
                   >
                     {elementImageUrl ? (
@@ -140,7 +140,7 @@ export default function PortobelloGreen({ data }: Props) {
                 );
               })}
 
-              {/* Main image */}
+              {/* Main image - Bigger on both */}
               <img
                 src={bgImageUrl}
                 alt="Portobello product"
@@ -149,7 +149,9 @@ export default function PortobelloGreen({ data }: Props) {
                 style={{
                   maxHeight: "none",
                   objectPosition: "center bottom",
-                  marginBottom: "-1%",
+                  marginBottom: isMobile ? "0%" : "-5%", // Less negative margin on mobile
+                  transform: isMobile ? "scale(1.1)" : "scale(1.15)", // Scale up on both
+                  transformOrigin: "center bottom",
                 }}
               />
             </div>
@@ -160,10 +162,13 @@ export default function PortobelloGreen({ data }: Props) {
           )}
         </div>
 
-        {/* TEXT CONTENT - Responsive but maintains side-by-side layout */}
+        {/* TEXT CONTENT - Moved higher up */}
         <div
-          className="relative z-30 w-full flex flex-col lg:flex-row items-start justify-between gap-4 sm:gap-6 lg:gap-8 pt-6 sm:pt-8 lg:pt-0"
-          style={{ transform: "translateY(15%)" }}
+          className="relative z-30 w-full flex flex-col lg:flex-row items-start justify-between gap-4 sm:gap-6 lg:gap-8 pt-8 sm:pt-10 lg:pt-12"
+          style={{ 
+            transform: isMobile ? "translateY(-35%)" : "translateY(0%)", // Higher up on both
+            marginTop: isMobile ? "auto" : "2rem" // Added margin top on desktop
+          }}
         >
           {/* Left Text */}
           <div className="flex-1 flex flex-col space-y-3 sm:space-y-4 lg:space-y-6 max-w-md">
@@ -178,10 +183,13 @@ export default function PortobelloGreen({ data }: Props) {
             </p>
           </div>
 
-          {/* Right Points - responsive spacing and text */}
+          {/* Right Points - moved higher */}
           <div
             className="flex-1 flex flex-col space-y-3 sm:space-y-4 lg:space-y-5 max-w-md"
-            style={{ transform: "translateY(10%)" }}
+            style={{ 
+              transform: isMobile ? "translateY(0%)" : "translateY(15%)", // Higher on both
+              marginTop: isMobile ? "0" : "1rem" // Added margin top
+            }}
           >
             {(data.points || []).map((point) => {
               const pointImageUrl = point.image?.url
