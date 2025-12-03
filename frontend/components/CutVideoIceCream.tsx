@@ -120,23 +120,26 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
       </div>
     );
 
-    // Desktop layout - original positioning
+    // Desktop layout - TEXT PUSHED MORE TO THE EDGES
     const desktopLayout = (
       <div className="hidden lg:block">
         {segment.side === "left" ? (
-          <div className="absolute inset-0 flex items-center justify-start p-8">
-            <div className="ml-70">
+          // LEFT SIDE - Pushed more to left edge
+          <div className="absolute inset-0 flex items-center justify-start">
+            <div className="ml-20 pl-10 xl:ml-30 xl:pl-15"> {/* Reduced margins, added padding */}
               {textContent}
             </div>
           </div>
         ) : segment.side === "right" ? (
-          <div className="absolute inset-0 flex items-center justify-end p-8 -top-8">
-            <div className="mr-48">
+          // RIGHT SIDE - Pushed more to right edge
+          <div className="absolute inset-0 flex items-center justify-end">
+            <div className="mr-25 pr-8 xl:mr-24 xl:pr-12 -top-8"> {/* Reduced margins, added padding */}
               {textContent}
             </div>
           </div>
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center p-8">
+          // CENTER - Keep centered but adjust positioning
+          <div className="absolute inset-0 flex items-center justify-center">
             {textContent}
           </div>
         )}
