@@ -111,9 +111,9 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
     if (!isMobile || !side) return "center center";
     
     if (side === "left") {
-      return "70% center"; // STRONGER: Shift video further right (was 60%)
+      return "90% center"; // STRONGER: Shift video further right (was 60%)
     } else if (side === "right") {
-      return "30% center"; // STRONGER: Shift video further left (was 40%)
+      return "15% center"; // STRONGER: Shift video further left (was 40%)
     }
     return "center center";
   };
@@ -122,7 +122,31 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
   const renderSegmentText = (segment: VideoSegment, index: number) => {
     if (!segment.text1 && !segment.text2) return null;
 
-    const textContent = (
+    // Mobile text content - BIG TEXT AT TOP, SMALL TEXT AT BOTTOM
+    const mobileTextContent = (
+      <>
+        {/* BIG TEXT at the top */}
+        {segment.text1 && (
+          <div className="absolute top-8 sm:top-12 md:top-16 left-0 right-0 px-4">
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-black text-white tracking-wide scale-y-155 text-center">
+              {segment.text1}
+            </h2>
+          </div>
+        )}
+        
+        {/* SMALL TEXT at the bottom */}
+        {segment.text2 && (
+          <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 px-4">
+            <p className="text-xs sm:text-sm md:text-base text-white opacity-90 leading-relaxed text-center max-w-md mx-auto">
+              {segment.text2}
+            </p>
+          </div>
+        )}
+      </>
+    );
+
+    // Desktop text content - original layout
+    const desktopTextContent = (
       <div className="relative z-15 max-w-2xl p-4 lg:p-8">
         {segment.text1 && (
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-black text-white mb-4 lg:mb-6 tracking-wide scale-y-155 relative lg:-top-10">
@@ -137,49 +161,34 @@ const CutVideoIceCream: React.FC<CutVideoIceCreamProps> = ({ videoUrl, segments 
       </div>
     );
 
-    // Mobile layout - text positioned higher with side positioning - STRONGER PUSH
+    // Mobile layout - TOP AND BOTTOM POSITIONING
     const mobileLayout = (
-      <div className="lg:hidden absolute inset-0 flex items-start justify-center pt-20 sm:pt-24 md:pt-32">
-        {segment.side === "left" ? (
-          // LEFT SIDE on mobile - text on left with STRONGER push
-          <div className="w-full h-full flex items-start justify-start pl-4 sm:pl-6 md:pl-8">
-            {textContent}
-          </div>
-        ) : segment.side === "right" ? (
-          // RIGHT SIDE on mobile - text on right with STRONGER push
-          <div className="w-full h-full flex items-start justify-end pr-4 sm:pr-6 md:pr-8">
-            {textContent}
-          </div>
-        ) : (
-          // CENTER on mobile
-          <div className="w-full h-full flex items-start justify-center px-4">
-            {textContent}
-          </div>
-        )}
+      <div className="lg:hidden absolute inset-0">
+        {mobileTextContent}
       </div>
     );
 
-    // Desktop layout - TEXT PUSHED MORE TO THE EDGES
+    // Desktop layout - ORIGINAL SIDE POSITIONING
     const desktopLayout = (
       <div className="hidden lg:block">
         {segment.side === "left" ? (
           // LEFT SIDE - Pushed more to left edge
           <div className="absolute inset-0 flex items-center justify-start">
             <div className="ml-20 pl-10 xl:ml-30 xl:pl-15">
-              {textContent}
+              {desktopTextContent}
             </div>
           </div>
         ) : segment.side === "right" ? (
           // RIGHT SIDE - Pushed more to right edge
           <div className="absolute inset-0 flex items-center justify-end">
             <div className="mr-25 pr-8 xl:mr-24 xl:pr-12 -top-8">
-              {textContent}
+              {desktopTextContent}
             </div>
           </div>
         ) : (
           // CENTER - Keep centered but adjust positioning
           <div className="absolute inset-0 flex items-center justify-center">
-            {textContent}
+            {desktopTextContent}
           </div>
         )}
       </div>
