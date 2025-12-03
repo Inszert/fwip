@@ -114,6 +114,7 @@ export default function SignatureRecipes() {
 
   return (
     <section className="relative bg-gradient-to-br from-[#40DDCB] to-[#2EC4B6] min-h-screen py-28 text-center overflow-hidden">
+      {/* Original PC background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
@@ -184,11 +185,11 @@ export default function SignatureRecipes() {
               ))}
             </div>
 
-            {/* Active card info - Original PC style, adjusted for mobile */}
+            {/* Active card info - Simple design for mobile, original for PC */}
             {isMobile ? (
               <div className="mt-6 px-4">
                 <div
-                  className="rounded-xl shadow-2xl p-4 transition-all duration-500"
+                  className="rounded-xl p-4 transition-all duration-500"
                   style={{
                     backgroundColor: iceCreams[activeIndex]?.color || '#ffffff',
                   }}
@@ -266,7 +267,7 @@ export default function SignatureRecipes() {
   );
 }
 
-// IceCreamCard component - Original PC version with mobile optimizations
+// IceCreamCard component - Fixed for mobile, unchanged for PC
 function IceCreamCard({
   ice,
   hoveredCard,
@@ -281,11 +282,16 @@ function IceCreamCard({
   const ingredients: Ingredient[] = ice.ingredients || [];
   const [isTouching, setIsTouching] = useState(false);
 
-  // Handle touch events for mobile
-  const handleTouchStart = () => {
+  // Handle touch events for mobile - prevent jumping
+  const handleTouchStart = (e: React.TouchEvent) => {
     if (!isActive) return;
     setIsTouching(true);
     setHoveredCard(ice.id);
+    
+    // Prevent zoom and jumping on mobile
+    if (isMobile) {
+      e.preventDefault();
+    }
   };
 
   const handleTouchEnd = () => {
@@ -300,12 +306,21 @@ function IceCreamCard({
   return (
     <div
       className={`group relative ${isMobile ? 'w-full h-[200px]' : 'w-[200px] h-[250px]'} flex flex-col items-center justify-start ${isMobile ? 'pt-4' : 'pt-8'}`}
-      style={{ perspective: "1200px" }}
+      style={{ 
+        perspective: "1200px",
+        // Only add touch action restriction on mobile
+        ...(isMobile && { touchAction: 'pan-y' })
+      }}
       onMouseEnter={() => isActive && !isMobile && setHoveredCard(ice.id)}
       onMouseLeave={() => isActive && !isMobile && !isSliderMode && setHoveredCard(null)}
       onMouseMove={(e) => isActive && !isMobile && handleMouseMove(e, ice.id)}
       onTouchStart={handleTouchStart}
-      onTouchMove={(e) => isActive && handleTouchMove(e, ice.id)}
+      onTouchMove={(e) => {
+        if (isMobile) {
+          e.preventDefault(); // Prevent scroll during touch move on mobile only
+        }
+        isActive && handleTouchMove(e, ice.id);
+      }}
       onTouchEnd={handleTouchEnd}
     >
       {/* Ingredients orbiting */}
@@ -362,14 +377,24 @@ function IceCreamCard({
               width={isMobile ? Math.min(adjustedIngredient.size, 50) : adjustedIngredient.size}
               height={isMobile ? Math.min(adjustedIngredient.size, 50) : adjustedIngredient.size}
               className="object-contain rounded-2xl"
-              style={{ imageRendering: "auto" }}
+              style={{ 
+                imageRendering: "auto",
+                // Only disable selection on mobile
+                ...(isMobile && { 
+                  WebkitUserSelect: "none",
+                  userSelect: "none",
+                  WebkitTouchCallout: "none"
+                })
+              }}
               unoptimized
+              // Only disable draggable on mobile
+              draggable={!isMobile}
             />
           </div>
         );
       })}
 
-      {/* Main gelato image with hover effect - Original PC version */}
+      {/* Main gelato image with hover effect - Original PC animations */}
       <div
         className="relative z-40 transition-all duration-[600ms] ease-out group-hover:-translate-y-50 group-hover:scale-[1.25]"
         style={{
@@ -386,8 +411,16 @@ function IceCreamCard({
           style={{
             transformStyle: "preserve-3d",
             filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.4))",
+            // Only disable selection on mobile
+            ...(isMobile && { 
+              WebkitUserSelect: "none",
+              userSelect: "none",
+              WebkitTouchCallout: "none"
+            })
           }}
           unoptimized
+          // Only disable draggable on mobile
+          draggable={!isMobile}
         />
       </div>
 
