@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "promo-sections",
+  "info": {
+    "singularName": "promo-section",
+    "pluralName": "promo-sections",
+    "displayName": "Promo Sections"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "backgroundColor": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "imagePosition": {
+      "type": "enumeration",
+      "enum": [
+        "left",
+        "right"
+      ]
+    },
+    "textPosition": {
+      "type": "enumeration",
+      "enum": [
+        "left",
+        "right"
+      ]
+    },
+    "row1": {
+      "type": "string"
+    },
+    "row2": {
+      "type": "string"
+    },
+    "row2Color": {
+      "type": "string"
+    },
+    "row3": {
+      "type": "string"
+    }
+  }
+}

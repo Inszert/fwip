@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_default_circular_videos",
+  "info": {
+    "displayName": "circular_video"
+  },
+  "options": {},
+  "attributes": {
+    "video": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "text": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

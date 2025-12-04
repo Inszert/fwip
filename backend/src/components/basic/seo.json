@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_basic_seos",
+  "info": {
+    "displayName": "Seo"
+  },
+  "options": {},
+  "attributes": {
+    "metaTitle": {
+      "type": "string",
+      "required": true
+    },
+    "metaDescription": {
+      "type": "text",
+      "required": true
+    }
+  },
+  "config": {}
+}

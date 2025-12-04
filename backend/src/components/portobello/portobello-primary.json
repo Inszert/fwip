@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_portobello_portobello_primaries",
+  "info": {
+    "displayName": "Portobello Primary"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "textField1": {
+      "type": "string"
+    },
+    "textField2": {
+      "type": "string"
+    },
+    "textField3": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comparisons",
+  "info": {
+    "singularName": "comparison",
+    "pluralName": "comparisons",
+    "displayName": "Comparison"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "text1": {
+      "type": "string"
+    },
+    "text2": {
+      "type": "string"
+    },
+    "button": {
+      "type": "component",
+      "component": "basic.button",
+      "repeatable": false
+    },
+    "types": {
+      "type": "component",
+      "component": "basic.list-for-comparison",
+      "repeatable": true
+    },
+    "property": {
+      "type": "component",
+      "component": "basic.property-list",
+      "repeatable": true
+    }
+  }
+}

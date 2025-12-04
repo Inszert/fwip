@@ -97,11 +97,13 @@ export interface FooterBottomLinks extends Struct.ComponentSchema {
 export interface FooterOptionalSlots extends Struct.ComponentSchema {
   collectionName: 'components_footer_optional_slots_s';
   info: {
+    description: '';
     displayName: 'optionalSlots ';
   };
   attributes: {
     description: Schema.Attribute.Blocks;
     Title: Schema.Attribute.String;
+    url: Schema.Attribute.String;
   };
 }
 

@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_places_places_heroes",
+  "info": {
+    "displayName": "places-hero"
+  },
+  "options": {},
+  "attributes": {
+    "text1": {
+      "type": "string"
+    },
+    "text2": {
+      "type": "string"
+    },
+    "text3": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "bg_color": {
+      "type": "string"
+    },
+    "text1_color": {
+      "type": "string"
+    },
+    "text2_color": {
+      "type": "string"
+    },
+    "text3_color": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
