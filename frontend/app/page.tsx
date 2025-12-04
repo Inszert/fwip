@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import StepBubbles from "@/components/StepsOfUse";
 import { fetchSteps } from "@/lib/strapi";
 import ComparisonTableSection from "@/components/Comaprison";
+import CookieConsentSimple from "@/components/CookieConsentSimple";
 import {
   fetchHeaderData,
   fetchHeroVideo,
@@ -108,7 +109,7 @@ export default async function Home() {
       )}
 
       <ComparisonTableSection data={comparisons[0] || {}} />
-
+<CookieConsentSimple />
       <Footer />
     </main>
   );
