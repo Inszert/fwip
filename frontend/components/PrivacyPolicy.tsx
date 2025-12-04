@@ -4,7 +4,7 @@ import React from "react";
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#40DDCB] to-[#2EC4B6] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#05584e] to-[#2EC4B6] pt-30 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-[#40DDCB] to-[#2EC4B6] text-white py-8 px-6 md:px-12">
