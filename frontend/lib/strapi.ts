@@ -474,12 +474,12 @@ export interface RichTextBlock {
   type: string;
   children: RichTextChild[];
 }
-
 // Typ pre jednotlivé položky v footer_opt (repeatable component)
 export interface OptionalSlot {
   id: number;
   Title: string;
   description: RichTextBlock[];
+  url: string; // Added URL field
 }
 
 // Typ pre jednotlivé tlačidlá v footer_btns (repeatable component)
@@ -487,14 +487,6 @@ export interface BottomLink {
   id: number;
   text: string;
   url: string | null;
-}
-
-// Typ dát footeru vracaných zo Strapi
-export interface FooterData {
-  phoneNumber: string;
-  location: string;
-  footer_opt: OptionalSlot[];
-  footer_btns: BottomLink[];
 }
 
 export interface FooterData {
@@ -522,14 +514,9 @@ export async function fetchFooterData(): Promise<FooterData | null> {
     console.log("Full JSON response:", JSON.stringify(json, null, 2));
 
     if (json.data && json.data.length > 0) {
-      // Sa namiesto footer.attributes vráti priamo json.data[0]
       const footer = json.data[0];
       console.log("Footer element:", footer);
-
-      // V JSON je objekt priamo, takto to vrátime:
       return footer as FooterData;
-      
-      // Ak chceš, len ak je isté, že tie polia sedí na FooterData
     } else {
       console.warn("No data array or empty in API response");
       return null;
@@ -539,7 +526,6 @@ export async function fetchFooterData(): Promise<FooterData | null> {
     return null;
   }
 }
-
 
 
 export interface ZariadeniaImage {

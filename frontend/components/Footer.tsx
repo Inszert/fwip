@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { fetchFooterData, FooterData } from "@/lib/strapi";
+import { useRouter } from "next/navigation"; // Import useRouter for navigation
 
 const SIGNATURE_COLOR = "#40DDCB";
 
 const Footer: React.FC = () => {
   const [footerData, setFooterData] = useState<FooterData | null>(null);
+  const router = useRouter(); // Initialize router for navigation
 
   useEffect(() => {
     const getFooter = async () => {
@@ -19,6 +21,14 @@ const Footer: React.FC = () => {
     };
     getFooter();
   }, []);
+
+  // Handle click on optional slot item
+  const handleOptionalSlotClick = (url: string) => {
+    if (url) {
+      // Navigate to the URL (e.g., "ochrana-osobnych-udajov")
+      router.push(`/${url}`);
+    }
+  };
 
   if (!footerData) return null;
 
@@ -43,20 +53,40 @@ const Footer: React.FC = () => {
         </div>
 
         {footerData.footer_opt?.slice(0, 4).map((slot) => (
-          <div key={slot.id} className="sm:col-span-1">
-            <h4 className="font-semibold mb-1.5 text-lg border-b border-white/30 pb-1">
+          <div 
+            key={slot.id} 
+            className="sm:col-span-1"
+          >
+            {/* Make the title clickable if URL exists */}
+            <h4 
+              className={`font-semibold mb-1.5 text-lg border-b border-white/30 pb-1 ${
+                slot.url ? "cursor-pointer hover:text-gray-200 transition" : ""
+              }`}
+             
+            >
               {slot.Title}
             </h4>
-{slot.description?.map((block: any, i: number) =>
-  block.type === "paragraph" ? (
-    <p key={i} className="text-white/90 leading-relaxed text-sm">
-      {block.children?.map((child: any, ci: number) => (
-        <React.Fragment key={ci}>{child.text}</React.Fragment>
-      ))}
-    </p>
-  ) : null
-)}
-
+            
+            {/* Make the entire description block clickable */}
+            <div 
+              className={`${slot.url ? "cursor-pointer" : ""}`}
+              onClick={() => slot.url && handleOptionalSlotClick(slot.url)}
+            >
+              {slot.description?.map((block: any, i: number) =>
+                block.type === "paragraph" ? (
+                  <p 
+                    key={i} 
+                    className={`text-white/90 leading-relaxed text-sm ${
+                      slot.url ? "hover:text-gray-200 transition" : ""
+                    }`}
+                  >
+                    {block.children?.map((child: any, ci: number) => (
+                      <React.Fragment key={ci}>{child.text}</React.Fragment>
+                    ))}
+                  </p>
+                ) : null
+              )}
+            </div>
           </div>
         ))}
       </div>
