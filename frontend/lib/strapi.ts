@@ -50,8 +50,9 @@ export interface HeroVideo {
 export async function fetchHeroVideo(): Promise<HeroVideo | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-videos?populate=*`,
+    
     {
-      
+    cache: "no-store"  
        // disable Next.js cache for fresh content
     }
   );
@@ -73,7 +74,8 @@ export async function fetchHeroVideo(): Promise<HeroVideo | null> {
 }
 export async function fetchHeroVideoIceCream(): Promise<HeroVideo | null> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-video-ice-creams?populate=*`,
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-video-ice-creams?populate=*`,{cache: "no-store"}
+    
   
   );
 
@@ -277,7 +279,7 @@ export interface PortobelloData {
 export async function fetchPortobelloData(): Promise<PortobelloData> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/portobellos?populate=portobelloPrimary.image`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/portobellos?populate=portobelloPrimary.image`,{cache: "no-store"}
      
     );
 
@@ -328,7 +330,7 @@ export async function fetchPurpleShowcaseData() {
   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
   const response = await fetch(
-    `${apiUrl}/api/portobellos?populate[portobelloSecondary][populate][imageTextCombo][populate]=image`
+    `${apiUrl}/api/portobellos?populate[portobelloSecondary][populate][imageTextCombo][populate]=image`,{cache: "no-store"}
   );
   const json: { data: PortobelloItem[] } = await response.json();
 
@@ -385,7 +387,7 @@ export interface PromoSectionData {
 export async function fetchPromoSections(): Promise<PromoSectionData[]> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/promo-sections?populate=image`,
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/promo-sections?populate=image`,{cache: "no-store"}
      
     );
     if (!res.ok) throw new Error("Failed to fetch PromoSection data");
@@ -454,7 +456,7 @@ export interface PortobelloHwdItem {
 
 export async function fetchPortobelloHwdData(): Promise<PortobelloHwdItem[]> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/portobellos?populate[portobelloHwd][populate][hwdOptions][populate]=image`
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/portobellos?populate[portobelloHwd][populate][hwdOptions][populate]=image`,{cache: "no-store"}
   );
   const json = await res.json();
   return json.data;
@@ -500,14 +502,20 @@ export interface FooterData {
   footer_opt: OptionalSlot[];
   footer_btns: BottomLink[];
 }
-
 export async function fetchFooterData(): Promise<FooterData | null> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
     const url = `${baseUrl}/api/footers?populate[footer_opt]=*&populate[footer_btns]=*`;
     console.log("Fetching from URL:", url);
 
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      cache: "no-store",           // 🔥 Disable caching
+      headers: {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache"
+      }
+    });
+
     if (!res.ok) throw new Error(`Error ${res.status}`);
 
     const json = await res.json();
@@ -588,7 +596,7 @@ export interface UnitsPart {
 export async function fetchZariadeniaData(): Promise<ZariadeniaResponse | null> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/zariadenias?populate[main_image]=true&populate[units_part][populate]=*`
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/zariadenias?populate[main_image]=true&populate[units_part][populate]=*`,{cache: "no-store"}
     );
     return await response.json();
   } catch (error) {
@@ -633,7 +641,7 @@ export interface HeroVideoToSeparate {
 
 export async function fetchHeroVideoToSeparate(): Promise<HeroVideoToSeparate | null> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-video-ice-creams?populate[main_body_video][populate]=*`,
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/hero-video-ice-creams?populate[main_body_video][populate]=*`, {cache: "no-store"}
   );
 
   if (!res.ok) throw new Error("Error fetching hero video");
@@ -704,7 +712,7 @@ export const fetchPlaceData = async (): Promise<PlaceData | null> => {
     if (!baseUrl) throw new Error("NEXT_PUBLIC_STRAPI_URL not defined");
 
     const response = await fetch(
-      `${baseUrl}/api/places?populate[0]=lending_image&populate[1]=first_hero_section.image`
+      `${baseUrl}/api/places?populate[0]=lending_image&populate[1]=first_hero_section.image`,{cache: "no-store"}
     );
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
@@ -775,41 +783,57 @@ export const submitContactForm = async (data: ContactFormData): Promise<{ succes
 
 
 
-
 export async function fetchSteps() {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
   const endpoint = `${baseUrl}/api/stepss?populate[video][populate]=*`;
 
-  const response = await fetch(endpoint);
-  if (!response.ok) {
-    throw new Error('Failed to fetch steps');
-  }
-  const data = await response.json();
-  return data.data; // returning the array inside data property
-}
+  const response = await fetch(endpoint, {
+    cache: "no-store",
+    headers: {
+      "Cache-Control": "no-cache",
+      "Pragma": "no-cache"
+    }
+  });
 
+  if (!response.ok) throw new Error('Failed to fetch steps');
+
+  const data = await response.json();
+  return data.data;
+}
 
 export async function fetchPortobelloMiddles() {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
   const endpoint = `${baseUrl}/api/portobello-middles?populate[0]=backgorund&populate[1]=image&populate[2]=sorunding_elements&populate[3]=sorunding_elements.image&populate[4]=points&populate[5]=points.image`;
 
-  const response = await fetch(endpoint);
-  if (!response.ok) {
+  const response = await fetch(endpoint, {
+    cache: "no-store",
+    headers: {
+      "Cache-Control": "no-cache",
+      "Pragma": "no-cache"
+    }
+  });
+
+  if (!response.ok)
     throw new Error(`Failed to fetch portobello middles data: ${response.status} ${response.statusText}`);
-  }
+
   const data = await response.json();
-  return data.data; // returns array of items or object depending on your API setup
+  return data.data;
 }
-
-
 export async function fetchComparisons() {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
   const endpoint = `${baseUrl}/api/comparisons?populate[button][populate]=*&populate[types][populate]=*&populate[property][populate]=*`;
 
-  const response = await fetch(endpoint);
-  if (!response.ok) {
+  const response = await fetch(endpoint, {
+    cache: "no-store",
+    headers: {
+      "Cache-Control": "no-cache",
+      "Pragma": "no-cache"
+    }
+  });
+
+  if (!response.ok)
     throw new Error(`Failed to fetch comparisons: ${response.status} ${response.statusText}`);
-  }
+
   const data = await response.json();
-  return data.data; // returns array or object depending on your API
+  return data.data;
 }
