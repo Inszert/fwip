@@ -12,6 +12,7 @@ const PurpleShowcase: React.FC<{
           <div key={i} className="flex flex-col items-center justify-center flex-1 min-w-[150px] max-w-[220px]">
             {f.iconUrl && (
               <img
+              
                 src={f.iconUrl}
                 alt={f.heading}
                 width={60}
