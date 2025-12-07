@@ -26,9 +26,5 @@ export default [
   },
   'strapi::session',
   'strapi::favicon',
-
-  // 👉 Add this
-  'global::disable-cache',
-
   'strapi::public',
 ];
