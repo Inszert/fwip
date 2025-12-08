@@ -131,7 +131,7 @@ export default function SignatureRecipes() {
 
         {/* GRID MODE - when all cards fit in one line */}
         {!isSliderMode && (
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-0">
             {iceCreams.map((ice) => (
               <IceCreamCard
                 key={ice.id}
