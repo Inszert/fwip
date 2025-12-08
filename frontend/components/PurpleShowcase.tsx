@@ -12,7 +12,7 @@ const PurpleShowcase: React.FC<{
           <div key={i} className="flex flex-col items-center justify-center flex-1 min-w-[150px] max-w-[220px]">
             {f.iconUrl && (
               <img
-              
+
                 src={f.iconUrl}
                 alt={f.heading}
                 width={60}
@@ -23,7 +23,7 @@ const PurpleShowcase: React.FC<{
             )}
             <div className="text-center">
               <div className="text-white font-extrabold text-lg mb-1">{f.heading}</div>
-              <div className="text-white text-base opacity-80 font-medium">{f.subtext}</div>
+              <div className="text-white text-base opacity-80 font-medium font-extrabold">{f.subtext}</div>
             </div>
           </div>
         ))}
