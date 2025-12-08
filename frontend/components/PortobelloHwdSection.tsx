@@ -156,7 +156,7 @@ export default function PortobelloHwdSection({ data }: Props) {
         <div
           className="absolute right-0 top-0 h-full flex flex-col items-start justify-center"
           style={{ 
-            left: "80%", // Changed from 75% to 80% to push content more right
+            left: "75%", // Changed from 75% to 80% to push content more right
             transform: "translateX(-50%)" 
           }}
         >
