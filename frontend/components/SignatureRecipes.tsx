@@ -123,10 +123,10 @@ export default function SignatureRecipes() {
       <div ref={containerRef} className="relative z-10 h-full flex flex-col justify-center px-6">
         {/* Titles - Original PC version */}
         <h2 className="text-6xl font-black text-white mb-6 tracking-tight drop-shadow-xl">
-          OUR SIGNATURE
+          NAŠE IKONICKÉ 
         </h2>
         <h2 className="text-6xl font-black text-white mb-24 tracking-tight drop-shadow-xl">
-          ITALIAN RECIPES
+          TALIANSKE RECEPTY
         </h2>
 
         {/* GRID MODE - when all cards fit in one line */}
