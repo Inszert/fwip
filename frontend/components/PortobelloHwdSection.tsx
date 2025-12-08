@@ -118,7 +118,7 @@ export default function PortobelloHwdSection({ data }: Props) {
                   key={option.id || index}
                   onClick={() => setActiveIndex(index)}
                   onMouseEnter={() => setActiveIndex(index)}
-                  className={`cursor-pointer font-extrabold uppercase text-white text-5xl md:text-6xl tracking-tight transition-all duration-300 text-left ${
+                  className={`cursor-pointer font-semibold uppercase text-white text-5xl md:text-6xl tracking-tight transition-all duration-300 text-left ${
                     isActive ? "opacity-100 scale-105" : "opacity-40 hover:opacity-70"
                   }`}
                 >

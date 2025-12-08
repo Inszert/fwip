@@ -510,10 +510,7 @@ export async function fetchFooterData(): Promise<FooterData | null> {
 
     const res = await fetch(url, {
       cache: "no-store",           // 🔥 Disable caching
-      headers: {
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache"
-      }
+
     });
 
     if (!res.ok) throw new Error(`Error ${res.status}`);
