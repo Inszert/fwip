@@ -502,6 +502,7 @@ export interface FooterData {
   footer_opt: OptionalSlot[];
   footer_btns: BottomLink[];
 }
+
 export async function fetchFooterData(): Promise<FooterData | null> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
