@@ -23,7 +23,7 @@ const PurpleShowcase: React.FC<{
             )}
             <div className="text-center">
               <div className="text-white font-extrabold text-lg mb-1">{f.heading}</div>
-              <div className="text-white text-base  font-extrabold">{f.subtext}</div>
+              <div className="text-white font-extrabold text-lg mb-1">{f.subtext}</div>
             </div>
           </div>
         ))}
