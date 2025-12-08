@@ -173,7 +173,7 @@ export default function PortobelloHwdSection({ data }: Props) {
           <div className="flex flex-col gap-6 max-w-md">
             {/* Main heading */}
             {data.textField1 && (
-              <h1 className="text-5xl md:text-6xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
+              <h1 className="text-3xl md:text-2xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
                 {data.textField1}
               </h1>
             )}
