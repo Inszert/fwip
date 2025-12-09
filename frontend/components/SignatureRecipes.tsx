@@ -396,7 +396,7 @@ function IceCreamCard({
 
       {/* Main gelato image with hover effect - Original PC animations */}
       <div
-        className="relative z-40 transition-all duration-[600ms] ease-out group-hover:-translate-y-50 group-hover:scale-[1.25]"
+        className="relative z-40 transition-all duration-[600ms] ease-out group-hover:-translate-y-60 group-hover:scale-[1.25]"
         style={{
           transformStyle: "preserve-3d",
           transition: "all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55)",
@@ -412,11 +412,7 @@ function IceCreamCard({
             transformStyle: "preserve-3d",
             filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.4))",
             // Only disable selection on mobile
-            ...(isMobile && { 
-              WebkitUserSelect: "none",
-              userSelect: "none",
-              WebkitTouchCallout: "none"
-            })
+           
           }}
           unoptimized
           // Only disable draggable on mobile
@@ -430,12 +426,13 @@ function IceCreamCard({
           className="absolute bottom-0 left-1/2 transform -translate-x-1/2 rounded-[2rem] shadow-2xl p-6 pt-16 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-[500ms] ease-out z-30"
           style={{
             backgroundColor: ice.color,
-            height: "200px",
-            width: "110%",
+            height: "220px",
+            width: "130%",
           }}
         >
           <div className="opacity-0 -translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-[400ms] delay-150">
-            <h3 className="text-2xl font-bold text-white uppercase tracking-wide mb-1">
+            <h3 className="text-2xl font-bold text-white uppercase tracking-wide -mt-4">
+
               {ice.name}
             </h3>
             <p className="text-white/90 leading-relaxed text-sm font-normal">
