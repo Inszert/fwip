@@ -107,7 +107,7 @@ const PromoSection: React.FC<{ data: PromoSectionData }> = ({ data }) => {
           }}
         >
           <div className={`px-12 ${isImageLeft ? "text-left" : "text-right"}`}>
-            <h1 className="text-5xl md:text-6xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
+            <h1 className="text-3xl md:text-2xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
               {data.row1}
             </h1>
             <h2
