@@ -175,10 +175,10 @@ export default function PortobelloGreen({ data }: Props) {
             <p className="text-sm sm:text-base lg:text-xl font-semibold text-white uppercase tracking-widest bg-black/30 px-3 py-1 sm:px-4 sm:py-2 rounded inline-block">
               {data.text1}
             </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-extrabold text-white leading-tight drop-shadow-2xl">
+            <h2 className="text-xl sm:text-xl md:text-2xl lg:text-3xl font-extrabold text-white leading-tight drop-shadow-2xl">
               {data.text2}
             </h2>
-            <p className="text-base sm:text-lg lg:text-2xl text-white/90 leading-relaxed drop-shadow-md">
+            <p className="text-base sm:text-lg lg:text-xl text-white/90 leading-relaxed drop-shadow-md">
               {data.text3}
             </p>
           </div>
