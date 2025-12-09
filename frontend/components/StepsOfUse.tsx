@@ -163,9 +163,7 @@ const videoUrl = video?.video?.url || "";
           </div>
         </div>
         <div className="text-center mt-6 sm:mt-8">
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent font-inter">
-            {stepText}
-          </h3>
+
         </div>
       </div>
     );
@@ -212,9 +210,7 @@ const videoUrl = video?.video?.url || "";
         </div>
       </div>
       <div className="text-center mt-6 sm:mt-8">
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent font-inter">
-          {stepText}
-        </h3>
+
       </div>
     </div>
   );
