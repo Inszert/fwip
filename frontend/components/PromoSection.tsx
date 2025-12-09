@@ -26,8 +26,7 @@ interface PromoSectionData {
 const PromoSection: React.FC<{ data: PromoSectionData }> = ({ data }) => {
   const imageUrl =
     data.image.formats?.large?.url
-      ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${data.image.formats.large.url}`
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}${data.image.url}`;
+
 
   const isImageLeft = data.imagePosition === "left";
 
