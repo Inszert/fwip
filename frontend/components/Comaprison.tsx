@@ -84,9 +84,7 @@ export default function Comparison({ data }: Props) {
                   <span
                     key={index}
                     className="px-1 rounded-lg"
-                    style={{
-                      color: SIGNATURE_COLOR,
-                    }}
+                    style={{ color: SIGNATURE_COLOR }}
                   >
                     {word}
                   </span>
@@ -126,8 +124,7 @@ export default function Comparison({ data }: Props) {
                       : "text-gray-700 bg-gray-50"
                   }`}
                   style={{
-                    background:
-                      idx === types.length - 1 ? SIGNATURE_COLOR : undefined,
+                    background: idx === types.length - 1 ? SIGNATURE_COLOR : undefined,
                   }}
                 >
                   {type.image && type.image.length > 0 ? (
@@ -143,9 +140,7 @@ export default function Comparison({ data }: Props) {
                           src={type.image[0].url}
                           alt={type.name || "Logo"}
                           className={`h-8 sm:h-10 lg:h-12 w-auto ${
-                            idx === types.length - 1
-                              ? "filter brightness-0 invert"
-                              : ""
+                            idx === types.length - 1 ? "filter brightness-0 invert" : ""
                           }`}
                         />
                       </div>
@@ -171,39 +166,30 @@ export default function Comparison({ data }: Props) {
                   <div className="p-4 font-medium text-gray-700 flex items-center bg-white text-sm sm:text-base break-words">
                     {prop.property}
                   </div>
-                  {prop.result.map((res: PropertyResult, i: number) => {
+                  {types.map((type, i) => {
+                    const res = prop.result[i]; // align result to type column
                     const isLastColumn = i === types.length - 1;
 
                     return (
                       <div
-                        key={res.id}
+                        key={type.id}
                         className="p-4 flex items-center justify-center"
                         style={{
-                          background: isLastColumn
-                            ? SIGNATURE_COLOR
-                            : "transparent",
+                          background: isLastColumn ? SIGNATURE_COLOR : "transparent",
                         }}
                       >
                         <div
                           className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                            isLastColumn
-                              ? "bg-white"
-                              : "bg-white border-2"
+                            isLastColumn ? "bg-white" : "bg-white border-2"
                           }`}
                           style={{
-                            borderColor: isLastColumn
-                              ? "transparent"
-                              : SIGNATURE_COLOR,
+                            borderColor: isLastColumn ? "transparent" : SIGNATURE_COLOR,
                           }}
                         >
-                          {res.result ? (
-                            <CheckIcon
-                              color={isLastColumn ? SIGNATURE_COLOR : "#ffffff"}
-                            />
+                          {res?.result ? (
+                            <CheckIcon color={isLastColumn ? SIGNATURE_COLOR : SIGNATURE_COLOR} />
                           ) : (
-                            <CrossIcon
-                              color={isLastColumn ? "#ffffff" : "#9CA3AF"}
-                            />
+                            <CrossIcon color={isLastColumn ? "#ffffff" : "#9CA3AF"} />
                           )}
                         </div>
                       </div>
