@@ -102,7 +102,7 @@ export default function Comparison({ data }: Props) {
               className="inline-flex items-center justify-center text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-base font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
               style={{
                 backgroundColor: SIGNATURE_COLOR,
-                boxShadow: `0 4px 14px ${SIGNATURE_COLOR}55`,
+                boxShadow: `0 4px 14px ${SIGNATURE_COLOR}`,
               }}
             >
               {button.text}
@@ -114,7 +114,7 @@ export default function Comparison({ data }: Props) {
         <div className="w-full lg:w-3/5">
           <div className="bg-white rounded-xl lg:rounded-2xl shadow-lg overflow-hidden">
             {/* Header Row */}
-            <div className="grid grid-cols-[200px_repeat(4,1fr)]">
+            <div className="grid grid-cols-5">
               <div className="p-4 font-semibold flex items-center text-gray-700 bg-gray-50 text-sm sm:text-base"></div>
               {types.map((type: ComparisonType, idx: number) => (
                 <div
@@ -125,7 +125,7 @@ export default function Comparison({ data }: Props) {
                   style={{
                     background:
                       idx === types.length - 1
-                        ? `linear-gradient(180deg, ${SIGNATURE_COLOR}, ${SIGNATURE_COLOR}CC)`
+                        ? SIGNATURE_COLOR
                         : undefined,
                   }}
                 >
@@ -162,24 +162,19 @@ export default function Comparison({ data }: Props) {
             {/* Feature Rows */}
             <div>
               {properties.map((prop: ComparisonProperty) => (
-                <div key={prop.id} className="grid grid-cols-[200px_repeat(4,1fr)]">
+                <div key={prop.id} className="grid grid-cols-5">
                   <div className="p-4 font-medium text-gray-700 flex items-center bg-white text-sm sm:text-base break-words">
                     {prop.property}
                   </div>
                   {prop.result.map((res: PropertyResult, i: number) => {
                     const isLastColumn = i === types.length - 1;
-                    const hasImage = types[i]?.image && types[i].image.length > 0;
 
                     return (
                       <div
                         key={res.id}
                         className="p-4 flex items-center justify-center"
                         style={{
-                          background: isLastColumn
-                            ? SIGNATURE_COLOR
-                            : hasImage
-                            ? `${SIGNATURE_COLOR}10`
-                            : "transparent",
+                          background: isLastColumn ? SIGNATURE_COLOR : "transparent",
                         }}
                       >
                         <div
@@ -188,8 +183,6 @@ export default function Comparison({ data }: Props) {
                             backgroundColor: res.result
                               ? isLastColumn
                                 ? SIGNATURE_COLOR
-                                : hasImage
-                                ? `${SIGNATURE_COLOR}20`
                                 : "#d1d5db"
                               : "#f3f4f6",
                           }}
