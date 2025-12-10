@@ -45,7 +45,7 @@ export default function PortobelloHwdSection({ data }: Props) {
         </div>
 
         {/* Selection Buttons */}
-        <div className="flex flex-col justify-center gap-2 px-6 py-4"> {/* closer together */}
+        <div className="flex flex-col justify-center gap-2 px-6 py-4">
           {validOptions.map((option, index) => {
             const isActive = index === activeIndex;
             return (
@@ -77,24 +77,24 @@ export default function PortobelloHwdSection({ data }: Props) {
           )}
 
           <div className="flex flex-col">
-            {/* Main heading */}
+            {/* Main heading (tf1 same as PromoSection) */}
             {data.textField1 && (
-              <h1 className="text-xl sm:text-2xl font-extrabold uppercase text-white drop-shadow-lg leading-tight tracking-tight mb-4">
+              <h1 className="text-3xl sm:text-4xl font-extrabold uppercase text-white drop-shadow-lg leading-tight tracking-tight mb-4">
                 {data.textField1}
               </h1>
             )}
 
-            {/* Subheading (purple, -1 size) */}
+            {/* Subheading (tf2 -1 size) */}
             {data.textField2 && (
               <h2
-                className="text-xl sm:text-2xl font-extrabold uppercase drop-shadow-lg tracking-tight mb-2" // gap restored
+                className="text-xl sm:text-2xl font-extrabold uppercase drop-shadow-lg tracking-tight mb-2"
                 style={{ color: "#a855f7" }}
               >
                 {data.textField2}
               </h2>
             )}
 
-            {/* Paragraph (1 size bigger) */}
+            {/* Paragraph (tf3 +1 size) */}
             {data.textField3 && (
               <p className="text-xl sm:text-lg font-sans text-white leading-relaxed">
                 {data.textField3}
@@ -107,8 +107,8 @@ export default function PortobelloHwdSection({ data }: Props) {
       {/* Desktop Layout */}
       <div className="hidden lg:flex flex-row items-center h-full w-full">
         {/* LEFT SIDE: Dimensions */}
-        <div className="flex flex-row items-center h-full w-2/3 gap-3"> {/* closer together */}
-          <div className="flex flex-col justify-center h-full gap-4 pl-32 min-w-fit"> {/* smaller gap */}
+        <div className="flex flex-row items-center h-full w-2/3 gap-3">
+          <div className="flex flex-col justify-center h-full gap-4 pl-32 min-w-fit">
             {validOptions.map((option, index) => {
               const isActive = index === activeIndex;
               return (
@@ -166,14 +166,14 @@ export default function PortobelloHwdSection({ data }: Props) {
           )}
 
           <div className="flex flex-col max-w-md">
-            {/* Main heading (slightly smaller) */}
+            {/* Main heading (tf1 same as PromoSection) */}
             {data.textField1 && (
-              <h1 className="text-2xl md:text-xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
+              <h1 className="text-3xl md:text-2xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
                 {data.textField1}
               </h1>
             )}
 
-            {/* Subheading (purple, -1 size) */}
+            {/* Subheading (tf2 -1 size) */}
             {data.textField2 && (
               <h2
                 className="text-4xl md:text-5xl font-extrabold uppercase drop-shadow-lg mb-2 tracking-tight whitespace-normal"
@@ -183,7 +183,7 @@ export default function PortobelloHwdSection({ data }: Props) {
               </h2>
             )}
 
-            {/* Paragraph (1 size bigger, gap restored) */}
+            {/* Paragraph (tf3 +1 size) */}
             {data.textField3 && (
               <p className="text-xl md:text-lg font-sans text-white leading-relaxed">
                 {data.textField3}
