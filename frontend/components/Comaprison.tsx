@@ -167,8 +167,23 @@ export default function Comparison({ data }: Props) {
                     {prop.property}
                   </div>
                   {types.map((type, i) => {
-                    const res = prop.result[i]; // align result to type column
+                    const res = prop.result[i];
                     const isLastColumn = i === types.length - 1;
+
+                    // Determine circle background
+                    const circleBg = res?.result
+                      ? isLastColumn
+                        ? "bg-white"
+                        : "bg-white border-2"
+                      : isLastColumn
+                      ? "bg-white"
+                      : "bg-gray-200";
+
+                    const borderColor = res?.result
+                      ? isLastColumn
+                        ? "transparent"
+                        : SIGNATURE_COLOR
+                      : "transparent";
 
                     return (
                       <div
@@ -179,12 +194,8 @@ export default function Comparison({ data }: Props) {
                         }}
                       >
                         <div
-                          className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                            isLastColumn ? "bg-white" : "bg-white border-2"
-                          }`}
-                          style={{
-                            borderColor: isLastColumn ? "transparent" : SIGNATURE_COLOR,
-                          }}
+                          className={`flex items-center justify-center w-8 h-8 rounded-full ${circleBg}`}
+                          style={{ borderColor }}
                         >
                           {res?.result ? (
                             <CheckIcon color={isLastColumn ? SIGNATURE_COLOR : SIGNATURE_COLOR} />
