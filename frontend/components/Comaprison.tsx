@@ -48,7 +48,6 @@ const CheckIcon = ({ color }: { color?: string }) => (
   </svg>
 );
 
-
 const CrossIcon = () => (
   <svg
     className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400"
@@ -86,7 +85,6 @@ export default function Comparison({ data }: Props) {
                     className="px-1 rounded-lg"
                     style={{
                       color: SIGNATURE_COLOR,
-                     
                     }}
                   >
                     {word}
@@ -116,12 +114,12 @@ export default function Comparison({ data }: Props) {
         <div className="w-full lg:w-3/5">
           <div className="bg-white rounded-xl lg:rounded-2xl shadow-lg overflow-hidden">
             {/* Header Row */}
-            <div className="grid grid-cols-5">
-              <div className="p-4 sm:p-6 font-semibold flex items-center text-gray-700 bg-gray-50 text-sm sm:text-base"></div>
+            <div className="grid grid-cols-[200px_repeat(4,1fr)]">
+              <div className="p-4 font-semibold flex items-center text-gray-700 bg-gray-50 text-sm sm:text-base"></div>
               {types.map((type: ComparisonType, idx: number) => (
                 <div
                   key={type.id}
-                  className={`p-4 sm:p-6 text-center font-semibold ${
+                  className={`p-4 text-center font-semibold ${
                     idx === types.length - 1 ? "text-white" : "text-gray-700 bg-gray-50"
                   }`}
                   style={{
@@ -164,11 +162,8 @@ export default function Comparison({ data }: Props) {
             {/* Feature Rows */}
             <div>
               {properties.map((prop: ComparisonProperty) => (
-                <div
-                  key={prop.id}
-                  className="grid grid-cols-5"
-                >
-                  <div className="p-4 sm:p-6 font-medium text-gray-700 flex items-center bg-white text-sm sm:text-base break-words">
+                <div key={prop.id} className="grid grid-cols-[200px_repeat(4,1fr)]">
+                  <div className="p-4 font-medium text-gray-700 flex items-center bg-white text-sm sm:text-base break-words">
                     {prop.property}
                   </div>
                   {prop.result.map((res: PropertyResult, i: number) => {
@@ -178,7 +173,7 @@ export default function Comparison({ data }: Props) {
                     return (
                       <div
                         key={res.id}
-                        className="p-4 sm:p-6 flex items-center justify-center"
+                        className="p-4 flex items-center justify-center"
                         style={{
                           background: isLastColumn
                             ? SIGNATURE_COLOR
@@ -198,8 +193,8 @@ export default function Comparison({ data }: Props) {
                                 : "#d1d5db"
                               : "#f3f4f6",
                           }}
-                        >{res.result ? <CheckIcon color={isLastColumn ? "#fff" : SIGNATURE_COLOR} /> : <CrossIcon />}
-
+                        >
+                          {res.result ? <CheckIcon color={isLastColumn ? "#fff" : SIGNATURE_COLOR} /> : <CrossIcon />}
                         </div>
                       </div>
                     );
