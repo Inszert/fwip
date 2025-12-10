@@ -30,7 +30,7 @@ export default function PortobelloHwdSection({ data }: Props) {
     >
       {/* Mobile & Tablet Layout */}
       <div className="lg:hidden w-full flex flex-col min-h-screen">
-        {/* Image First */}
+        {/* Image */}
         <div className="flex-1 flex items-center justify-center p-4">
           {activeOption && activeOption.image && activeOption.image.url ? (
             <img
@@ -65,37 +65,42 @@ export default function PortobelloHwdSection({ data }: Props) {
         </div>
 
         {/* Content Texts */}
-        <div className="flex flex-col gap-4 px-6 pb-8 text-center">
+        <div className="flex flex-col px-6 pb-8 text-center">
           {data.button?.[0] && (
             <a
               href={data.button[0].url}
               style={{ backgroundColor: data.button[0].color || "#000" }}
-              className="text-lg sm:text-xl font-bold px-8 py-4 rounded-full shadow-xl text-white hover:brightness-110 hover:scale-105 transition-all duration-300 inline-block"
+              className="text-lg sm:text-xl font-bold px-8 py-4 rounded-full shadow-xl text-white hover:brightness-110 hover:scale-105 transition-all duration-300 inline-block mb-6"
             >
               {data.button[0].text}
             </a>
           )}
 
-          {data.textField1 && (
-            <h1 className="text-xl sm:text-2xl font-extrabold uppercase text-white drop-shadow-lg leading-tight tracking-tight">
-              {data.textField1}
-            </h1>
-          )}
+          <div className="flex flex-col">
+            {/* Main heading */}
+            {data.textField1 && (
+              <h1 className="text-xl sm:text-2xl font-extrabold uppercase text-white drop-shadow-lg leading-tight tracking-tight mb-4">
+                {data.textField1}
+              </h1>
+            )}
 
-          {data.textField2 && (
-            <h2
-              className="text-2xl sm:text-3xl font-extrabold uppercase drop-shadow-lg tracking-tight"
-              style={{ color: "#a855f7" }}
-            >
-              {data.textField2}
-            </h2>
-          )}
+            {/* Subheading (purple) */}
+            {data.textField2 && (
+              <h2
+                className="text-2xl sm:text-3xl font-extrabold uppercase drop-shadow-lg tracking-tight mb-0"
+                style={{ color: "#a855f7" }}
+              >
+                {data.textField2}
+              </h2>
+            )}
 
-          {data.textField3 && (
-            <p className="text-base sm:text-lg font-sans text-white leading-relaxed">
-              {data.textField3}
-            </p>
-          )}
+            {/* Paragraph */}
+            {data.textField3 && (
+              <p className="text-xl sm:text-lg font-sans text-white leading-relaxed">
+                {data.textField3}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
@@ -160,7 +165,7 @@ export default function PortobelloHwdSection({ data }: Props) {
             </a>
           )}
 
-          <div className="flex flex-col gap-6 max-w-md">
+          <div className="flex flex-col max-w-md">
             {/* Main heading (slightly smaller) */}
             {data.textField1 && (
               <h1 className="text-2xl md:text-xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
@@ -168,19 +173,19 @@ export default function PortobelloHwdSection({ data }: Props) {
               </h1>
             )}
 
-            {/* Subheading (purple, same size) */}
+            {/* Subheading (purple, unchanged) */}
             {data.textField2 && (
               <h2
-                className="text-5xl md:text-6xl font-extrabold uppercase drop-shadow-lg mb-6 tracking-tight whitespace-normal"
+                className="text-5xl md:text-6xl font-extrabold uppercase drop-shadow-lg mb-0 tracking-tight whitespace-normal"
                 style={{ color: "#a855f7" }}
               >
                 {data.textField2}
               </h2>
             )}
 
-            {/* Paragraph (2 sizes smaller) */}
+            {/* Paragraph (1 size bigger, no gap) */}
             {data.textField3 && (
-              <p className="text-lg md:text-base font-sans text-white leading-relaxed">
+              <p className="text-xl md:text-lg font-sans text-white leading-relaxed">
                 {data.textField3}
               </p>
             )}
