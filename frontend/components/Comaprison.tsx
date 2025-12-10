@@ -86,7 +86,7 @@ export default function Comparison({ data }: Props) {
                     className="px-1 rounded-lg"
                     style={{
                       color: SIGNATURE_COLOR,
-                      backgroundColor: `${SIGNATURE_COLOR}20`,
+                     
                     }}
                   >
                     {word}
