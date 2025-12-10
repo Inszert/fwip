@@ -84,17 +84,17 @@ export default function PortobelloHwdSection({ data }: Props) {
               </h1>
             )}
 
-            {/* Subheading (purple) */}
+            {/* Subheading (purple, -1 size) */}
             {data.textField2 && (
               <h2
-                className="text-2xl sm:text-3xl font-extrabold uppercase drop-shadow-lg tracking-tight mb-0"
+                className="text-xl sm:text-2xl font-extrabold uppercase drop-shadow-lg tracking-tight mb-0"
                 style={{ color: "#a855f7" }}
               >
                 {data.textField2}
               </h2>
             )}
 
-            {/* Paragraph */}
+            {/* Paragraph (1 size bigger) */}
             {data.textField3 && (
               <p className="text-xl sm:text-lg font-sans text-white leading-relaxed">
                 {data.textField3}
@@ -173,17 +173,17 @@ export default function PortobelloHwdSection({ data }: Props) {
               </h1>
             )}
 
-            {/* Subheading (purple, unchanged) */}
+            {/* Subheading (purple, -1 size) */}
             {data.textField2 && (
               <h2
-                className="text-5xl md:text-6xl font-extrabold uppercase drop-shadow-lg mb-0 tracking-tight whitespace-normal"
+                className="text-4xl md:text-5xl font-extrabold uppercase drop-shadow-lg mb-0 tracking-tight whitespace-normal"
                 style={{ color: "#a855f7" }}
               >
                 {data.textField2}
               </h2>
             )}
 
-            {/* Paragraph (1 size bigger, no gap) */}
+            {/* Paragraph (1 size bigger) */}
             {data.textField3 && (
               <p className="text-xl md:text-lg font-sans text-white leading-relaxed">
                 {data.textField3}
