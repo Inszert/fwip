@@ -36,11 +36,12 @@ interface ComparisonData {
   property?: ComparisonProperty[];
 }
 
+// Icons
 const CheckIcon = ({ color }: { color?: string }) => (
   <svg
     className="w-4 h-4 sm:w-5 sm:h-5"
     fill="none"
-    stroke={color || SIGNATURE_COLOR}
+    stroke={color || "#ffffff"}
     strokeWidth="2.5"
     viewBox="0 0 24 24"
   >
@@ -48,11 +49,11 @@ const CheckIcon = ({ color }: { color?: string }) => (
   </svg>
 );
 
-const CrossIcon = () => (
+const CrossIcon = ({ color }: { color?: string }) => (
   <svg
-    className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400"
+    className="w-4 h-4 sm:w-5 sm:h-5"
     fill="none"
-    stroke="currentColor"
+    stroke={color || "#9CA3AF"}
     strokeWidth="2.5"
     viewBox="0 0 24 24"
   >
@@ -102,7 +103,7 @@ export default function Comparison({ data }: Props) {
               className="inline-flex items-center justify-center text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-base font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
               style={{
                 backgroundColor: SIGNATURE_COLOR,
-                boxShadow: `0 4px 14px ${SIGNATURE_COLOR}`,
+                boxShadow: `0 4px 14px ${SIGNATURE_COLOR}55`,
               }}
             >
               {button.text}
@@ -120,27 +121,31 @@ export default function Comparison({ data }: Props) {
                 <div
                   key={type.id}
                   className={`p-4 text-center font-semibold ${
-                    idx === types.length - 1 ? "text-white" : "text-gray-700 bg-gray-50"
+                    idx === types.length - 1
+                      ? "text-white"
+                      : "text-gray-700 bg-gray-50"
                   }`}
                   style={{
                     background:
-                      idx === types.length - 1
-                        ? SIGNATURE_COLOR
-                        : undefined,
+                      idx === types.length - 1 ? SIGNATURE_COLOR : undefined,
                   }}
                 >
                   {type.image && type.image.length > 0 ? (
                     <div className="flex flex-col items-center space-y-2 sm:space-y-3">
                       <div
                         className={`p-2 sm:p-3 rounded-lg ${
-                          idx === types.length - 1 ? "bg-white/20 backdrop-blur-sm" : "bg-gray-100"
+                          idx === types.length - 1
+                            ? "bg-white/20 backdrop-blur-sm"
+                            : "bg-gray-100"
                         }`}
                       >
                         <img
                           src={type.image[0].url}
                           alt={type.name || "Logo"}
                           className={`h-8 sm:h-10 lg:h-12 w-auto ${
-                            idx === types.length - 1 ? "filter brightness-0 invert" : ""
+                            idx === types.length - 1
+                              ? "filter brightness-0 invert"
+                              : ""
                           }`}
                         />
                       </div>
@@ -174,20 +179,32 @@ export default function Comparison({ data }: Props) {
                         key={res.id}
                         className="p-4 flex items-center justify-center"
                         style={{
-                          background: isLastColumn ? SIGNATURE_COLOR : "transparent",
+                          background: isLastColumn
+                            ? SIGNATURE_COLOR
+                            : "transparent",
                         }}
                       >
                         <div
-                          className="flex items-center justify-center w-8 h-8 rounded-lg"
+                          className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                            isLastColumn
+                              ? "bg-white"
+                              : "bg-white border-2"
+                          }`}
                           style={{
-                            backgroundColor: res.result
-                              ? isLastColumn
-                                ? SIGNATURE_COLOR
-                                : "#d1d5db"
-                              : "#f3f4f6",
+                            borderColor: isLastColumn
+                              ? "transparent"
+                              : SIGNATURE_COLOR,
                           }}
                         >
-                          {res.result ? <CheckIcon color={isLastColumn ? "#fff" : SIGNATURE_COLOR} /> : <CrossIcon />}
+                          {res.result ? (
+                            <CheckIcon
+                              color={isLastColumn ? SIGNATURE_COLOR : "#ffffff"}
+                            />
+                          ) : (
+                            <CrossIcon
+                              color={isLastColumn ? "#ffffff" : "#9CA3AF"}
+                            />
+                          )}
                         </div>
                       </div>
                     );
