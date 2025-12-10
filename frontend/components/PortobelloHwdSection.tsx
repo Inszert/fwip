@@ -45,14 +45,14 @@ export default function PortobelloHwdSection({ data }: Props) {
         </div>
 
         {/* Selection Buttons */}
-        <div className="flex flex-col justify-center gap-3 px-6 py-4">
+        <div className="flex flex-col justify-center gap-2 px-6 py-4"> {/* closer together */}
           {validOptions.map((option, index) => {
             const isActive = index === activeIndex;
             return (
               <button
                 key={option.id || index}
                 onClick={() => setActiveIndex(index)}
-                className={`cursor-pointer font-extrabold uppercase text-white text-2xl sm:text-3xl tracking-tight transition-all duration-300 text-center px-6 py-3 rounded-lg ${
+                className={`cursor-pointer font-extrabold uppercase text-white text-xl sm:text-2xl tracking-tight transition-all duration-300 text-center px-6 py-3 rounded-lg ${
                   isActive 
                     ? "opacity-100 scale-105 bg-white/20" 
                     : "opacity-60 hover:opacity-80 bg-white/10"
@@ -87,7 +87,7 @@ export default function PortobelloHwdSection({ data }: Props) {
             {/* Subheading (purple, -1 size) */}
             {data.textField2 && (
               <h2
-                className="text-xl sm:text-2xl font-extrabold uppercase drop-shadow-lg tracking-tight mb-0"
+                className="text-xl sm:text-2xl font-extrabold uppercase drop-shadow-lg tracking-tight mb-2" // gap restored
                 style={{ color: "#a855f7" }}
               >
                 {data.textField2}
@@ -107,8 +107,8 @@ export default function PortobelloHwdSection({ data }: Props) {
       {/* Desktop Layout */}
       <div className="hidden lg:flex flex-row items-center h-full w-full">
         {/* LEFT SIDE: Dimensions */}
-        <div className="flex flex-row items-center h-full w-2/3 gap-4">
-          <div className="flex flex-col justify-center h-full gap-6 pl-32 min-w-fit">
+        <div className="flex flex-row items-center h-full w-2/3 gap-3"> {/* closer together */}
+          <div className="flex flex-col justify-center h-full gap-4 pl-32 min-w-fit"> {/* smaller gap */}
             {validOptions.map((option, index) => {
               const isActive = index === activeIndex;
               return (
@@ -116,7 +116,7 @@ export default function PortobelloHwdSection({ data }: Props) {
                   key={option.id || index}
                   onClick={() => setActiveIndex(index)}
                   onMouseEnter={() => setActiveIndex(index)}
-                  className={`cursor-pointer font-semibold uppercase text-white text-5xl md:text-6xl tracking-tight transition-all duration-300 text-left ${
+                  className={`cursor-pointer font-semibold uppercase text-white text-4xl md:text-5xl tracking-tight transition-all duration-300 text-left ${
                     isActive ? "opacity-100 scale-105" : "opacity-40 hover:opacity-70"
                   }`}
                 >
@@ -176,14 +176,14 @@ export default function PortobelloHwdSection({ data }: Props) {
             {/* Subheading (purple, -1 size) */}
             {data.textField2 && (
               <h2
-                className="text-4xl md:text-5xl font-extrabold uppercase drop-shadow-lg mb-0 tracking-tight whitespace-normal"
+                className="text-4xl md:text-5xl font-extrabold uppercase drop-shadow-lg mb-2 tracking-tight whitespace-normal"
                 style={{ color: "#a855f7" }}
               >
                 {data.textField2}
               </h2>
             )}
 
-            {/* Paragraph (1 size bigger) */}
+            {/* Paragraph (1 size bigger, gap restored) */}
             {data.textField3 && (
               <p className="text-xl md:text-lg font-sans text-white leading-relaxed">
                 {data.textField3}
