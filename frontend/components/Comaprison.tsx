@@ -36,18 +36,18 @@ interface ComparisonData {
   property?: ComparisonProperty[];
 }
 
-// SVG Icons
-const CheckIcon = () => (
+const CheckIcon = ({ color }: { color?: string }) => (
   <svg
     className="w-4 h-4 sm:w-5 sm:h-5"
     fill="none"
-    stroke={SIGNATURE_COLOR}
+    stroke={color || SIGNATURE_COLOR}
     strokeWidth="2.5"
     viewBox="0 0 24 24"
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
   </svg>
 );
+
 
 const CrossIcon = () => (
   <svg
@@ -117,9 +117,7 @@ export default function Comparison({ data }: Props) {
           <div className="bg-white rounded-xl lg:rounded-2xl shadow-lg overflow-hidden">
             {/* Header Row */}
             <div className="grid grid-cols-5">
-              <div className="p-4 sm:p-6 font-semibold flex items-center text-gray-700 bg-gray-50 text-sm sm:text-base">
-                Features
-              </div>
+              <div className="p-4 sm:p-6 font-semibold flex items-center text-gray-700 bg-gray-50 text-sm sm:text-base"></div>
               {types.map((type: ComparisonType, idx: number) => (
                 <div
                   key={type.id}
@@ -141,10 +139,7 @@ export default function Comparison({ data }: Props) {
                         }`}
                       >
                         <img
-                          src={
-                            
-                               type.image[0].url
-                          }
+                          src={type.image[0].url}
                           alt={type.name || "Logo"}
                           className={`h-8 sm:h-10 lg:h-12 w-auto ${
                             idx === types.length - 1 ? "filter brightness-0 invert" : ""
@@ -171,30 +166,40 @@ export default function Comparison({ data }: Props) {
               {properties.map((prop: ComparisonProperty) => (
                 <div
                   key={prop.id}
-                  className="grid grid-cols-5 transition-colors hover:bg-gray-50/50"
+                  className="grid grid-cols-5"
                 >
                   <div className="p-4 sm:p-6 font-medium text-gray-700 flex items-center bg-white text-sm sm:text-base break-words">
                     {prop.property}
                   </div>
                   {prop.result.map((res: PropertyResult, i: number) => {
+                    const isLastColumn = i === types.length - 1;
                     const hasImage = types[i]?.image && types[i].image.length > 0;
+
                     return (
                       <div
                         key={res.id}
                         className="p-4 sm:p-6 flex items-center justify-center"
-                        style={{ backgroundColor: hasImage ? `${SIGNATURE_COLOR}10` : "transparent" }}
+                        style={{
+                          background: isLastColumn
+                            ? SIGNATURE_COLOR
+                            : hasImage
+                            ? `${SIGNATURE_COLOR}10`
+                            : "transparent",
+                        }}
                       >
                         <div
                           className="flex items-center justify-center w-8 h-8 rounded-lg"
                           style={{
                             backgroundColor: res.result
-                              ? hasImage
+                              ? isLastColumn
+                                ? SIGNATURE_COLOR
+                                : hasImage
                                 ? `${SIGNATURE_COLOR}20`
                                 : "#d1d5db"
                               : "#f3f4f6",
                           }}
-                        >
-                          {res.result ? <CheckIcon /> : <CrossIcon />}
+                        >{res.result ? <CheckIcon color={isLastColumn ? "#fff" : SIGNATURE_COLOR} /> : <CrossIcon />}
+
                         </div>
                       </div>
                     );
