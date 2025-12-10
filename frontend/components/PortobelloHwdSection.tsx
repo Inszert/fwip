@@ -30,7 +30,7 @@ export default function PortobelloHwdSection({ data }: Props) {
     >
       {/* Mobile & Tablet Layout */}
       <div className="lg:hidden w-full flex flex-col min-h-screen">
-        {/* Image First - Much Larger */}
+        {/* Image First */}
         <div className="flex-1 flex items-center justify-center p-4">
           {activeOption && activeOption.image && activeOption.image.url ? (
             <img
@@ -38,9 +38,6 @@ export default function PortobelloHwdSection({ data }: Props) {
               src={activeOption.image.url}
               alt={activeOption.text || "Product image"}
               className="object-contain transition-all duration-300 ease-in-out w-full h-full max-h-[70vh]"
-              onError={(e) => {
-                console.error("Image failed to load:", e);
-              }}
             />
           ) : (
             <div className="text-white text-2xl">No image available</div>
@@ -69,7 +66,6 @@ export default function PortobelloHwdSection({ data }: Props) {
 
         {/* Content Texts */}
         <div className="flex flex-col gap-4 px-6 pb-8 text-center">
-          {/* Button */}
           {data.button?.[0] && (
             <a
               href={data.button[0].url}
@@ -80,14 +76,12 @@ export default function PortobelloHwdSection({ data }: Props) {
             </a>
           )}
 
-          {/* Main heading */}
           {data.textField1 && (
-            <h1 className="text-2xl sm:text-3xl font-extrabold uppercase text-white drop-shadow-lg leading-tight tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-extrabold uppercase text-white drop-shadow-lg leading-tight tracking-tight">
               {data.textField1}
             </h1>
           )}
 
-          {/* Subheading */}
           {data.textField2 && (
             <h2
               className="text-2xl sm:text-3xl font-extrabold uppercase drop-shadow-lg tracking-tight"
@@ -97,7 +91,6 @@ export default function PortobelloHwdSection({ data }: Props) {
             </h2>
           )}
 
-          {/* Paragraph */}
           {data.textField3 && (
             <p className="text-base sm:text-lg font-sans text-white leading-relaxed">
               {data.textField3}
@@ -106,9 +99,9 @@ export default function PortobelloHwdSection({ data }: Props) {
         </div>
       </div>
 
-      {/* Desktop Layout - MODIFIED: Image pushed more to the right */}
+      {/* Desktop Layout */}
       <div className="hidden lg:flex flex-row items-center h-full w-full">
-        {/* LEFT SIDE: Dimensions + Image */}
+        {/* LEFT SIDE: Dimensions */}
         <div className="flex flex-row items-center h-full w-2/3 gap-4">
           <div className="flex flex-col justify-center h-full gap-6 pl-32 min-w-fit">
             {validOptions.map((option, index) => {
@@ -128,8 +121,8 @@ export default function PortobelloHwdSection({ data }: Props) {
             })}
           </div>
 
-          {/* Image container pushed more to the right */}
-          <div className="flex items-center justify-start h-full flex-1 -ml-[25rem] mr-8"> {/* Changed -ml from -36rem to -30rem and added mr-8 */}
+          {/* Image container */}
+          <div className="flex items-center justify-start h-full flex-1 -ml-[25rem] mr-8">
             {activeOption && activeOption.image && activeOption.image.url ? (
               <img
                 key={`img-${activeIndex}`}
@@ -140,10 +133,7 @@ export default function PortobelloHwdSection({ data }: Props) {
                   height: "90vh",
                   width: "90vw",
                   maxWidth: "none",
-                  marginLeft: "2rem", // Additional margin to push right
-                }}
-                onError={(e) => {
-                  console.error("Image failed to load:", e);
+                  marginLeft: "2rem",
                 }}
               />
             ) : (
@@ -152,11 +142,11 @@ export default function PortobelloHwdSection({ data }: Props) {
           </div>
         </div>
 
-        {/* RIGHT SIDE: Content - Adjusted position */}
+        {/* RIGHT SIDE: Content */}
         <div
           className="absolute right-0 top-0 h-full flex flex-col items-start justify-center"
           style={{ 
-            left: "75%", // Changed from 75% to 80% to push content more right
+            left: "75%",
             transform: "translateX(-50%)" 
           }}
         >
@@ -171,14 +161,14 @@ export default function PortobelloHwdSection({ data }: Props) {
           )}
 
           <div className="flex flex-col gap-6 max-w-md">
-            {/* Main heading */}
+            {/* Main heading (slightly smaller) */}
             {data.textField1 && (
-              <h1 className="text-3xl md:text-2xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
+              <h1 className="text-2xl md:text-xl font-extrabold uppercase text-white drop-shadow-lg leading-tight mb-6 tracking-tight whitespace-normal">
                 {data.textField1}
               </h1>
             )}
 
-            {/* Subheading */}
+            {/* Subheading (purple, same size) */}
             {data.textField2 && (
               <h2
                 className="text-5xl md:text-6xl font-extrabold uppercase drop-shadow-lg mb-6 tracking-tight whitespace-normal"
@@ -188,9 +178,9 @@ export default function PortobelloHwdSection({ data }: Props) {
               </h2>
             )}
 
-            {/* Paragraph */}
+            {/* Paragraph (2 sizes smaller) */}
             {data.textField3 && (
-              <p className="text-xl md:text-2xl font-sans text-white leading-relaxed">
+              <p className="text-lg md:text-base font-sans text-white leading-relaxed">
                 {data.textField3}
               </p>
             )}
