@@ -37,13 +37,13 @@ const TopSectionZariadenia: React.FC<TopSectionZariadeniaProps> = ({
 
             {/* Hlavný nadpis - NOW SMALLER SIZE */}
             <div className="space-y-4">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-[#800080] uppercase tracking-tight">
+              <h1 className="text-1xl md:text-2xl lg:text-3xl font-black text-[#800080] uppercase font-light">
                 {title}
               </h1>
 
               {/* Podnadpis - NOW LARGER SIZE with signature color */}
               <h2 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold"
+                className="text-4xl md:text-5xl lg:text-6xl font-extrabold"
                 style={{ color: SIGNATURE_COLOR }}
               >
                 {subtitle}
