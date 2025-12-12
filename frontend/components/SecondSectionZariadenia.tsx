@@ -31,43 +31,43 @@ const PurpleCenteredCard: React.FC<ZariadeniaCardProps> = ({ units }) => {
 
   return (
     <div className="bg-[#7e36e3] min-h-screen flex justify-center items-start relative pt-0 font-sans">
-      <div className="bg-[#7e36e3] text-white w-full max-w-[95vw] min-h-[60vh] p-4 md:p-8 lg:p-12">
+      <div className="bg-[#7e36e3] text-white w-full max-w-[95vw] min-h-[60vh] p-4 md:p-6 lg:p-8">
         <div 
-          className="grid gap-8 w-full justify-items-center" 
+          className="grid gap-4 w-full justify-items-center" 
           style={{ 
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            rowGap: "180px"
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            rowGap: "120px"
           }}
         >
           {units?.map((unit) => (
             <div
               key={unit.id}
-              className="text-white rounded-2xl p-6 flex flex-col items-center text-center relative bg-transparent"
+              className="text-white rounded-2xl p-4 flex flex-col items-center text-center relative bg-transparent"
               style={{ 
                 width: "100%", 
-                maxWidth: "340px",
-                minHeight: "460px",
-                marginBottom: "80px"
+                maxWidth: "280px",
+                minHeight: "380px",
+                marginBottom: "60px"
               }}
             >
               {/* Circle image section */}
-              <div className="absolute left-1/2 -top-[160px] -translate-x-1/2 z-10 transition-transform duration-300 hover:scale-105">
-                {/* Cyan circle background - 280px */}
-                <div className="bg-[#17e4e4] rounded-full w-[280px] h-[280px] relative shadow-xl">
-                  {/* Image container - Original image size, scaled up */}
+              <div className="absolute left-1/2 -top-[100px] -translate-x-1/2 z-10 transition-transform duration-300 hover:scale-105">
+                {/* Cyan circle background - 200px */}
+                <div className="bg-[#17e4e4] rounded-full w-[200px] h-[200px] relative shadow-xl">
+                  {/* Image container - Scaled appropriately */}
                   <div 
                     className="absolute"
                     style={{
                       top: "50%",
                       left: "50%",
-                      transform: "translate(-50%, -50%) scale(.4)" // Only scale changes
+                      transform: "translate(-50%, -50%) scale(.35)"
                     }}
                   >
                     {unit.image && (
                       <img
                         src={unit.image.url}
                         alt={unit.image.alternativeText || unit.text1}
-                        className="max-w-none" // Prevent width constraints
+                        className="max-w-none"
                         style={{
                           width: unit.image.width ? `${unit.image.width}px` : 'auto',
                           height: unit.image.height ? `${unit.image.height}px` : 'auto',
@@ -80,23 +80,23 @@ const PurpleCenteredCard: React.FC<ZariadeniaCardProps> = ({ units }) => {
               </div>
 
               {/* Card content section */}
-              <div className="pt-[130px] flex flex-col justify-start h-full w-full">
+              <div className="pt-[90px] flex flex-col justify-start h-full w-full">
                 <div className="flex-grow flex flex-col justify-start">
-                  <h2 className="text-[1.25rem] font-bold text-[#32e3e3] mb-3 min-h-[36px] tracking-wide line-clamp-2">
+                  <h2 className="text-[1.1rem] font-bold text-[#32e3e3] mb-2 min-h-[32px] tracking-wide line-clamp-2">
                     {unit.text1}
                   </h2>
                   
-                  <p className="text-[1rem] text-white mb-4 min-h-[80px] leading-relaxed line-clamp-4">
+                  <p className="text-[0.9rem] text-white mb-3 min-h-[70px] leading-relaxed line-clamp-4">
                     {unit.text2}
                   </p>
                   
-                  <p className="text-[0.95rem] text-[#32e3e3] font-bold underline mb-3 min-h-[28px] line-clamp-1">
+                  <p className="text-[0.85rem] text-[#32e3e3] font-bold underline mb-2 min-h-[24px] line-clamp-1">
                     {unit.text3}
                   </p>
 
                   {unit.button && (
                     <button
-                      className="font-bold py-2 px-6 rounded-full text-[1rem] shadow-lg transition-all hover:opacity-90 mt-4"
+                      className="font-bold py-1.5 px-4 rounded-full text-[0.9rem] shadow-lg transition-all hover:opacity-90 mt-3"
                       style={{
                         backgroundColor: unit.button.color || "#32e3e3",
                         color: "#fff",

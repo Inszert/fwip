@@ -28,14 +28,18 @@ const CafeRestaurantsSection: React.FC = () => {
   if (!data) return <div>No data available</div>;
 
   return (
-    <div className="bg-[#40DDCB] min-h-screen"> {/* Added min-h-screen to ensure full coverage */}
+    <div className="bg-[#40DDCB] min-h-screen">
       {/* Hero section - full 100vh with blue background */}
-      <section className="relative w-full h-screen bg-[#40DDCB]"> {/* Added blue bg here too */}
+      <section className="relative w-full h-screen bg-[#40DDCB]">
         {getImageUrl(data.lending_image, "large") && (
           <img
             src={getImageUrl(data.lending_image, "large") ?? undefined}
             alt={data.lending_image?.alternativeText || data.landing_text1}
             className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              maxWidth: '100%',
+              maxHeight: '100%'
+            }}
           />
         )}
         <div className="relative z-10 flex flex-col justify-center h-full bg-opacity-50 px-4 sm:px-6 md:px-12 text-center md:text-left">
@@ -52,11 +56,14 @@ const CafeRestaurantsSection: React.FC = () => {
       {data.first_hero_section.map((item, index) => {
         const isImageOnRight = index % 2 === 0;
         const isLast = index === data.first_hero_section.length - 1;
+        const negativeMarginClass = !isLast ? "-mb-8 sm:-mb-12" : "";
+        const desktopNegativeMarginClass = !isLast ? "-mb-16 md:-mb-20" : "";
+        
         return (
           <section
             key={item.id}
-            style={{ backgroundColor: item.bg_color || '#40DDCB' }} // Fallback to blue if no color
-            className="relative w-full min-h-screen lg:h-screen flex items-center justify-center py-12 lg:py-0"
+            style={{ backgroundColor: item.bg_color || '#40DDCB' }}
+            className="relative w-full min-h-screen lg:h-screen flex items-center justify-center py-12 lg:py-0 overflow-hidden"
           >
             <div className="container mx-auto px-4 sm:px-6 md:px-12 flex flex-col lg:flex-row items-center h-full">
               {/* Mobile Layout - Stacked */}
@@ -85,19 +92,21 @@ const CafeRestaurantsSection: React.FC = () => {
 
                 {/* Image */}
                 {item.image.length > 0 && (
-                  <div className="flex-1 flex justify-center">
+                  <div className="flex-1 flex justify-center w-full max-w-full">
                     <img
                       src={getImageUrl(item.image[0], "large") ?? undefined}
                       alt={item.image[0].alternativeText || item.text1}
-                      className={`w-full max-w-xs sm:max-w-sm md:max-w-md h-auto rounded-lg ${
-                        !isLast ? "-mb-8 sm:-mb-12" : ""
-                      }`}
+                      className={`w-auto max-w-full h-auto max-h-[70vh] object-contain rounded-lg ${negativeMarginClass}`}
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '100%'
+                      }}
                     />
                   </div>
                 )}
               </div>
 
-              {/* Desktop Layout - EXACTLY AS ORIGINAL */}
+              {/* Desktop Layout */}
               <div className="hidden lg:flex flex-col md:flex-row items-center h-full w-full">
                 {/* Text */}
                 <div
@@ -112,7 +121,7 @@ const CafeRestaurantsSection: React.FC = () => {
                     {item.text1}
                   </h3>
                   <h4
-                    className="text-2xl md:text-6xl mb-4 font-bold "
+                    className="text-2xl md:text-6xl mb-4 font-bold"
                     style={{ color: item.text2_color }}
                   >
                     {item.text2}
@@ -128,16 +137,18 @@ const CafeRestaurantsSection: React.FC = () => {
                 {/* Image */}
                 {item.image.length > 0 && (
                   <div
-                    className={`flex-1 flex justify-center ${
+                    className={`flex-1 flex justify-center items-center w-full max-w-full h-full ${
                       isImageOnRight ? "md:order-2" : "md:order-1"
                     }`}
                   >
                     <img
                       src={getImageUrl(item.image[0], "large") ?? undefined}
                       alt={item.image[0].alternativeText || item.text1}
-                      className={`w-full max-w-lg h-auto rounded-lg ${
-                        !isLast ? "-mb-16 md:-mb-20" : ""
-                      }`}
+                      className={`w-auto max-w-full h-auto max-h-[70vh] object-contain rounded-lg ${desktopNegativeMarginClass}`}
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '100%'
+                      }}
                     />
                   </div>
                 )}
