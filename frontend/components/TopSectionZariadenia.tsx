@@ -1,5 +1,7 @@
 import React from 'react';
 
+const SIGNATURE_COLOR = "#40DDCB";
+
 interface TopSectionZariadeniaProps {
   backgroundImage: string;
   title: string;
@@ -33,14 +35,17 @@ const TopSectionZariadenia: React.FC<TopSectionZariadeniaProps> = ({
         <div className="bg-white min-h-[60vh] p-10 md:p-14 lg:p-16 shadow-2xl rounded-t-3xl w-[90vw] mx-auto">
           <div className="text-center space-y-8">
 
-            {/* Hlavný nadpis */}
+            {/* Hlavný nadpis - NOW SMALLER SIZE */}
             <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-purple-800 uppercase tracking-tight">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-[#800080] uppercase tracking-tight">
                 {title}
               </h1>
 
-              {/* Podnadpis */}
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800">
+              {/* Podnadpis - NOW LARGER SIZE with signature color */}
+              <h2 
+                className="text-4xl md:text-5xl lg:text-6xl font-bold"
+                style={{ color: SIGNATURE_COLOR }}
+              >
                 {subtitle}
               </h2>
             </div>
