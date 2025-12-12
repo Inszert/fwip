@@ -120,4 +120,5 @@ const PurpleCenteredCard: React.FC<ZariadeniaCardProps> = ({ units }) => {
   );
 };
 
+
 export default PurpleCenteredCard;
