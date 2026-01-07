@@ -12,6 +12,9 @@ import {
   HeaderData,
   FooterData,
 } from "@/lib/strapi";
+// cahche enabled
+export const revalidate = 0; // Revalidate data every 60 seconds
+export const dynamic = "force-dynamic"; // Ensure the page is always rendered dynamically
 
 export default async function ZariadeniaPage() {
   let headerData: HeaderData = { button: [], image: null, subtitle: "" };
