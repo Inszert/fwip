@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
             <p className="text-sm opacity-80 mt-1">
               poskytnuté prevádzkovateľom dotknutej osobe pri získavaní osobných údajov od dotknutej osoby
             </p>
-            <p className="text-base font-semibold mt-2">Internetového obchodu magicice.sk</p>
+            <p className="text-base font-semibold mt-2">Internetového obchodu fwip.sk</p>
           </div>
         </div>
 
@@ -44,13 +44,13 @@ export default function PrivacyPolicy() {
               <section className="bg-gray-50 rounded-2xl p-6">
                 <h3 className="text-2xl font-bold text-[#2EC4B6] mb-4">1. Totožnosť a kontaktné údaje Prevádzkovateľa:</h3>
                 <ul className="space-y-2 text-gray-700">
-                  <li><span className="font-semibold">Obchodné meno:</span> AZIN s.r.o.</li>
+                  <li><span className="font-semibold">Obchodné meno:</span> PRENAKO s.r.o.</li>
                   <li><span className="font-semibold">Sídlo:</span> Jedľová 3, Košice - mestská časť Sever 040 01, Slovenská republika</li>
-                  <li><span className="font-semibold">Zapísaná v registri:</span> Mestského súdu Košice I, Oddiel Sro, Vložka číslo 40818/V</li>
-                  <li><span className="font-semibold">IČO:</span> 50 732 692</li>
-                  <li><span className="font-semibold">DIČ:</span> 212 043 99 04</li>
-                  <li><span className="font-semibold">IČ DPH:</span> SK212043990 – len na dovoz tovaru z členských štátov Európskej únie podľa § 7 Zákon č. 222/2004 Z. z. v znení neskorších predpisov zákona o dani z pridanej hodnoty.</li>
-                  <li><span className="font-semibold">Bankový účet:</span> SK8483300000002901187780</li>
+                  <li><span className="font-semibold">Zapísaná v registri:</span> Mestského súdu Košice I, Oddiel Sro, Vložka číslo 58896/V</li>
+                  <li><span className="font-semibold">IČO:</span> 56 066 643</li>
+                  <li><span className="font-semibold">DIČ:</span> 212 217 49 01</li>
+                  <li><span className="font-semibold">IČ DPH:</span> SK212 217 49 01 </li>
+                  <li><span className="font-semibold">Bankový účet:</span> SK2083300000002902797580</li>
                 </ul>
               </section>
 
@@ -225,7 +225,7 @@ export default function PrivacyPolicy() {
                   Tieto Zásady a poučenia o ochrane osobných údajov tvoria neoddeliteľnú súčasť Všeobecných obchodných podmienok a Reklamačného poriadku. Dokumenty – Všeobecné obchodné podmienky a Reklamačný poriadok tohto internetového obchodu sú zverejnené na doméne Internetového obchodu Predávajúceho.
                 </p>
                 <p className="text-gray-700 mt-4 font-semibold">
-                  Tieto zásady ochrany osobných údajov nadobúdajú platnosť a účinnosť ich zverejnením v Internetovom obchode predávajúceho 20.01.2020
+                  Tieto zásady ochrany osobných údajov nadobúdajú platnosť a účinnosť ich zverejnením v Internetovom obchode predávajúceho 15.01.2026
                 </p>
               </section>
             </div>
