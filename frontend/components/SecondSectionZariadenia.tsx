@@ -80,15 +80,15 @@ const PurpleCenteredCard: React.FC<ZariadeniaCardProps> = ({ units }) => {
 
               {/* Content */}
               <div className="pt-[90px] flex flex-col h-full w-full">
-                <h2 className="text-[1.1rem] font-bold text-[#32e3e3] mb-2 tracking-wide line-clamp-none md:line-clamp-2">
+                <h2 className="text-[1.1rem] font-bold text-[#32e3e3] mb-2 tracking-wide line-clamp-none">
                   {unit.text1}
                 </h2>
 
-                <p className="text-[0.9rem] mb-3 leading-relaxed line-clamp-none md:line-clamp-4">
+                <p className="text-[0.9rem] mb-3 leading-relaxed line-clamp-none">
                   {unit.text2}
                 </p>
 
-                <p className="text-[0.85rem] text-[#32e3e3] font-bold underline mb-2 line-clamp-none md:line-clamp-1">
+                <p className="text-[0.85rem] text-[#32e3e3] font-bold underline mb-2 line-clamp-none">
                   {unit.text3}
                 </p>
 
