@@ -45,7 +45,7 @@ const CafeRestaurantsSection: React.FC = () => {
         <div className="relative z-10 flex flex-col justify-center h-full bg-opacity-50 px-4 sm:px-6 md:px-12 text-center md:text-left">
          <h1 
   className="sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 sm:mb-6 uppercase"
-  style={{ color: '#D63484y' }}
+  style={{ color: '#D63484' }}
 >
             {data.landing_text1}
           </h1>
