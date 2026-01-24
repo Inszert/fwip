@@ -88,7 +88,7 @@ const PurpleCenteredCard: React.FC<ZariadeniaCardProps> = ({ units }) => {
                   {unit.text2}
                 </p>
 
-                <p className="text-[0.85rem] text-[#32e3e3] font-bold underline mb-2 line-clamp-none">
+                <p className="text-[0.85rem] text-[#32e3e3] font-bold  mb-2 line-clamp-none">
                   {unit.text3}
                 </p>
 
