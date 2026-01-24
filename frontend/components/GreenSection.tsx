@@ -71,10 +71,11 @@ export default function PortobelloGreen({ data }: Props) {
 
   return (
     <section
-      className="w-full min-h-[100svh] flex items-center justify-center px-4 sm:px-6 overflow-hidden relative"
+      className="w-full flex items-center justify-center px-4 sm:px-6 overflow-hidden relative"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
+        minHeight: isMobile ? "calc(100vh + 50%)" : "100vh", // fix: sekcia dostatočne vysoká na mobile
         backgroundImage: sectionBgImageUrl ? `url(${sectionBgImageUrl})` : "none",
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -130,9 +131,9 @@ export default function PortobelloGreen({ data }: Props) {
                 draggable={false}
                 style={{
                   objectPosition: "center bottom",
-                  transform: isMobile ? "scale(0.95)" : "scale(1.15)", // menší scale na mobile
+                  transform: isMobile ? "scale(0.95)" : "scale(1.15)",
                   transformOrigin: "center bottom",
-                  marginBottom: isMobile ? "-50%" : "-5%", // výrazne nižšie na mobile
+                  marginBottom: isMobile ? "-50%" : "-5%",
                 }}
               />
             </div>
@@ -147,7 +148,7 @@ export default function PortobelloGreen({ data }: Props) {
         <div
           className="relative z-30 w-full flex flex-col lg:flex-row items-start justify-between gap-4 sm:gap-6 lg:gap-8 pt-8 sm:pt-10 lg:pt-12"
           style={{
-            transform: isMobile ? "translateY(-5%)" : "translateY(0%)", // mierny posun na mobile
+            transform: isMobile ? "translateY(-5%)" : "translateY(0%)",
           }}
         >
           {/* LEFT TEXT */}
