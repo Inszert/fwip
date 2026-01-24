@@ -130,9 +130,9 @@ export default function PortobelloGreen({ data }: Props) {
                 draggable={false}
                 style={{
                   objectPosition: "center bottom",
-                  transform: isMobile ? "scale(1.05)" : "scale(1)",
+                  transform: isMobile ? "scale(1.0)" : "scale(1.15)", // Menší scale na mobile
                   transformOrigin: "center bottom",
-                  marginBottom: "0%",
+                  marginBottom: isMobile ? "-20%" : "-5%", // Posun nižšie na mobile, nech sa nedotýka textu
                 }}
               />
             </div>
@@ -147,7 +147,7 @@ export default function PortobelloGreen({ data }: Props) {
         <div
           className="relative z-30 w-full flex flex-col lg:flex-row items-start justify-between gap-4 sm:gap-6 lg:gap-8 pt-8 sm:pt-10 lg:pt-12"
           style={{
-            transform: isMobile ? "translateY(-15%)" : "translateY(0%)",
+            transform: isMobile ? "translateY(-10%)" : "translateY(0%)", // mierny posun na mobile
           }}
         >
           {/* LEFT TEXT */}
