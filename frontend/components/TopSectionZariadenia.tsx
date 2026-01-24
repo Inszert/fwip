@@ -19,49 +19,41 @@ const TopSectionZariadenia: React.FC<TopSectionZariadeniaProps> = ({
 }) => {
   return (
     <div className="relative">
-      {/* Sekcia s obrázkom - 100vh */}
+      {/* Background image */}
       <section
         className="h-screen w-full bg-cover bg-center bg-no-repeat relative"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          filter: 'blur(5px)'
-        }}
+        style={{ backgroundImage: `url(${backgroundImage})`, filter: 'blur(5px)' }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
       </section>
 
-      {/* Biela karta - visí dole z obrázka */}
-      <div className="relative -top-[30vh] z-10 mx-auto">
-        <div className="bg-white min-h-[60vh] p-10 md:p-14 lg:p-16 shadow-2xl rounded-t-3xl w-[90vw] mx-auto">
-          <div className="text-center space-y-8">
+      {/* White card overlapping background */}
+      <div className="relative -top-[20vh] md:-top-[30vh] z-10 mx-auto">
+        <div className="bg-white min-h-[auto] md:min-h-[60vh] p-6 sm:p-8 md:p-14 lg:p-16 shadow-2xl rounded-t-3xl w-[90vw] max-w-6xl mx-auto">
+          <div className="text-center space-y-6 sm:space-y-8">
 
-            {/* Hlavný nadpis - NOW SMALLER SIZE */}
-            <div className="space-y-4">
-              <h1 className="text-1xl md:text-2xl lg:text-3xl font-black text-[#800080] uppercase font-light">
+            {/* Titles */}
+            <div className="space-y-2 sm:space-y-4">
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-[#800080] uppercase">
                 {title}
               </h1>
-
-              {/* Podnadpis - NOW LARGER SIZE with signature color */}
               <h2 
-                className="text-4xl md:text-5xl lg:text-6xl font-extrabold"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold"
                 style={{ color: SIGNATURE_COLOR }}
               >
                 {subtitle}
               </h2>
             </div>
 
-            {/* Oddeľovacia čiara */}
-            <div className="w-32 h-1.5 bg-gray-800 mx-auto"></div>
+            {/* Divider */}
+            <div className="w-20 h-1.5 bg-gray-800 mx-auto"></div>
 
-            {/* Textový obsah */}
-            <div className="space-y-6 text-gray-700 max-w-6xl mx-auto">
+            {/* Paragraphs */}
+            <div className="space-y-4 sm:space-y-6 text-gray-700 px-2 sm:px-4 md:px-0">
               {paragraphs.map((paragraph, index) => (
                 <p
                   key={index}
-                  className={`text-lg md:text-xl leading-relaxed ${highlightLastParagraph && index === paragraphs.length - 1
-                      ? 'font-semibold text-gray-900'
-                      : ''
-                    }`}
+                  className={`text-base sm:text-lg md:text-xl leading-relaxed ${highlightLastParagraph && index === paragraphs.length - 1 ? 'font-semibold text-gray-900' : ''}`}
                 >
                   {paragraph}
                 </p>
