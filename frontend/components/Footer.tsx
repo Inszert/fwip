@@ -2,13 +2,26 @@
 
 import React, { useEffect, useState } from "react";
 import { fetchFooterData, FooterData } from "@/lib/strapi";
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useRouter } from "next/navigation";
 
 const SIGNATURE_COLOR = "#40DDCB";
 
 const Footer: React.FC = () => {
   const [footerData, setFooterData] = useState<FooterData | null>(null);
-  const router = useRouter(); // Initialize router for navigation
+  const router = useRouter();
+
+  // ✅ Navigation brain (internal + external links)
+  const handleNavigation = (url?: string | null) => {
+    if (!url) return;
+
+    const isExternal = /^https?:\/\//i.test(url);
+
+    if (isExternal) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      router.push(`/${url.replace(/^\/+/, "")}`);
+    }
+  };
 
   useEffect(() => {
     const getFooter = async () => {
@@ -21,14 +34,6 @@ const Footer: React.FC = () => {
     };
     getFooter();
   }, []);
-
-  // Handle click on optional slot item
-  const handleOptionalSlotClick = (url: string) => {
-    if (url) {
-      // Navigate to the URL (e.g., "ochrana-osobnych-udajov")
-      router.push(`/${url}`);
-    }
-  };
 
   if (!footerData) return null;
 
@@ -53,29 +58,24 @@ const Footer: React.FC = () => {
         </div>
 
         {footerData.footer_opt?.slice(0, 4).map((slot) => (
-          <div 
-            key={slot.id} 
-            className="sm:col-span-1"
-          >
-            {/* Make the title clickable if URL exists */}
-            <h4 
+          <div key={slot.id} className="sm:col-span-1">
+            <h4
               className={`font-semibold mb-1.5 text-lg border-b border-white/30 pb-1 ${
                 slot.url ? "cursor-pointer hover:text-gray-200 transition" : ""
               }`}
-             
+              onClick={() => handleNavigation(slot.url)}
             >
               {slot.Title}
             </h4>
-            
-            {/* Make the entire description block clickable */}
-            <div 
+
+            <div
               className={`${slot.url ? "cursor-pointer" : ""}`}
-              onClick={() => slot.url && handleOptionalSlotClick(slot.url)}
+              onClick={() => handleNavigation(slot.url)}
             >
               {slot.description?.map((block: any, i: number) =>
                 block.type === "paragraph" ? (
-                  <p 
-                    key={i} 
+                  <p
+                    key={i}
                     className={`text-white/90 leading-relaxed text-sm ${
                       slot.url ? "hover:text-gray-200 transition" : ""
                     }`}
@@ -94,13 +94,13 @@ const Footer: React.FC = () => {
       <div className="bg-[#0a4d4a] border-t border-[#074338]">
         <div className="max-w-7xl mx-auto px-6 py-1 flex flex-wrap gap-2 justify-center">
           {footerData.footer_btns?.map(({ id, text, url }) => (
-            <a
+            <button
               key={id}
-              href={url || "#"}
+              onClick={() => handleNavigation(url)}
               className="px-4 py-1 bg-[#40DDCB] hover:bg-[#32b4a6] rounded-md text-black font-semibold text-sm transition whitespace-nowrap"
             >
               {text}
-            </a>
+            </button>
           ))}
         </div>
       </div>
