@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://fwip.sk
+
+# Sitemaps
+Sitemap: https://fwip.sk/sitemap.xml

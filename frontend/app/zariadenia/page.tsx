@@ -1,4 +1,5 @@
-import React from "react";
+import Head from "next/head";
+import React from "react"; 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TopSectionZariadenia from "@/components/TopSectionZariadenia";
@@ -57,25 +58,16 @@ export default async function ZariadeniaPage() {
     const zariadeniaResponse = await fetchZariadeniaData();
     zariadeniaData = zariadeniaResponse?.data?.[0] || null;
   } catch (error) {
-    console.error("Error fetching header, footer or zariadenia data:", error);
+    console.error("Chyba pri načítaní dát:", error);
   }
-
-  const backgroundImageUrl = zariadeniaData?.main_image?.[0]?.url
-    ? `${zariadeniaData.main_image[0].url}`
-    : "/images/default-bg.jpg";
 
   const paragraphs = zariadeniaData?.text3
     ? zariadeniaData.text3
-      .split(". ")
-      .filter(Boolean)
-      .map((p: string) => (p.endsWith(".") ? p : p + "."))
-    : [
-      " ",
-      " ",
-      " ",
-    ];
+        .split(". ")
+        .filter(Boolean)
+        .map((p: string) => (p.endsWith(".") ? p : p + "."))
+    : ["", "", ""];
 
-  // Map API units to component type
   const mappedUnits: UnitPartMapped[] =
     zariadeniaData?.units_part?.map((unit: UnitPartApi) => ({
       id: unit.id,
@@ -89,21 +81,60 @@ export default async function ZariadeniaPage() {
     })) || [];
 
   return (
+    <>
+      <Head>
+        <title>FWIP Zariadenia - fwip.sk</title>
+        <meta
+          name="description"
+          content="FWIP.sk ponúka zariadenia na výrobu prémiovej zmrzliny pre kaviarne, reštaurácie a ďalšie prevádzky. Jednoduché, efektívne a kvalitné riešenia pre vašu prevádzku."
+        />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="FWIP Zariadenia - fwip.sk" />
+        <meta
+          property="og:description"
+          content="FWIP.sk ponúka zariadenia na výrobu prémiovej zmrzliny pre kaviarne, reštaurácie a ďalšie prevádzky. Jednoduché, efektívne a kvalitné riešenia pre vašu prevádzku."
+        />
+        <meta property="og:url" content="https://fwip.sk/zariadenia" />
+        <meta property="og:type" content="website" />
 
-    <main className="min-h-screen flex flex-col justify-between bg-white">
-      <Header />
+        {/* Schema.org Organization markup */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "FWIP.sk",
+              "url": "https://fwip.sk",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+421902200971",
+                "contactType": "zákaznícka podpora",
+                "email": "slovakia@fwip.com",
+              },
+              "sameAs": [
+                "https://www.facebook.com/fwipslovakia.sk",
+                "https://www.instagram.com/fwip_slovakia"
+              ],
+            }),
+          }}
+        />
+      </Head>
 
-      <TopSectionZariadenia
-        backgroundImage={backgroundImageUrl}
-        title={zariadeniaData?.text1 || ""}
-        subtitle={zariadeniaData?.text2 || ""}
-        paragraphs={paragraphs}
-      />
+      <main className="min-h-screen flex flex-col justify-between bg-white">
+        <Header />
 
-      <PurpleCenteredCard units={mappedUnits} />
+        <TopSectionZariadenia
+          backgroundImage={zariadeniaData?.main_image?.[0]?.url || ""}
+          title={zariadeniaData?.text1 || ""}
+          subtitle={zariadeniaData?.text2 || ""}
+          paragraphs={paragraphs}
+        />
 
-      <Footer
-      />
-    </main>
+        <PurpleCenteredCard units={mappedUnits} />
+
+        <Footer />
+      </main>
+    </>
   );
 }

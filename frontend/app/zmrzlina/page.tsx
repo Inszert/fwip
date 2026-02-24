@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -12,35 +13,69 @@ import {
   HeaderData,
   FooterData,
 } from "@/lib/strapi";
-// cahche enabled
 
-//export const revalidate = 0; // Revalidate data every 60 seconds
-//export const dynamic = "force-dynamic"; // Ensure the page is always rendered dynamically
-
-export default async function ZariadeniaPage() {
+export default async function ZmrzlinaPage() {
   let headerData: HeaderData = { button: [], image: null, subtitle: "" };
   let footerData: FooterData | null = null;
-
-  let heroVideo: any = null; // for HeroVideoBackgroundIce
-  let heroVideoData: any = null; // for CutVideoIceCream
+  let heroVideo: any = null; // pre HeroVideoBackgroundIce
+  let heroVideoData: any = null; // pre CutVideoIceCream
 
   try {
-    // Fetch header, footer, and hero videos
     heroVideo = await fetchHeroVideoIceCream();
     heroVideoData = await fetchHeroVideoToSeparate();
     headerData = await fetchHeaderData();
     footerData = await fetchFooterData();
+  } catch (error) {
+    console.error("Chyba pri načítaní dát pre Zmrzlinu:", error);
+  }
 
-    console.log("Fetched hero video data:", heroVideo);
-    console.log("Fetched hero video with segments:", heroVideoData);
+  return (
+    <>
+      <Head>
+        <title>FWIP Zmrzlina - fwip.sk</title>
+        <meta
+          name="description"
+          content="FWIP.sk ponúka prémiovú zmrzlinu pre kaviarne, reštaurácie a ďalšie prevádzky. Objavte signature recepty a kvalitné ingrediencie."
+        />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="FWIP Zmrzlina - fwip.sk" />
+        <meta
+          property="og:description"
+          content="FWIP.sk ponúka prémiovú zmrzlinu pre kaviarne, reštaurácie a ďalšie prevádzky. Objavte signature recepty a kvalitné ingrediencie."
+        />
+        <meta property="og:url" content="https://fwip.sk/zmrzlina" />
+        <meta property="og:type" content="website" />
 
-    return (
+        {/* Schema.org Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "FWIP.sk",
+              "url": "https://fwip.sk",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+421902200971",
+                "contactType": "zákaznícka podpora",
+                "email": "slovakia@fwip.com",
+              },
+              "sameAs": [
+                "https://www.facebook.com/fwipslovakia.sk",
+                "https://www.instagram.com/fwip_slovakia"
+              ],
+            }),
+          }}
+        />
+      </Head>
+
       <main className="min-h-screen flex flex-col justify-between bg-white">
-<Header />
+        <Header />
 
-        {/* Original HeroVideo section */}
+        {/* Hero video sekcia */}
         {heroVideo?.video?.url && (
-          <section className="">
+          <section>
             <HeroVideoBackgroundIce
               key={heroVideo.video.url}
               videoUrl={heroVideo.video.url}
@@ -51,20 +86,18 @@ export default async function ZariadeniaPage() {
           </section>
         )}
 
-        {/* New CutVideoIceCream component */}
+        {/* CutVideoIceCream sekcia */}
         {heroVideoData?.main_body_video && (
           <CutVideoIceCream
             videoUrl={heroVideoData.main_body_video.video_separ.url}
             segments={heroVideoData.main_body_video.data_for_sep}
           />
         )}
-<SignatureRecipes />
-        <Footer/>
-        
+
+        <SignatureRecipes />
+
+        <Footer />
       </main>
-    );
-  } catch (error) {
-    console.error("Error fetching data for Zariadenia page:", error);
-    return <div>Error loading page data.</div>;
-  }
+    </>
+  );
 }
