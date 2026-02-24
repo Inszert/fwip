@@ -87,7 +87,7 @@ export default async function Home() {
         />
         <meta property="og:url" content="https://fwip.sk/" />
         <meta property="og:type" content="website" />
-    <meta name="google-site-verification" content="CQf3MebeF3y1lc8rt9sf283lJsjZKlG_AxizZYQG1ts" />
+    
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
