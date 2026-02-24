@@ -74,20 +74,21 @@ export default async function Home() {
   return (
     <>
       <Head>
-        <title>FWIP - prémiová zmrzlina a zariadenia pre prevádzky</title>
+        <title>FWIP - prémiová gelato zmrzlina a zariadenia pre prevádzky</title>
         <meta
           name="description"
-          content="FWIP.sk ponúka prémiovú zmrzlinu, Portobello stroje a zariadenia pre kaviarne, reštaurácie a hotely. Objavte signature recepty, kroky použitia a porovnanie produktov."
+          content="FWIP.sk ponúka prémiovú taliansku gelato zmrzlinu – kapsulovo hygienicky balenú, award-winning receptúry, Portobello stroje a zariadenia pre kaviarne, reštaurácie a hotely."
         />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="FWIP - prémiová zmrzlina a zariadenia" />
+        <meta property="og:title" content="FWIP - prémiová gelato zmrzlina a zariadenia" />
         <meta
           property="og:description"
-          content="FWIP.sk ponúka prémiovú zmrzlinu, Portobello stroje a zariadenia pre kaviarne, reštaurácie a hotely. Objavte signature recepty, kroky použitia a porovnanie produktov."
+          content="FWIP.sk ponúka prémiovú taliansku gelato zmrzlinu – kapsulovo hygienicky balenú, award-winning receptúry, Portobello stroje a zariadenia pre kaviarne, reštaurácie a hotely."
         />
         <meta property="og:url" content="https://fwip.sk/" />
         <meta property="og:type" content="website" />
-    
+
+        {/* Structured Data pre Google */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -96,17 +97,19 @@ export default async function Home() {
               "@type": "Organization",
               "name": "FWIP.sk",
               "url": "https://fwip.sk",
+              "description": "Prémiová talianska gelato zmrzlina – kapsulovo hygienicky balená, award-winning receptúry, Portobello stroje a zariadenia pre kaviarne, reštaurácie a hotely.",
+              "logo": "https://res.cloudinary.com/dsbftnhih/image/upload/v1764181711/Fwip_Brand_Logo_Secondary_White_RGB_8b5e83e3da.png",
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+421902200971",
                 "contactType": "zákaznícka podpora",
-                "email": "slovakia@fwip.com",
+                "email": "slovakia@fwip.com"
               },
               "sameAs": [
                 "https://www.facebook.com/fwipslovakia.sk",
                 "https://www.instagram.com/fwip_slovakia"
-              ],
-            }),
+              ]
+            })
           }}
         />
       </Head>
