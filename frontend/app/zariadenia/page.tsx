@@ -11,7 +11,7 @@ import {
   HeaderData,
   FooterData,
 } from "@/lib/strapi";
-
+export const dynamic = "force-dynamic";
 // API unit type
 interface UnitPartApi {
   id: number;

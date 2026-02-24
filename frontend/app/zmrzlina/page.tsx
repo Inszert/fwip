@@ -13,7 +13,7 @@ import {
   HeaderData,
   FooterData,
 } from "@/lib/strapi";
-
+export const dynamic = "force-dynamic";
 export default async function ZmrzlinaPage() {
   let headerData: HeaderData = { button: [], image: null, subtitle: "" };
   let footerData: FooterData | null = null;

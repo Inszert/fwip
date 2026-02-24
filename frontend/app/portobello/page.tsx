@@ -15,7 +15,7 @@ import {
   fetchFooterData,
   HeaderData,
 } from "@/lib/strapi";
-
+export const dynamic = "force-dynamic";
 export default async function PortobelloPage() {
   let headerData: HeaderData = { button: [], image: null, subtitle: "" };
   let footerData = null;

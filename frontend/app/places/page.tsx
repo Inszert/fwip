@@ -3,7 +3,7 @@ import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CafeRestaurantsSection from "@/components/CafeRestaurantsSection";
-
+export const dynamic = "force-dynamic";
 export default function PlacesPage() {
   return (
     <>

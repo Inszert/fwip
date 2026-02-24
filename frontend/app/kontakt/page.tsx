@@ -1,9 +1,10 @@
+
 import Head from "next/head";
 import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import OfferForm from "@/components/Formular";
-
+export const dynamic = "force-dynamic";
 export default function KontaktPage() {
   return (
     <>
