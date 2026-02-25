@@ -13,9 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "fwip | The World's Smallest Gelateria | Award-winning ice cream",
-  description: "Experience the world's smallest gelateria, fwip, where award-winning ice cream meets artisanal craftsmanship. Indulge in our unique flavors made from the finest ingredients, served in a cozy and charming setting. Discover why fwip is celebrated globally for its innovative approach to gelato. Visit us for an unforgettable taste adventure!",
-};
+  title: "fwip | Najmenšia gelatéria na svete | Ocenená zmrzlina",
+description: "Objavte fwip – najmenšiu gelatériu na svete, kde sa ocenená zmrzlina vyrába s vášňou a dôrazom na každý detail. Vychutnajte si originálne príchute z tých najkvalitnejších surovín v útulnom a očarujúcom prostredí. fwip je celosvetovo oceňovaný pre svoj inovatívny prístup ku gelatu a ponúka chuťový zážitok, na ktorý nezabudnete."};
 
 export default function RootLayout({
   children,
