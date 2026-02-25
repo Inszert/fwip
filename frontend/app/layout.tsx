@@ -13,8 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "fwip | Najmenšia gelatéria na svete | Ocenená zmrzlina",
-description: "Objavte fwip – najmenšiu gelatériu na svete, kde sa ocenená zmrzlina vyrába s vášňou a dôrazom na každý detail. Vychutnajte si originálne príchute z tých najkvalitnejších surovín v útulnom a očarujúcom prostredí. fwip je celosvetovo oceňovaný pre svoj inovatívny prístup ku gelatu a ponúka chuťový zážitok, na ktorý nezabudnete."};
+title: "fwip | Najmenšia gelatéria na svete | Ocenená kapsulová zmrzlina",
+description: "Objavte fwip – najmenšiu gelatériu na svete, kde sa ocenená kapsulová zmrzlina vyrába s vášňou a dôrazom na každý detail. Vychutnajte si originálne príchute z tých najkvalitnejších surovín v útulnom a očarujúcom prostredí. fwip je celosvetovo oceňovaný pre svoj inovatívny prístup ku gelatu a prináša jedinečný chuťový zážitok v kapsulovej podobe."  
+  
+  "};
 
 export default function RootLayout({
   children,
