@@ -33,7 +33,7 @@ console.log("Received contact form submission:", body);
 console.log("Sending email with content:", emailHtml);
     await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "prenako.kosice@gmail.com",
+      to: "danielszabo.main@gmail.com",
       subject: `Contact Form Submission from ${name}`,
       html: emailHtml,
     });
