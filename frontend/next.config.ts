@@ -10,7 +10,8 @@ const nextConfig = {
       },
     ],
   },
-  serverExternalPackages: ["@tailwindcss/node"], // nahraď podľa potreby
+  // mark server-only packages here
+  serverExternalPackages: ["@tailwindcss/node", "resend"],
 };
 
 export default nextConfig;
