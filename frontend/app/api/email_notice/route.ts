@@ -1,14 +1,14 @@
 
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
-
+console.log("Email notice API route loaded");
 if (!process.env.RESEND_API_KEY) throw new Error("RESEND_API_KEY not set");
 const resend = new Resend(process.env.RESEND_API_KEY);
-
+console.log("Resend client initialized");
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-
+console.log("Received contact form submission:", body);
     // Normalize Strapi / client data
     const raw = body.data ?? {};
     const data = (raw.attributes ?? raw) as Record<string, any>;
@@ -30,18 +30,19 @@ export async function POST(request: Request) {
       <p><strong>Postal Code:</strong> ${postalCode}</p>
       <p><strong>Message:</strong> ${message}</p>
     `;
-
+console.log("Sending email with content:", emailHtml);
     await resend.emails.send({
       from: "onboarding@resend.dev",
       to: "prenako.kosice@gmail.com",
       subject: `Contact Form Submission from ${name}`,
       html: emailHtml,
     });
-
+console.log("Email sent successfully");
     return NextResponse.json({ success: true });
 
   } catch (error) {
     console.error(error);
+    console.log("Failed to send email");
     return NextResponse.json({ success: false, error });
   }
 }

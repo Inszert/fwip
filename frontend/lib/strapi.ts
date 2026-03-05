@@ -770,6 +770,7 @@ export const submitContactForm = async (data: ContactFormData): Promise<{ succes
     if (response.ok) {
 
       // Send the same data in the email
+      console.log("Contact form submitted successfully, sending email with data:", data);
       await fetch("/api/email_notice", {
         method: "POST",
         headers: {
