@@ -754,9 +754,6 @@ export interface ContactFormData {
   postal_code: string;
   message: string;
 }
-
-
-
 export const submitContactForm = async (data: ContactFormData): Promise<{ success: boolean; error?: string }> => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -771,16 +768,27 @@ export const submitContactForm = async (data: ContactFormData): Promise<{ succes
     });
 
     if (response.ok) {
+
+      // Send the same data in the email
+      await fetch("/api/email_notice", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data }),
+      });
+
       return { success: true };
+
     } else {
       const errorData = await response.json();
       return { success: false, error: errorData.error?.message || "Failed to send message" };
     }
+
   } catch (err) {
     return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
   }
 };
-
 export async function fetchSteps() {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
   const endpoint = `${baseUrl}/api/stepss?populate[video][populate]=*`;
