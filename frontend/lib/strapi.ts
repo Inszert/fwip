@@ -26,8 +26,8 @@ export async function fetchHeaderData(): Promise<HeaderData> {
 
   const data = await res.json();
   const header = data.data[0];
-  console.log("Fetched header data:", header);
-  console.log("Header image data:", header.image.url);
+ //onsole.log("Fetched header data:", header);
+  //console.log("Header image data:", header.image.url);
   return {
     subtitle: header.subtitle,
     button: header.button || [],
@@ -140,7 +140,7 @@ export async function fetchIceCreams(): Promise<IceCream[]> {
       };
     });
   } catch (error) {
-    console.error("Error fetching ice creams:", error);
+    //console.error("Error fetching ice creams:", error);
     return [];
   }
 }
@@ -178,8 +178,8 @@ export async function fetchIngredients(): Promise<{ [iceCreamId: number]: Ingred
           ? imageUrl
           : `${process.env.NEXT_PUBLIC_STRAPI_URL}${imageUrl}`;
 
-        // 👇 Log this so you can see the final image link in console
-        console.log("✅ Ingredient image URL:", fullImageUrl);
+        // 👇 Log this so you can see the final image link in //console
+        //console.log("✅ Ingredient image URL:", fullImageUrl);
 
         return {
           id: ing.id,
@@ -195,7 +195,7 @@ export async function fetchIngredients(): Promise<{ [iceCreamId: number]: Ingred
 
     return byIceCream;
   } catch (error) {
-    console.error("❌ Error fetching ingredients:", error);
+    //console.error("❌ Error fetching ingredients:", error);
     return {};
   }
 }
@@ -241,7 +241,7 @@ export async function fetchIngredients(): Promise<{ [iceCreamId: number]: Ingred
 
     return byIceCream;
   } catch (error) {
-    console.error("Error fetching ingredients:", error);
+    //console.error("Error fetching ingredients:", error);
     return {};
   }
 
@@ -300,7 +300,7 @@ export async function fetchPortobelloData(): Promise<PortobelloData> {
         : null,
     };
   } catch (err) {
-    console.error("Error fetching Portobello data:", err);
+    //console.error("Error fetching Portobello data:", err);
     return { textField1: "", textField2: "", textField3: "", image: null };
   }
 }
@@ -421,7 +421,7 @@ export async function fetchPromoSections(): Promise<PromoSectionData[]> {
       };
     });
   } catch (err) {
-    console.error("Error fetching PromoSections:", err);
+    //console.error("Error fetching PromoSections:", err);
     return [];
   }
 }
@@ -507,7 +507,7 @@ export async function fetchFooterData(): Promise<FooterData | null> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
     const url = `${baseUrl}/api/footers?populate[footer_opt]=*&populate[footer_btns]=*`;
-    console.log("Fetching from URL:", url);
+    //console.log("Fetching from URL:", url);
 
     const res = await fetch(url, {
       cache: "no-store",           // 🔥 Disable caching
@@ -517,18 +517,18 @@ export async function fetchFooterData(): Promise<FooterData | null> {
     if (!res.ok) throw new Error(`Error ${res.status}`);
 
     const json = await res.json();
-    console.log("Full JSON response:", JSON.stringify(json, null, 2));
+    //console.log("Full JSON response:", JSON.stringify(json, null, 2));
 
     if (json.data && json.data.length > 0) {
       const footer = json.data[0];
-      console.log("Footer element:", footer);
+      //console.log("Footer element:", footer);
       return footer as FooterData;
     } else {
-      console.warn("No data array or empty in API response");
+      //console.warn("No data array or empty in API response");
       return null;
     }
   } catch (err) {
-    console.error("Fetch footer error:", err);
+    //console.error("Fetch footer error:", err);
     return null;
   }
 }
@@ -598,7 +598,7 @@ export async function fetchZariadeniaData(): Promise<ZariadeniaResponse | null> 
     );
     return await response.json();
   } catch (error) {
-    console.error('Error fetching zariadenia data:', error);
+    //console.error('Error fetching zariadenia data:', error);
     return null;
   }
 }
@@ -663,7 +663,7 @@ export async function fetchHeroVideoToSeparate(): Promise<HeroVideoToSeparate | 
     side: seg.side || null,
   }));
 
-  console.log("Mapped segments:", segments); // Add this to debug
+  //console.log("Mapped segments:", segments); // Add this to debug
 
   return {
     main_body_video: {
@@ -720,7 +720,7 @@ export const fetchPlaceData = async (): Promise<PlaceData | null> => {
     }
     return null;
   } catch (err) {
-    console.error(err);
+    //console.error(err);
     return null;
   }
 };
@@ -770,7 +770,7 @@ export const submitContactForm = async (data: ContactFormData): Promise<{ succes
     if (response.ok) {
 
       // Send the same data in the email
-      console.log("Contact form submitted successfully, sending email with data:", data);
+      //console.log("Contact form submitted successfully, sending email with data:", data);
       await fetch("/api/email_notice", {
         method: "POST",
         headers: {
