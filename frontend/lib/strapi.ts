@@ -754,13 +754,10 @@ export interface ContactFormData {
   postal_code: string;
   message: string;
 }
-import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const submitContactForm = async (
-  data: ContactFormData
-): Promise<{ success: boolean; error?: string }> => {
+
+export const submitContactForm = async (data: ContactFormData): Promise<{ success: boolean; error?: string }> => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
     if (!baseUrl) throw new Error("Strapi base URL is not configured");
@@ -774,33 +771,15 @@ export const submitContactForm = async (
     });
 
     if (response.ok) {
-      // send email with the same data
-      await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: "prenako.kosice@gmail.com",
-        subject: "New Contact Form Submission",
-        html: `
-          <h2>New message from contact form</h2>
-          <pre>${JSON.stringify(data, null, 2)}</pre>
-        `,
-      });
-
       return { success: true };
     } else {
       const errorData = await response.json();
-      return {
-        success: false,
-        error: errorData.error?.message || "Failed to send message",
-      };
+      return { success: false, error: errorData.error?.message || "Failed to send message" };
     }
   } catch (err) {
-    return {
-      success: false,
-      error: err instanceof Error ? err.message : "Unknown error",
-    };
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
   }
 };
-
 
 export async function fetchSteps() {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
