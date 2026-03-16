@@ -143,7 +143,7 @@ const ModernForm: React.FC = () => {
           <span className="mr-2 text-xl" style={{ color: SIGNATURE_COLOR }}>🏠</span>
           <input
             type="text"
-            placeholder="PSČ/Mesto"
+            placeholder="Mesto/Obec"
             className={inputBase}
             value={postal}
             onChange={(e) => setPostal(e.target.value)}
