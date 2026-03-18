@@ -15,17 +15,16 @@ const HeroVideoBackgroundIce: React.FC<HeroVideoBackgroundProps> = ({
   textField1,
   textField2,
   textField3,
+  
 }) => {
+  console.log("VIDEO URL:", videoUrl);
   const [texts, setTexts] = useState({ t1: textField1, t2: textField2, t3: textField3 });
 
   useEffect(() => {
     setTexts({ t1: textField1, t2: textField2, t3: textField3 });
   }, [textField1, textField2, textField3]);
 
-  // Use the URL as-is if it already starts with http
-  const resolvedUrl = videoUrl.startsWith("http") 
-    ? videoUrl 
-    : `${process.env.NEXT_PUBLIC_STRAPI_URL}${videoUrl}`;
+  const resolvedUrl = videoUrl;
 
   return (
     <div className="relative w-full h-screen overflow-hidden" style={{ backgroundColor: "#40DDCB" }}>

@@ -6,7 +6,7 @@ const HeroVideo: React.FC<HeroVideoProps> = ({ videoUrl }) => {
   return (
     <div className="w-full mt-6" style={{ backgroundColor: "#40DDCB" }}>
       <video
-        src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${videoUrl}`}
+        src={videoUrl}
         autoPlay
         muted
         loop

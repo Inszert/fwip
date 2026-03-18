@@ -326,9 +326,6 @@ function IceCreamCard({
       {/* Ingredients orbiting */}
       {ingredients.map((ingredient: any, idx: number) => {
         let imgUrl = ingredient.url || "";
-        if (imgUrl && !imgUrl.startsWith("http")) {
-          imgUrl = `${process.env.NEXT_PUBLIC_STRAPI_URL}${imgUrl}`;
-        }
         if (!imgUrl) return null;
 
         // Adjust for mobile to prevent overflow
