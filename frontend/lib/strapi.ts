@@ -17,7 +17,6 @@ function proxifyMediaUrl(url: string | null | undefined): string {
       return proxied.replace("/upload/", "/upload/q_auto,f_auto/");
     }
   }
-
   return cleaned;
 }
 
