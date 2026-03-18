@@ -3,13 +3,19 @@ const STRAPI = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 function proxifyMediaUrl(url: string | null | undefined): string {
   if (!url) return "";
 
-  // Remove accidental Strapi prefix before a full URL (e.g. "http://localhost:1337https://res.cloudinary.com/...")
   const cleaned = url.replace(/^https?:\/\/[^/]+https?:\/\//, "https://");
 
   if (cleaned.includes("res.cloudinary.com")) {
-    return cleaned
+    const proxied = cleaned
       .replace("https://res.cloudinary.com", "https://media.fwip.sk")
       .replace("http://res.cloudinary.com", "https://media.fwip.sk");
+
+    // Auto-optimize videos and images
+    if (/\.(mp4|webm|mov)/i.test(proxied)) {
+      return proxied.replace("/upload/", "/upload/q_auto,vc_auto,w_1280/");
+    } else {
+      return proxied.replace("/upload/", "/upload/q_auto,f_auto/");
+    }
   }
 
   return cleaned;
