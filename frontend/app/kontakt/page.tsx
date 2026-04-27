@@ -34,7 +34,7 @@ export default function KontaktPage() {
               "url": "https://fwip.sk",
               "contactPoint": {
                 "@type": "ContactPoint",
-                "telephone": "+421123456789",
+                "telephone": "+421902200971",
                 "contactType": "customer service",
                 "email": "info@fwip.sk",
               },
@@ -43,7 +43,7 @@ export default function KontaktPage() {
         />
       </Head>
 
-      <main className="min-h-screen flex flex-col justify-between bg-white">
+      <main className="min-h-screen flex flex-col justify-between ">
         <Header />
         <OfferForm />
         <Footer />
