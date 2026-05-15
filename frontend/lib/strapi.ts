@@ -28,15 +28,13 @@ export interface HeaderData {
   button?: Button[];
   image?: HeaderImage | null;
 }
-
-
 function fixUrls(obj: any): any {
   if (!obj || typeof obj !== "object") return obj;
   if (Array.isArray(obj)) return obj.map(fixUrls);
-  
+
   const result: any = {};
   for (const key of Object.keys(obj)) {
-    if ((key === "url") && typeof obj[key] === "string") {
+    if (key === "url" && typeof obj[key] === "string") {
       result[key] = toAbsoluteUrl(obj[key]);
     } else {
       result[key] = fixUrls(obj[key]);
@@ -46,13 +44,12 @@ function fixUrls(obj: any): any {
 }
 
 
-
 export async function fetchHeaderData(): Promise<HeaderData> {
   const res = await fetch(`${STRAPI}/api/headers?populate=*`);
   if (!res.ok) throw new Error("Chyba pri načítaní headera");
 
   const data = await res.json();
-  const header = data.data[0];
+  const header = fixUrls(data.data[0]);
 
   return {
     subtitle: header.subtitle,
@@ -676,7 +673,7 @@ export async function fetchPortobelloMiddles() {
     throw new Error(`Failed to fetch portobello middles data: ${response.status} ${response.statusText}`);
 
   const data = await response.json();
-  return data.data;
+  return fixUrls(data.data);
 }
 
 export async function fetchComparisons() {
