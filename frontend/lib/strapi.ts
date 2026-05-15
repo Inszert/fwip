@@ -49,12 +49,14 @@ export async function fetchHeaderData(): Promise<HeaderData> {
   if (!res.ok) throw new Error("Chyba pri načítaní headera");
 
   const data = await res.json();
-  const header = fixUrls(data.data[0]);
+  const header = data.data[0];
 
   return {
     subtitle: header.subtitle,
     button: header.button || [],
-    image: header.image || null,
+    image: header.image
+      ? { ...header.image, url: toAbsoluteUrl(header.image.url) }
+      : null,
   };
 }
 
@@ -328,9 +330,7 @@ export async function fetchPromoSections(): Promise<PromoSectionData[]> {
     const items = json.data || [];
 
     return items.map((item: any) => {
-      const imageData = item.image || {};
-      const rawUrl = imageData.formats?.large?.url || imageData.url || "";
-      const imageUrl = toAbsoluteUrl(rawUrl);
+      const imageData = fixUrls(item.image || {});
 
       return {
         backgroundColor: item.backgroundColor || "#fff",
@@ -341,7 +341,7 @@ export async function fetchPromoSections(): Promise<PromoSectionData[]> {
         row2Color: item.row2Color || "#40DDCB",
         row3: item.row3 || "",
         image: {
-          url: imageUrl,
+          url: imageData.url || "",
           alternativeText: imageData.alternativeText || "",
           formats: imageData.formats || {},
         },
