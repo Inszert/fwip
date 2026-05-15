@@ -94,7 +94,7 @@ const CafeRestaurantsSection: React.FC = () => {
                 </div>
 
                 {/* Image */}
-                {item.image.length > 0 && (
+                {item.image?.length > 0 && (
                   <div className="flex-1 flex justify-center w-full max-w-full">
                     <img
                       src={getImageUrl(item.image[0], "large") ?? undefined}
@@ -138,7 +138,7 @@ const CafeRestaurantsSection: React.FC = () => {
                 </div>
 
                 {/* Image */}
-                {item.image.length > 0 && (
+                {item.image?.length > 0 && (
                   <div
                     className={`flex-1 flex justify-center items-center w-full max-w-full h-full ${
                       isImageOnRight ? "md:order-2" : "md:order-1"

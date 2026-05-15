@@ -51,30 +51,23 @@ const PurpleCenteredCard: React.FC<ZariadeniaCardProps> = ({ units }) => {
               {/* Image */}
               <div className="absolute left-1/2 -top-[100px] -translate-x-1/2 z-10 transition-transform duration-300 hover:scale-105">
                 <div className="bg-[#17e4e4] rounded-full w-[200px] h-[200px] shadow-xl relative">
-                  <div
-                    className="absolute"
-                    style={{
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%) scale(.35)",
-                    }}
-                  >
                     {unit.image && (
                       <img
                         src={unit.image.url}
                         alt={unit.image.alternativeText || unit.text1}
-                        className="max-w-none block"
+                        className="absolute"
                         style={{
-                          width: unit.image.width
-                            ? `${unit.image.width}px`
-                            : "auto",
-                          height: unit.image.height
-                            ? `${unit.image.height}px`
-                            : "auto",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          maxWidth: "130%",
+                          maxHeight: "130%",
+                          width: "auto",
+                          height: "auto",
+                          zIndex: 10,
                         }}
                       />
                     )}
-                  </div>
                 </div>
               </div>
 
