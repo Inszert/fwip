@@ -493,7 +493,20 @@ export async function fetchZariadeniaData(): Promise<ZariadeniaResponse | null> 
       `${STRAPI}/api/zariadenias?populate[main_image]=true&populate[units_part][populate]=*`,
       { next: { revalidate: 60 } }
     );
-    return await response.json();
+    const json = await response.json();
+
+    if (json.data) {
+      json.data = json.data.map((item: any) => ({
+        ...item,
+        main_image: fixUrls(item.main_image),
+        units_part: (item.units_part || []).map((unit: any) => ({
+          ...unit,
+          image: fixUrls(unit.image),
+        })),
+      }));
+    }
+
+    return json;
   } catch (error) {
     return null;
   }
