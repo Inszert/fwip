@@ -179,7 +179,7 @@ const Header: React.FC = () => {
                   alt={image.alternativeText || "Logo"}
                   width={60}
                   height={60}
-                  className={`object-contain transition-all duration-200 w-16 h-16 ${pathname === "/portobello" ? "brightness-0 invert" : ""}`}
+                  className={`object-contain transition-all duration-200 w-16 h-16 ${pathname === "/portobello" || pathname === "/kontakt" ? "brightness-0 invert" : ""}`}
                   unoptimized
                 />
               </Link>
