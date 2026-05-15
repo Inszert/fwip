@@ -186,7 +186,7 @@ export default function PortobelloGreen({ data }: Props) {
         </div>
 
         {/* TEXT */}
-        <div className="relative z-30 flex flex-col lg:flex-row justify-between gap-10 pt-12">
+        <div className="relative z-30 flex flex-col lg:flex-row justify-between gap-10 pt-[30vh]">
           <div className="max-w-md space-y-4">
             <p className="text-sm font-semibold text-white uppercase tracking-widest bg-black/30 px-3 py-1 rounded inline-block">
               {data.text1}
