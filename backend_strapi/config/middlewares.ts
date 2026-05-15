@@ -7,8 +7,8 @@ export default [
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          'img-src': ["'self'", "data:", "blob:", "https://res.cloudinary.com"],
-          'media-src': ["'self'", "data:", "blob:", "https://res.cloudinary.com"],
+          'img-src': ["'self'", "data:", "blob:", "https://pub-7d6fe2e7774e4986929a98b942945494.r2.dev"],
+          'media-src': ["'self'", "data:", "blob:", "https://pub-7d6fe2e7774e4986929a98b942945494.r2.dev"],
         },
       },
     },
