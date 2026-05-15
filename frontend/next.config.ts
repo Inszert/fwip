@@ -8,9 +8,16 @@ const nextConfig = {
         port: "1337",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "pub-7d6fe2e7774e4986929a98b942945494.r2.dev",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
-  // mark server-only packages here
   serverExternalPackages: ["@tailwindcss/node", "resend"],
 };
 
