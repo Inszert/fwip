@@ -7,8 +7,9 @@ export default [
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          'img-src': ["'self'", "data:", "blob:", "https://pub-7d6fe2e7774e4986929a98b942945494.r2.dev"],
-          'media-src': ["'self'", "data:", "blob:", "https://pub-7d6fe2e7774e4986929a98b942945494.r2.dev"],
+          'connect-src': ["'self'", 'https:', 'http:'],
+          'img-src': ["'self'", "data:", "blob:", "https://pub-7d6fe2e7774e4986929a98b942945494.r2.dev", "https://ae0e5ad00759ea5f03237821fe4e6ca9.r2.cloudflarestorage.com"],
+          'media-src': ["'self'", "data:", "blob:", "https://pub-7d6fe2e7774e4986929a98b942945494.r2.dev", "https://ae0e5ad00759ea5f03237821fe4e6ca9.r2.cloudflarestorage.com"],
         },
       },
     },
