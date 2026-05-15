@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://www.fwip.sk
+Host: https://fwip.sk
 
 # Sitemaps
-Sitemap: https://www.fwip.sk/sitemap.xml
+Sitemap: https://fwip.sk/sitemap.xml

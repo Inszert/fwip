@@ -384,7 +384,18 @@ export async function fetchPortobelloHwdData(): Promise<PortobelloHwdItem[]> {
     { next: { revalidate: 60 } }
   );
   const json = await res.json();
-  return json.data;
+  return (json.data || []).map((item: any) => ({
+    ...item,
+    portobelloHwd: item.portobelloHwd
+      ? {
+          ...item.portobelloHwd,
+          hwdOptions: (item.portobelloHwd.hwdOptions || []).map((opt: any) => ({
+            ...opt,
+            image: fixUrls(opt.image),
+          })),
+        }
+      : null,
+  }));
 }
 
 export interface RichTextChild {
@@ -604,7 +615,15 @@ export const fetchPlaceData = async (): Promise<PlaceData | null> => {
 
     const json = await response.json();
     if (json.data && json.data.length > 0) {
-      return json.data[0];
+      const item = json.data[0];
+      return {
+        ...item,
+        lending_image: fixUrls(item.lending_image),
+        first_hero_section: (item.first_hero_section || []).map((sec: any) => ({
+          ...sec,
+          image: fixUrls(sec.image),
+        })),
+      };
     }
     return null;
   } catch (err) {
@@ -701,5 +720,11 @@ export async function fetchComparisons() {
     throw new Error(`Failed to fetch comparisons: ${response.status} ${response.statusText}`);
 
   const data = await response.json();
-  return data.data;
+  return (data.data || []).map((item: any) => ({
+    ...item,
+    types: (item.types || []).map((type: any) => ({
+      ...type,
+      image: fixUrls(type.image),
+    })),
+  }));
 }
