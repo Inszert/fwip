@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_basic_result_comperisons",
+  "info": {
+    "displayName": "result_comperison"
+  },
+  "options": {},
+  "attributes": {
+    "result": {
+      "type": "boolean"
+    }
+  },
+  "config": {}
+}

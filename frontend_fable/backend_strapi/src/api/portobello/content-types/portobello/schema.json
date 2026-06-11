@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "portobellos",
+  "info": {
+    "singularName": "portobello",
+    "pluralName": "portobellos",
+    "displayName": "Portobellos"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "portobelloPrimary": {
+      "type": "component",
+      "component": "portobello.portobello-primary",
+      "repeatable": false
+    },
+    "portobelloSecondary": {
+      "type": "component",
+      "component": "portobello.portobello-secondary",
+      "repeatable": false
+    },
+    "portobelloHwd": {
+      "type": "component",
+      "component": "portobello.portobello-hwd",
+      "repeatable": false
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_portobello_hwd_options",
+  "info": {
+    "displayName": "Hwd Option"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "orientacion": {
+      "type": "enumeration",
+      "enum": [
+        "height",
+        "width",
+        "depth"
+      ]
+    }
+  },
+  "config": {}
+}

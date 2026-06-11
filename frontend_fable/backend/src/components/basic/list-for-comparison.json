@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_basic_list_for_comparisons",
+  "info": {
+    "displayName": "List_for_comparison"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ice-creams",
+  "info": {
+    "singularName": "ice-cream",
+    "pluralName": "ice-creams",
+    "displayName": "Ice-creams"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "color": {
+      "type": "string"
+    },
+    "ingredient": {
+      "type": "component",
+      "component": "default.ingredient",
+      "repeatable": true
+    }
+  }
+}

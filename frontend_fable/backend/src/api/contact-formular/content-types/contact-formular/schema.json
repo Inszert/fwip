@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_formulars",
+  "info": {
+    "singularName": "contact-formular",
+    "pluralName": "contact-formulars",
+    "displayName": "Contact_formular"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Business_name": {
+      "type": "string"
+    },
+    "Lname": {
+      "type": "string"
+    },
+    "Fname": {
+      "type": "string"
+    },
+    "emial": {
+      "type": "email"
+    },
+    "phone_number": {
+      "type": "string"
+    },
+    "postal_code": {
+      "type": "string"
+    },
+    "message": {
+      "type": "richtext"
+    }
+  }
+}

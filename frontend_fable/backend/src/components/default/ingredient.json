@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_basic_ingredients",
+  "info": {
+    "displayName": "Ingredient"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "x": {
+      "type": "integer"
+    },
+    "y": {
+      "type": "integer"
+    },
+    "size": {
+      "type": "integer"
+    },
+    "rotation": {
+      "type": "integer"
+    }
+  },
+  "config": {}
+}
