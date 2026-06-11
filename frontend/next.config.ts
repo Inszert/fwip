@@ -4,8 +4,7 @@ const nextConfig = {
     return [
       {
         source: '/:path*',
-        has: [{ type: 'header', key: 'x-forwarded-proto', value: 'http' }],
-        destination: 'https://fwip.sk/:path*',
+        destination: 'https://www.fwip.sk/:path*',
         permanent: true,
       },
     ]
