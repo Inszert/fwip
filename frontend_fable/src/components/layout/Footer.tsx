@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { CONTACT, FOOTER } from '../../data/static.sk'
 import { useFooter } from '../../hooks/useFooter'
+import { useHeader } from '../../hooks/useHeader'
 
 function InstagramIcon() {
   return (
@@ -20,9 +21,11 @@ function FacebookIcon() {
 
 export default function Footer() {
   const { data: strapiFooter } = useFooter()
+  const { data: header } = useHeader()
 
   const phone = strapiFooter?.phoneNumber || CONTACT.phone
   const location = strapiFooter?.location || CONTACT.address
+  const logoUrl = header?.image?.url
 
   return (
     <footer className="bg-dark text-white" aria-label="Pätička stránky">
@@ -30,8 +33,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="lg:col-span-2 space-y-4">
-            <Link to="/" className="font-display font-bold text-3xl text-primary">
-              fwip
+            <Link to="/" className="inline-block" aria-label="fwip – domov">
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt="fwip"
+                  className="h-12 w-auto object-contain brightness-0 invert"
+                />
+              ) : (
+                <span className="font-display font-bold text-3xl text-primary">fwip</span>
+              )}
             </Link>
             <p className="text-white/70 text-sm leading-relaxed max-w-sm">{FOOTER.tagline}</p>
             <div className="flex gap-3 pt-1">

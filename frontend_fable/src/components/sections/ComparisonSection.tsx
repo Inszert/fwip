@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { COMPARISON_FALLBACK } from '../../data/static.sk'
 import { fadeUp } from '../../design-system/animations'
 import { useComparisons } from '../../hooks/useComparisons'
+import { useHeader } from '../../hooks/useHeader'
 import { useMotionSafe } from '../../hooks/useMotionSafe'
 import Button from '../ui/Button'
 import SectionHeading from '../ui/SectionHeading'
@@ -51,7 +52,9 @@ function Cell({ value, highlight }: { value: CellValue; highlight: boolean }) {
  */
 export default function ComparisonSection() {
   const { data: comparison } = useComparisons()
+  const { data: header } = useHeader()
   const variants = useMotionSafe(fadeUp)
+  const fwipLogo = header?.image?.url
 
   const heading = comparison?.text1 || COMPARISON_FALLBACK.heading
   const subheading = comparison?.text2 || COMPARISON_FALLBACK.subheading
@@ -98,21 +101,37 @@ export default function ComparisonSection() {
                   <th
                     key={`${col.label}-${i}`}
                     scope="col"
-                    className={`px-3 md:px-5 py-4 text-center align-bottom ${
+                    className={`px-3 md:px-5 py-4 text-center align-middle ${
                       col.isFwip ? 'text-primary' : 'text-white/85'
                     }`}
                   >
-                    {col.imageUrl && (
-                      <img
-                        src={col.imageUrl}
-                        alt=""
-                        loading="lazy"
-                        className="w-10 h-10 mx-auto mb-1.5 object-contain rounded-full bg-white/10"
-                      />
+                    {col.isFwip ? (
+                      /* fwip column: logo instead of the word */
+                      (col.imageUrl || fwipLogo) ? (
+                        <img
+                          src={col.imageUrl || fwipLogo}
+                          alt="fwip"
+                          loading="lazy"
+                          className="h-9 md:h-11 mx-auto object-contain brightness-0 invert"
+                        />
+                      ) : (
+                        <span className="font-display font-bold text-sm md:text-base">fwip</span>
+                      )
+                    ) : (
+                      <>
+                        {col.imageUrl && (
+                          <img
+                            src={col.imageUrl}
+                            alt=""
+                            loading="lazy"
+                            className="w-10 h-10 mx-auto mb-1.5 object-contain rounded-full bg-white/10"
+                          />
+                        )}
+                        <span className="font-display font-bold text-xs md:text-sm leading-tight block">
+                          {col.label}
+                        </span>
+                      </>
                     )}
-                    <span className="font-display font-bold text-xs md:text-sm leading-tight block">
-                      {col.label}
-                    </span>
                   </th>
                 ))}
               </tr>

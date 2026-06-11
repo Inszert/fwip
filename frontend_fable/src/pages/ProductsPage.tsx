@@ -1,5 +1,4 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { useState } from 'react'
 import CtaStrip from '../components/sections/CtaStrip'
 import SegmentedVideo from '../components/sections/SegmentedVideo'
 import FlavorCard from '../components/ui/FlavorCard'
@@ -8,28 +7,17 @@ import SectionHeading from '../components/ui/SectionHeading'
 import { FLAVORS_SECTION } from '../data/static.sk'
 import { fadeUp, stagger } from '../design-system/animations'
 import { useMotionSafe } from '../hooks/useMotionSafe'
+import { PAGE_META, usePageMeta } from '../hooks/usePageMeta'
 import { useProducts } from '../hooks/useProducts'
 import { useZmrzlinaVideo } from '../hooks/useZmrzlinaVideo'
-import type { FlavorType } from '../types'
-
-type Filter = 'all' | FlavorType
-
-const FILTERS: { value: Filter; label: string }[] = [
-  { value: 'all', label: 'Všetky' },
-  { value: 'Gelato', label: 'Gelato' },
-  { value: 'Sorbet', label: 'Sorbet' },
-  { value: 'Frozen Yogurt', label: 'Frozen jogurt' },
-]
 
 export default function ProductsPage() {
+  usePageMeta(PAGE_META.zmrzlina)
   const { data: flavors, loading } = useProducts()
   const { data: videos } = useZmrzlinaVideo()
-  const [filter, setFilter] = useState<Filter>('all')
   const staggerSafe = useMotionSafe(stagger)
   const fadeUpSafe = useMotionSafe(fadeUp)
   const prefersReduced = useReducedMotion()
-
-  const filtered = filter === 'all' ? flavors : flavors.filter((f) => f.type === filter)
 
   return (
     <>
@@ -74,45 +62,23 @@ export default function ProductsPage() {
         </section>
       )}
 
-      <section className="py-16 md:py-20 bg-off-white min-h-[40vh]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Filter tabs */}
-          <div
-            className="flex flex-wrap justify-center gap-3 mb-12"
-            role="tablist"
-            aria-label="Filter príchutí"
-          >
-            {FILTERS.map((f) => (
-              <button
-                key={f.value}
-                role="tab"
-                aria-selected={filter === f.value}
-                onClick={() => setFilter(f.value)}
-                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${
-                  filter === f.value
-                    ? 'bg-dark text-white shadow-md'
-                    : 'bg-white text-muted shadow-card hover:text-dark hover:shadow-card-hover'
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
+      {/* Soft teal backdrop — colored but not overpowering */}
+      <section className="relative py-16 md:py-24 bg-gradient-to-b from-primary/40 via-primary/25 to-primary/40 min-h-[40vh] overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <LoadingSpinner />
-          ) : filtered.length === 0 ? (
+          ) : flavors.length === 0 ? (
             <p className="text-center text-muted py-12">
-              V tejto kategórii momentálne nie sú žiadne príchute.
+              Momentálne nie sú dostupné žiadne príchute.
             </p>
           ) : (
             <motion.div
-              key={filter}
               variants={staggerSafe}
               initial="hidden"
               animate="visible"
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
             >
-              {filtered.map((flavor) => (
+              {flavors.map((flavor) => (
                 <FlavorCard key={flavor.id} flavor={flavor} />
               ))}
             </motion.div>
@@ -120,7 +86,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* The "cut" video — 3 full-screen parts with text, like the original */}
+      {/* The "cut" video — full-screen parts with text, like the original */}
       {videos.separVideoUrl && (
         <SegmentedVideo videoUrl={videos.separVideoUrl} segments={videos.segments} />
       )}

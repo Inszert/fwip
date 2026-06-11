@@ -8,6 +8,7 @@ import { B2B, MACHINE } from '../data/static.sk'
 import { fadeUp, scaleIn, slideInLeft, slideInRight, stagger } from '../design-system/animations'
 import { sentenceCase } from '../lib/text'
 import { useMotionSafe } from '../hooks/useMotionSafe'
+import { PAGE_META, usePageMeta } from '../hooks/usePageMeta'
 import { usePortobello } from '../hooks/usePortobello'
 import { usePromoSections } from '../hooks/usePromoSections'
 
@@ -33,6 +34,9 @@ function FeaturesGrid() {
 
   const heading = sentenceCase(portobello?.portobelloSecondary?.subtitle || 'Prečo Portobello?')
 
+  // The CMS icons are white SVGs — they need a colored disc behind them
+  const discColors = ['bg-primary', 'bg-pink-400', 'bg-amber-400', 'bg-violet-400', 'bg-sky-400']
+
   return (
     <section className="py-20 md:py-28 bg-off-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,21 +55,23 @@ function FeaturesGrid() {
               whileHover={{ y: -4 }}
               className="bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-shadow duration-300 px-6 py-6 flex items-center gap-4 w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.834rem)]"
             >
-              {feature.iconUrl ? (
-                <img
-                  src={feature.iconUrl}
-                  alt=""
-                  loading="lazy"
-                  className="w-12 h-12 shrink-0 object-contain"
-                />
-              ) : (
-                <span
-                  className="w-12 h-12 shrink-0 rounded-full bg-primary-light text-primary-dark text-xl flex items-center justify-center"
-                  aria-hidden="true"
-                >
-                  ✓
-                </span>
-              )}
+              <span
+                className={`w-14 h-14 shrink-0 rounded-full ${
+                  discColors[i % discColors.length]
+                } flex items-center justify-center shadow-md`}
+                aria-hidden="true"
+              >
+                {feature.iconUrl ? (
+                  <img
+                    src={feature.iconUrl}
+                    alt=""
+                    loading="lazy"
+                    className="w-8 h-8 object-contain"
+                  />
+                ) : (
+                  <span className="text-white text-xl">✓</span>
+                )}
+              </span>
               <div className="text-left">
                 <h3 className="font-semibold text-dark leading-snug">{feature.title}</h3>
                 {feature.description && (
@@ -183,6 +189,7 @@ function StatsSection() {
 }
 
 export default function MachinePage() {
+  usePageMeta(PAGE_META.portobello)
   const { data: portobello } = usePortobello()
   const fadeUpSafe = useMotionSafe(fadeUp)
 

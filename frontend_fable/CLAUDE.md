@@ -48,14 +48,20 @@ are data, applied via inline style.)
 - Media URLs from the private Cloudflare R2 bucket are rewritten to the public
   r2.dev host in src/lib/strapi.ts (same mapping as the original frontend).
 - All Strapi collection types: see src/hooks/ — one hook per collection:
-  - useProducts → /api/ice-creams (normalized to the Flavor model)
-  - useSteps → /api/stepss
+  - useProducts → /api/ice-creams (Flavor model incl. floating ingredients)
+  - useSteps → /api/stepss (heading + circular step videos)
   - useComparisons → /api/comparisons
   - usePortobello → /api/portobellos (primary + secondary + hwd components)
   - usePromoSections → /api/promo-sections
   - useZariadenia → /api/zariadenias
-  - usePlaces → /api/places
+  - usePlaces → /api/places (also provides B2B image + section colors)
   - useFooter → /api/footers
+  - useHeader → /api/headers (fwip logo used in navbar, footer, comparison)
+  - useHeroVideo → /api/hero-videos (home hero background video)
+  - useZmrzlinaVideo → /api/hero-video-ice-creams (zmrzlina hero + segmented video)
+- SEO: usePageMeta hook sets per-page title/description/OG/canonical
+  (PAGE_META in src/hooks/usePageMeta.ts); JSON-LD Organization in index.html;
+  public/robots.txt ready. Sitemap intentionally NOT generated yet.
 - Contact form POSTs to /api/contact-formulars — field names match the Strapi
   schema exactly, including the `emial` typo. Do not "fix" it client-side.
 - Fallback hardcoded Slovak data: src/data/flavors.sk.ts + src/data/static.sk.ts

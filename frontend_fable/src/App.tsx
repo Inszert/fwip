@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
+import CookieConsent from './components/ui/CookieConsent'
 import { pageTransition } from './design-system/animations'
 import { useMotionSafe } from './hooks/useMotionSafe'
 import ContactPage from './pages/ContactPage'
@@ -54,6 +55,7 @@ export default function App() {
           </Routes>
         </motion.main>
       </AnimatePresence>
+      <CookieConsent />
       <Footer />
     </div>
   )

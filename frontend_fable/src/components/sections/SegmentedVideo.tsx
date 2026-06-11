@@ -46,11 +46,20 @@ function SegmentPart({ videoUrl, segment }: { videoUrl: string; segment: VideoSe
         ? 'justify-end text-right'
         : 'justify-center text-center'
 
+  // On mobile the subject sits where the desktop text would be — shift the
+  // crop away from the text side, like the original CutVideoIceCream
+  const mobileObjectPosition =
+    segment.side === 'left'
+      ? 'max-lg:object-[90%_center]'
+      : segment.side === 'right'
+        ? 'max-lg:object-[15%_center]'
+        : ''
+
   return (
     <div className="relative w-full h-screen bg-dark overflow-hidden">
       <video
         ref={ref}
-        className="absolute inset-0 w-full h-full object-cover"
+        className={`absolute inset-0 w-full h-full object-cover ${mobileObjectPosition}`}
         src={videoUrl}
         muted
         playsInline
@@ -58,9 +67,9 @@ function SegmentPart({ videoUrl, segment }: { videoUrl: string; segment: VideoSe
         onTimeUpdate={handleTimeUpdate}
         aria-hidden="true"
       />
-      {/* Soft gradient on the text side for readability */}
+      {/* Soft gradient on the text side for readability (desktop) */}
       <div
-        className={`absolute inset-0 ${
+        className={`hidden lg:block absolute inset-0 ${
           segment.side === 'left'
             ? 'bg-gradient-to-r from-dark/55 via-transparent to-transparent'
             : segment.side === 'right'
@@ -69,23 +78,49 @@ function SegmentPart({ videoUrl, segment }: { videoUrl: string; segment: VideoSe
         }`}
         aria-hidden="true"
       />
+      {/* Mobile: gentle top + bottom gradients behind the texts */}
+      <div
+        className="lg:hidden absolute inset-0 bg-gradient-to-b from-dark/55 via-transparent to-dark/55"
+        aria-hidden="true"
+      />
 
+      {/* Desktop: text on the segment's side */}
       {(segment.text1 || segment.text2) && (
-        <div className={`absolute inset-0 flex items-center ${alignment} px-6 md:px-16 lg:px-24`}>
+        <div
+          className={`hidden lg:flex absolute inset-0 items-center ${alignment} lg:px-36 xl:px-52`}
+        >
           <div className="max-w-xl">
             {segment.text1 && (
-              <h3 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white tracking-wide drop-shadow-lg">
+              <h3 className="font-display font-bold text-5xl lg:text-7xl text-white tracking-wide drop-shadow-lg">
                 {segment.text1}
               </h3>
             )}
             {segment.text2 && (
-              <p className="text-white/90 text-base md:text-xl mt-4 md:mt-6 leading-relaxed drop-shadow">
+              <p className="text-white/90 text-xl mt-6 leading-relaxed drop-shadow">
                 {segment.text2}
               </p>
             )}
           </div>
         </div>
       )}
+
+      {/* Mobile: big text top, small text bottom */}
+      <div className="lg:hidden absolute inset-0">
+        {segment.text1 && (
+          <div className="absolute top-20 left-0 right-0 px-4">
+            <h3 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-wide text-center drop-shadow-lg">
+              {segment.text1}
+            </h3>
+          </div>
+        )}
+        {segment.text2 && (
+          <div className="absolute bottom-8 left-0 right-0 px-6">
+            <p className="text-white/90 text-sm sm:text-base leading-relaxed text-center max-w-md mx-auto drop-shadow">
+              {segment.text2}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

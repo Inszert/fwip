@@ -3,9 +3,11 @@ import ContactForm from '../components/sections/ContactForm'
 import { CONTACT, FOOTER } from '../data/static.sk'
 import { fadeUp, slideInLeft } from '../design-system/animations'
 import { useMotionSafe } from '../hooks/useMotionSafe'
+import { PAGE_META, usePageMeta } from '../hooks/usePageMeta'
 import { useFooter } from '../hooks/useFooter'
 
 export default function ContactPage() {
+  usePageMeta(PAGE_META.kontakt)
   const fadeUpSafe = useMotionSafe(fadeUp)
   const left = useMotionSafe(slideInLeft)
   const { data: strapiFooter } = useFooter()

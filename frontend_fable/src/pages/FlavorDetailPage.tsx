@@ -4,14 +4,21 @@ import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import FlavorCard from '../components/ui/FlavorCard'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
-import { fadeUp, stagger } from '../design-system/animations'
+import { fadeUp, slideInLeft, slideInRight, stagger } from '../design-system/animations'
 import { useMotionSafe } from '../hooks/useMotionSafe'
 import { useProducts } from '../hooks/useProducts'
 
+/**
+ * Product page in the fwip.com style: full-bleed flavor-colored hero with a
+ * large capsule render and floating ingredients, copy on the left, related
+ * flavors below.
+ */
 export default function FlavorDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const { data: flavors, loading } = useProducts()
   const fadeUpSafe = useMotionSafe(fadeUp)
+  const left = useMotionSafe(slideInLeft)
+  const right = useMotionSafe(slideInRight)
   const staggerSafe = useMotionSafe(stagger)
 
   if (loading) {
@@ -37,59 +44,124 @@ export default function FlavorDetailPage() {
 
   return (
     <>
-      {/* Full-width hero in the flavor's own color (CMS data → inline style) */}
+      {/* Full-bleed hero in the flavor's own color, fwip.com product style */}
       <section
-        className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden"
+        className="relative min-h-screen flex items-center overflow-hidden"
         style={{ backgroundColor: flavor.color }}
       >
-        <div className="absolute inset-0 bg-dark/45" aria-hidden="true" />
-        <motion.div
-          variants={fadeUpSafe}
-          initial="hidden"
-          animate="visible"
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
-        >
-          <div>
+        {/* Soft radial glow behind the capsule */}
+        <div
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-[60vw] h-[60vw] rounded-full bg-white/10 blur-3xl"
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-32 pb-20 w-full">
+          {/* Copy */}
+          <motion.div variants={left} initial="hidden" animate="visible">
+            <nav className="text-white/70 text-sm mb-6" aria-label="Omrvinková navigácia">
+              <Link to="/zmrzlina" className="hover:text-white transition-colors">
+                Naše príchute
+              </Link>
+              <span className="mx-2" aria-hidden="true">/</span>
+              <span className="text-white">{flavor.name}</span>
+            </nav>
+
             <Badge kind="type" flavorType={flavor.type} />
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mt-4">
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white mt-5 drop-shadow">
               {flavor.name}
             </h1>
-            <p className="font-accent italic text-2xl md:text-3xl text-white/85 mt-4">
+            <p className="font-accent italic text-2xl md:text-3xl text-white/90 mt-4">
               {flavor.tagline}
             </p>
-            <div className="flex flex-wrap gap-2 mt-6">
+            <p className="text-white/85 text-base md:text-lg mt-6 leading-relaxed max-w-xl whitespace-pre-line">
+              {flavor.description}
+            </p>
+
+            <div className="flex flex-wrap gap-2 mt-7">
               {flavor.isVegan && <Badge kind="vegan" />}
               {flavor.isGlutenFree && <Badge kind="gluten-free" />}
               {flavor.type === 'Frozen Yogurt' && <Badge kind="less-fat" />}
             </div>
-          </div>
-          {flavor.image && (
-            <div className="flex justify-center md:justify-end">
-              <img
-                src={flavor.image}
-                alt={flavor.name}
-                className="max-h-80 md:max-h-96 w-auto object-contain drop-shadow-2xl rounded-2xl"
-              />
+
+            <div className="mt-9 flex flex-col sm:flex-row gap-4">
+              <Button to="/kontakt" variant="secondary" size="lg">
+                Chcem fwip pre môj biznis
+              </Button>
             </div>
-          )}
-        </motion.div>
+          </motion.div>
+
+          {/* Big capsule with its floating ingredients */}
+          <motion.div
+            variants={right}
+            initial="hidden"
+            animate="visible"
+            className="relative flex justify-center lg:justify-end"
+          >
+            <div className="relative">
+              {(flavor.ingredients || []).map((ing) => (
+                <motion.img
+                  key={ing.id}
+                  src={ing.url}
+                  alt=""
+                  aria-hidden="true"
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  animate={{ opacity: 0.95, scale: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5, ease: 'easeOut' }}
+                  className="absolute z-20 pointer-events-none object-contain drop-shadow-xl motion-reduce:transition-none"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                    width: ing.size,
+                    height: ing.size,
+                    transform: `translate(calc(-50% + ${ing.x * 1.4}px), calc(-50% + ${
+                      ing.y * 0.9
+                    }px)) rotate(${ing.rotation}deg)`,
+                  }}
+                />
+              ))}
+              {flavor.image ? (
+                <img
+                  src={flavor.image}
+                  alt={flavor.name}
+                  className="relative z-10 max-h-[420px] md:max-h-[540px] w-auto object-contain"
+                  style={{ filter: 'drop-shadow(0 35px 60px rgba(0,0,0,0.35))' }}
+                />
+              ) : (
+                <div
+                  className="w-72 h-72 rounded-full bg-white/20 ring-8 ring-white/30"
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+          </motion.div>
+        </div>
       </section>
 
-      {/* Description */}
-      <section className="py-16 md:py-24 bg-off-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-dark mb-6">
-            O tejto príchuti
-          </h2>
-          <p className="text-text text-base md:text-lg leading-relaxed whitespace-pre-line">
-            {flavor.description}
-          </p>
-          <div className="mt-10">
-            <Button to="/kontakt" size="lg">
-              Chcem fwip pre môj biznis
-            </Button>
-          </div>
-        </div>
+      {/* Quick facts strip */}
+      <section className="bg-off-white py-14 md:py-16">
+        <motion.div
+          variants={fadeUpSafe}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-5 text-center"
+        >
+          {[
+            { value: '7 s', label: 'čerstvo stočené' },
+            { value: '100 %', label: 'talianska receptúra' },
+            { value: flavor.isGlutenFree ? 'Áno' : 'Nie', label: 'bezlepkové' },
+            { value: flavor.isVegan ? 'Áno' : 'Nie', label: 'vegánske' },
+          ].map((fact) => (
+            <div key={fact.label} className="bg-white rounded-2xl shadow-card px-4 py-6">
+              <p className="font-display text-2xl md:text-3xl font-bold text-primary-dark">
+                {fact.value}
+              </p>
+              <p className="text-muted text-xs md:text-sm mt-1 uppercase tracking-wide">
+                {fact.label}
+              </p>
+            </div>
+          ))}
+        </motion.div>
       </section>
 
       {/* Other flavors — horizontal scroll */}
@@ -98,7 +170,7 @@ export default function FlavorDetailPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
               <h2 className="font-display text-2xl md:text-3xl font-bold text-dark">
-                Ďalšie príchute
+                Mohlo by vám chutiť
               </h2>
               <Link
                 to="/zmrzlina"

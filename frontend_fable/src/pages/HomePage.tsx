@@ -5,9 +5,11 @@ import Hero from '../components/sections/Hero'
 import HowItWorks from '../components/sections/HowItWorks'
 import MachineTeaser from '../components/sections/MachineTeaser'
 import SignatureFlavors from '../components/sections/SignatureFlavors'
+import { PAGE_META, usePageMeta } from '../hooks/usePageMeta'
 import { useProducts } from '../hooks/useProducts'
 
 export default function HomePage() {
+  usePageMeta(PAGE_META.home)
   const { data: flavors, loading } = useProducts()
 
   return (

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { fadeUp } from '../design-system/animations'
 import { useMotionSafe } from '../hooks/useMotionSafe'
+import { PAGE_META, usePageMeta } from '../hooks/usePageMeta'
 
 interface Section {
   title: string
@@ -143,6 +144,7 @@ const SECTIONS: Section[] = [
 ]
 
 export default function PrivacyPage() {
+  usePageMeta(PAGE_META.privacy)
   const fadeUpSafe = useMotionSafe(fadeUp)
 
   return (

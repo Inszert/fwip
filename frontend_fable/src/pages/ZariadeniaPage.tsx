@@ -5,6 +5,7 @@ import { ZARIADENIA } from '../data/static.sk'
 import { fadeUp, stagger } from '../design-system/animations'
 import { sentenceCase } from '../lib/text'
 import { useMotionSafe } from '../hooks/useMotionSafe'
+import { PAGE_META, usePageMeta } from '../hooks/usePageMeta'
 import { useZariadenia } from '../hooks/useZariadenia'
 import type { StrapiButton } from '../types'
 
@@ -14,6 +15,7 @@ function unitButton(button: StrapiButton | StrapiButton[] | null | undefined) {
 }
 
 export default function ZariadeniaPage() {
+  usePageMeta(PAGE_META.zariadenia)
   const { data: zariadenia } = useZariadenia()
   const fadeUpSafe = useMotionSafe(fadeUp)
   const staggerSafe = useMotionSafe(stagger)
@@ -65,9 +67,17 @@ export default function ZariadeniaPage() {
         </motion.div>
       </section>
 
-      {/* Units */}
-      <section className="py-20 md:py-28 bg-off-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Units — circular showcases on a playful teal backdrop */}
+      <section className="relative py-20 md:py-28 bg-gradient-to-b from-primary-light via-off-white to-primary-light overflow-hidden">
+        <div
+          className="absolute -top-20 -left-20 w-80 h-80 rounded-full bg-primary/15 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute bottom-0 -right-24 w-96 h-96 rounded-full bg-pink-300/20 blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {units.length === 0 ? (
             <div className="text-center max-w-xl mx-auto">
               <p className="text-muted text-lg">
@@ -87,10 +97,11 @@ export default function ZariadeniaPage() {
               viewport={{ once: true, margin: '-80px' }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {units.map((unit) => {
+              {units.map((unit, unitIndex) => {
                 const btn = unitButton(unit.button)
+                const discColors = ['bg-primary', 'bg-pink-300', 'bg-amber-300', 'bg-violet-300']
                 return (
-                  /* Circular unit photos, fwip.com style */
+                  /* Circular unit showcases, fwip.com style — image overflows the disc */
                   <motion.article
                     key={unit.id}
                     variants={fadeUpSafe}
@@ -98,21 +109,29 @@ export default function ZariadeniaPage() {
                     transition={{ type: 'tween', duration: 0.25, ease: 'easeOut' }}
                     className="flex flex-col items-center text-center"
                   >
-                    {unit.image?.url ? (
-                      <img
-                        src={unit.image.url}
-                        alt={unit.image.alternativeText || unit.text1 || 'Zariadenie'}
-                        loading="lazy"
-                        className="w-52 h-52 md:w-60 md:h-60 rounded-full object-cover ring-8 ring-white shadow-card-hover"
-                      />
-                    ) : (
+                    <div className="relative w-52 h-52 md:w-60 md:h-60">
                       <div
-                        className="w-52 h-52 md:w-60 md:h-60 rounded-full bg-primary-light ring-8 ring-white shadow-card flex items-center justify-center text-6xl"
+                        className={`absolute inset-0 rounded-full ${
+                          discColors[unitIndex % discColors.length]
+                        } ring-8 ring-white shadow-card-hover`}
                         aria-hidden="true"
-                      >
-                        🍦
-                      </div>
-                    )}
+                      />
+                      {unit.image?.url ? (
+                        <img
+                          src={unit.image.url}
+                          alt={unit.image.alternativeText || unit.text1 || 'Zariadenie'}
+                          loading="lazy"
+                          className="absolute inset-0 w-full h-full object-contain scale-[1.18] -translate-y-3 drop-shadow-xl"
+                        />
+                      ) : (
+                        <span
+                          className="absolute inset-0 flex items-center justify-center text-6xl"
+                          aria-hidden="true"
+                        >
+                          🍦
+                        </span>
+                      )}
+                    </div>
                     <div className="mt-6 flex flex-col items-center flex-1 max-w-xs">
                       {unit.text1 && (
                         <h2 className="font-display text-2xl font-bold text-dark">
