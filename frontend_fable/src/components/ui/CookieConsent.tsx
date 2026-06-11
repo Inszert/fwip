@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { initAnalytics } from '../../lib/analytics'
 
 const STORAGE_KEY = 'simpleCookieConsent'
 
@@ -19,6 +20,7 @@ export default function CookieConsent() {
   const accept = () => {
     localStorage.setItem(STORAGE_KEY, 'accepted')
     setVisible(false)
+    initAnalytics()
   }
 
   return (

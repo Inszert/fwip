@@ -1,0 +1,221 @@
+================================================================================
+FWIP.SK — frontend_fable — DOKUMENTÁCIA PRE DEVELOPERA
+================================================================================
+
+Posledná aktualizácia: jún 2026
+Stack: Vite 5 + React 18 + TypeScript + Tailwind CSS v3 + Framer Motion
+       + React Router v6. Dáta zo Strapi CMS (REST).
+
+--------------------------------------------------------------------------------
+1. SPUSTENIE
+--------------------------------------------------------------------------------
+cd frontend_fable
+npm install
+npm run dev        -> http://localhost:5174  (port je fixný, strictPort)
+npm run build      -> tsc typecheck + produkčný build do dist/
+npm run preview    -> náhľad produkčného buildu na 5174
+
+.env premenné (pozri .env.example):
+  VITE_STRAPI_URL          adresa Strapi (produkcia: Railway inštancia)
+  VITE_GA_MEASUREMENT_ID   GA4 ID (G-XXXX...). Prázdne = žiadne trackovanie.
+
+--------------------------------------------------------------------------------
+2. ŠTRUKTÚRA PRIEČINKOV
+--------------------------------------------------------------------------------
+frontend_fable/
+├── index.html                  fonty (Playfair Display, Inter, Cormorant
+│                               Garamond), favicon, JSON-LD Organization
+├── public/
+│   ├── favicon.ico
+│   ├── robots.txt              povoľuje všetko + odkaz na sitemap
+│   └── sitemap.xml             statická sitemap (pri novej príchuti DOPLŇ URL!)
+├── tailwind.config.ts          VŠETKY farebné tokeny a fonty (jediné miesto)
+├── CLAUDE.md                   inštrukcie pre AI sessiony
+├── DEVELOPER.txt               tento súbor
+└── src/
+    ├── main.tsx                entry — BrowserRouter + <App/>
+    ├── App.tsx                 routy, AnimatePresence prechody stránok,
+    │                           ScrollToTop, init analytiky, cookie lišta
+    ├── index.css               Tailwind vrstvy + scrollbar-hide utilita
+    │
+    ├── design-system/
+    │   ├── tokens.ts           farby/fonty ako TS konštanty (pre SVG, canvas…)
+    │   └── animations.ts       všetky Framer Motion varianty (fadeUp, stagger,
+    │                           wordReveal, pageTransition, reducedVariants)
+    │
+    ├── types/index.ts          typy 1:1 podľa Strapi schém (vrátane preklepu
+    │                           `emial` v kontaktnom formulári — NEOPRAVOVAŤ,
+    │                           inak POST do Strapi zlyhá!)
+    │
+    ├── lib/
+    │   ├── strapi.ts           strapiGet() + prepis R2 privátnych URL na
+    │   │                       verejné r2.dev + submitContactForm()
+    │   ├── analytics.ts        GA4 — načíta sa AŽ PO súhlase s cookies
+    │   └── text.ts             sentenceCase() pre CAPS texty z CMS,
+    │                           isLightColor() — voľba tmavý/biely text
+    │                           podľa svetlosti farby (pozná aj named colors)
+    │
+    ├── hooks/                  JEDEN hook = JEDNA Strapi kolekcia
+    │   ├── useStrapi.ts        generický fetch: loading/error/isFallback,
+    │   │                       pri zlyhaní VŽDY vráti fallback dáta
+    │   ├── useProducts.ts      /api/ice-creams — príchute + ingrediencie
+    │   │                       (normalizuje na Flavor model: slug, typ,
+    │   │                       tagline = prvá veta popisu, vegan heuristika)
+    │   ├── useSteps.ts         /api/stepss — kroky s kruhovými videami
+    │   ├── useComparisons.ts   /api/comparisons — porovnávacia tabuľka
+    │   ├── usePortobello.ts    /api/portobellos — hero+vlastnosti+rozmery(HWD)
+    │   ├── usePromoSections.ts /api/promo-sections
+    │   ├── useZariadenia.ts    /api/zariadenias — jednotky
+    │   ├── usePlaces.ts        /api/places — B2B sekcie + farby sekcií
+    │   ├── useFooter.ts        /api/footers — telefón, adresa
+    │   ├── useHeader.ts        /api/headers — LOGO (navbar/footer/tabuľka)
+    │   ├── useHeroVideo.ts     /api/hero-videos — video na domovskej
+    │   ├── useZmrzlinaVideo.ts /api/hero-video-ice-creams — hero video
+    │   │                       + rozsekané video (segmenty s časmi a textom)
+    │   ├── usePageMeta.ts      SEO: title/description/OG/canonical per stránka
+    │   ├── useMotionSafe.ts    vráti varianty bez pohybu pri
+    │   │                       prefers-reduced-motion — POUŽÍVAŤ VŠADE
+    │   └── useScrollAnimation.ts  (legacy, nepoužívané — všetko ide cez
+    │                              whileInView priamo na motion elementoch)
+    │
+    ├── data/                   HARDCODED SLOVENSKÉ FALLBACKY
+    │   ├── flavors.sk.ts       7 príchutí — použijú sa keď Strapi nejde
+    │   └── static.sk.ts        všetky texty mimo CMS: hero, kroky, B2B,
+    │                           navigácia, footer, kontakt, 404, fallback
+    │                           porovnávacej tabuľky
+    │
+    ├── components/
+    │   ├── layout/
+    │   │   ├── Navbar.tsx      fixný; priehľadný hore (logo INVERTOVANÉ na
+    │   │   │                   bielo, biely CTA), po scrolle >50px tmavý
+    │   │   │                   blur (logo teal, CTA teal); mobilné menu
+    │   │   └── Footer.tsx      tmavý; logo zo Strapi, linky, kontakt, sociálky
+    │   ├── ui/
+    │   │   ├── Button.tsx      primary/secondary/outline; to= interný Link,
+    │   │   │                   href= externý <a>, inak <button>
+    │   │   ├── Card.tsx        biela karta s hover liftom
+    │   │   ├── Badge.tsx       Vegan / Bezlepkové / typ príchute
+    │   │   ├── FlavorCard.tsx  karta príchute: biela, na hover ju ZALEJE
+    │   │   │                   farba príchute (text sa preklopí podľa
+    │   │   │                   isLightColor), kapsula sa zväčší
+    │   │   ├── SectionHeading.tsx  nadpis s teal podčiarknutím (whileInView)
+    │   │   ├── LoadingSpinner.tsx
+    │   │   └── CookieConsent.tsx   lišta na "/" po 1,5 s; OK -> localStorage
+    │   │                           'simpleCookieConsent' + spustí GA4
+    │   └── sections/
+    │       ├── Hero.tsx            domovská: Strapi video na pozadí, word-by-
+    │       │                       word nadpis; overlay sa po 7 s nečinnosti
+    │       │                       SKRYJE (vidieť video), pohyb myši ho vráti
+    │       ├── SignatureFlavors.tsx  "skákacie zmrzliny": desktop = hover
+    │       │                       skok 240px + ingrediencie s paralaxou
+    │       │                       + farebná kartička VNÚTRI karty (geometria
+    │       │                       1:1 s pôvodným webom: karta 180×250,
+    │       │                       kapsula 195px, kotva ingrediencií top:130);
+    │       │                       mobil = horizontálny snap carousel
+    │       ├── HowItWorks.tsx      kroky s kruhovými autoplay videami zo Strapi
+    │       ├── MachineTeaser.tsx   tmavý teaser Portobella na domovskej
+    │       ├── B2BSection.tsx      "Pre váš biznis" + obrázok z places
+    │       ├── ComparisonSection.tsx  tabuľka ✓/✕; stĺpec fwip má LOGO
+    │       ├── SegmentedVideo.tsx  JEDNO video rozsekané na fullscreen časti,
+    │       │                       každá loopuje svoj [start,end] interval;
+    │       │                       desktop text vľavo/vpravo, mobil text
+    │       │                       hore/dole + posunutý crop (object-position)
+    │       ├── HwdSection.tsx      rozmery stroja v/h/š — interaktívny prepínač
+    │       ├── CtaStrip.tsx        teal pás s CTA nad footrom
+    │       └── ContactForm.tsx     POST /api/contact-formulars (pole `emial`!)
+    │
+    └── pages/                  1 route = 1 súbor (routy v App.tsx)
+        ├── HomePage.tsx            /
+        ├── ProductsPage.tsx        /zmrzlina   (video hero + grid + rozsekané video)
+        ├── FlavorDetailPage.tsx    /zmrzlina/:slug  (štýl fwip.com produktu;
+        │                           text tmavý/biely podľa svetlosti farby)
+        ├── MachinePage.tsx         /portobello
+        ├── ZariadeniaPage.tsx      /zariadenia (kruhové jednotky)
+        ├── PlacesPage.tsx          /places
+        ├── ContactPage.tsx         /kontakt
+        ├── PrivacyPage.tsx         /ochrana-osobnych-udajov (GDPR text)
+        └── NotFoundPage.tsx        *
+
+--------------------------------------------------------------------------------
+3. TOK DÁT (ako to celé funguje)
+--------------------------------------------------------------------------------
+Stránka -> hook (napr. useProducts) -> useStrapi(path, transform, fallback)
+  -> lib/strapi.ts strapiGet() -> VITE_STRAPI_URL + path
+  -> fixUrls() prepíše každé "url" pole: privátny R2 bucket -> verejný
+     https://pub-....r2.dev (bez toho médiá nefungujú!)
+  -> transform() znormalizuje Strapi payload na app model
+  -> pri chybe ALEBO prázdnej odpovedi sa vráti slovenský fallback
+     zo src/data/ a isFallback=true. Stránka teda NIKDY nie je prázdna.
+
+Obsah ktorý NIE JE v Strapi (hero texty, kroky fallback, B2B body, navigácia,
+footer skupiny, 404...) -> src/data/static.sk.ts.
+
+CAPS texty z CMS sa zobrazujú cez sentenceCase() — obsah v CMS sa NEMENÍ.
+Farby z CMS (príchute, promo, places) idú cez inline style — to je jediná
+povolená výnimka z pravidla "žiadne raw hex v komponentoch".
+
+--------------------------------------------------------------------------------
+4. SEO + GOOGLE
+--------------------------------------------------------------------------------
+- usePageMeta (src/hooks/usePageMeta.ts): každá stránka si nastaví <title>,
+  meta description, OG tagy a canonical. Texty sú v PAGE_META.
+- index.html: JSON-LD Organization (telefón, e-mail, sociálne siete).
+- public/sitemap.xml: statická. PRI PRIDANÍ PRÍCHUTE V STRAPI treba ručne
+  doplniť /zmrzlina/<slug> (slug = názov bez diakritiky, medzery -> pomlčky).
+- public/robots.txt: Allow všetko + Sitemap odkaz.
+- POZOR: je to SPA (client-side rendering). Googlebot JS renderuje, ale pre
+  najlepšie indexovanie zvážte pri nasadení prerendering (napr.
+  vite-plugin-ssr / prerender.io) alebo aspoň serverový fallback na index.html
+  pre všetky routy (nutné aj pre React Router — 404 na serveri = zle).
+- Google Search Console: overiť doménu, odoslať sitemap.xml.
+
+--------------------------------------------------------------------------------
+5. TRACKOVANIE (GA4)
+--------------------------------------------------------------------------------
+src/lib/analytics.ts:
+- gtag.js sa NAČÍTA AŽ keď používateľ klikne OK na cookie lište
+  (localStorage 'simpleCookieConsent' = 'accepted') — GDPR friendly.
+- Pri ďalších návštevách s uloženým súhlasom sa inicializuje hneď (App.tsx).
+- Page-view sa posiela pri každej zmene routy (SPA tracking).
+- anonymize_ip zapnuté.
+- Aktivácia: nastav VITE_GA_MEASUREMENT_ID v .env a rebuildni.
+  Prázdne ID = celý modul je no-op, nič sa nenačíta.
+
+--------------------------------------------------------------------------------
+6. ANIMÁCIE — PRAVIDLÁ
+--------------------------------------------------------------------------------
+- Všetky varianty v src/design-system/animations.ts.
+- Scroll-triggered: VŽDY whileInView + viewport={{ once:true, margin:'-80px' }}
+  priamo na motion elemente. NIKDY useInView s ref na element, ktorý sa
+  mountuje až po načítaní dát — observer sa nepripojí a sekcia ostane
+  neviditeľná (historická chyba, už opravená).
+- Každý motion komponent berie varianty cez useMotionSafe() — automaticky
+  vypne pohyb pri prefers-reduced-motion. Videá sa vtedy neautoplayujú.
+
+--------------------------------------------------------------------------------
+7. ČASTÉ ÚPRAVY — KDE SIAHNUŤ
+--------------------------------------------------------------------------------
+Zmena farby/fontu          -> tailwind.config.ts (+ tokens.ts)
+Nový text mimo CMS         -> src/data/static.sk.ts
+Nová príchuť               -> pridať v Strapi (ice-creams) + sitemap.xml;
+                              fallback voliteľne do flavors.sk.ts
+Nová stránka               -> src/pages/X.tsx + route v App.tsx + odkaz
+                              v static.sk.ts NAV/FOOTER + PAGE_META + sitemap
+Nová Strapi kolekcia       -> typ do types/index.ts + hook do src/hooks/
+                              (vzor: useZariadenia) + fallback
+Kontaktný formulár polia   -> ContactForm.tsx + types (POZOR na `emial`)
+Cookie texty               -> CookieConsent.tsx
+Navigačné položky          -> static.sk.ts -> NAV
+
+--------------------------------------------------------------------------------
+8. ZNÁME ZVLÁŠTNOSTI (nie sú to chyby)
+--------------------------------------------------------------------------------
+- Strapi pole `emial` (preklep v schéme) — musí ostať, inak POST zlyhá.
+- Kolekcia krokov sa volá `stepss` (dvojité s) — tak je to v Strapi.
+- Logo zo Strapi je teal PNG — v navbare hore a vo footri sa invertuje
+  na bielo cez CSS filter (brightness-0 invert).
+- Médiá chodia z privátneho R2 bucketu -> prepis na pub-...r2.dev
+  v lib/strapi.ts. Keď sa zmení bucket, zmeň konštanty R2_PRIVATE/R2_PUBLIC.
+- Porovnávacia tabuľka: 4. typ v CMS nemá meno (name=null) — to JE fwip
+  stĺpec, renderuje sa logom.
+================================================================================

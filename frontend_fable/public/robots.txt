@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-# Sitemap: https://fwip.sk/sitemap.xml
+Sitemap: https://fwip.sk/sitemap.xml

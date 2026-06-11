@@ -5,6 +5,7 @@ import Button from '../components/ui/Button'
 import FlavorCard from '../components/ui/FlavorCard'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 import { fadeUp, slideInLeft, slideInRight, stagger } from '../design-system/animations'
+import { isLightColor } from '../lib/text'
 import { useMotionSafe } from '../hooks/useMotionSafe'
 import { useProducts } from '../hooks/useProducts'
 
@@ -42,6 +43,17 @@ export default function FlavorDetailPage() {
 
   const others = flavors.filter((f) => f.slug !== slug)
 
+  // The tagline is the description's first sentence — don't show it twice
+  const descriptionRest = flavor.description.startsWith(flavor.tagline)
+    ? flavor.description.slice(flavor.tagline.length).trim()
+    : flavor.description
+
+  // Light flavors (mango, vanilka, jogurt…) need dark text for readability
+  const light = isLightColor(flavor.color)
+  const heroText = light ? 'text-dark' : 'text-white'
+  const heroTextSoft = light ? 'text-dark/75' : 'text-white/85'
+  const heroTextFaint = light ? 'text-dark/60' : 'text-white/70'
+
   return (
     <>
       {/* Full-bleed hero in the flavor's own color, fwip.com product style */}
@@ -51,31 +63,41 @@ export default function FlavorDetailPage() {
       >
         {/* Soft radial glow behind the capsule */}
         <div
-          className="absolute right-0 top-1/2 -translate-y-1/2 w-[60vw] h-[60vw] rounded-full bg-white/10 blur-3xl"
+          className={`absolute right-0 top-1/2 -translate-y-1/2 w-[60vw] h-[60vw] rounded-full blur-3xl ${
+            light ? 'bg-dark/5' : 'bg-white/10'
+          }`}
           aria-hidden="true"
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-32 pb-20 w-full">
           {/* Copy */}
           <motion.div variants={left} initial="hidden" animate="visible">
-            <nav className="text-white/70 text-sm mb-6" aria-label="Omrvinková navigácia">
-              <Link to="/zmrzlina" className="hover:text-white transition-colors">
+            <nav className={`${heroTextFaint} text-sm mb-6`} aria-label="Omrvinková navigácia">
+              <Link to="/zmrzlina" className={`${light ? 'hover:text-dark' : 'hover:text-white'} transition-colors`}>
                 Naše príchute
               </Link>
               <span className="mx-2" aria-hidden="true">/</span>
-              <span className="text-white">{flavor.name}</span>
+              <span className={heroText}>{flavor.name}</span>
             </nav>
 
             <Badge kind="type" flavorType={flavor.type} />
-            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white mt-5 drop-shadow">
+            <h1
+              className={`font-display text-5xl md:text-6xl lg:text-7xl font-bold ${heroText} mt-5 ${
+                light ? '' : 'drop-shadow'
+              }`}
+            >
               {flavor.name}
             </h1>
-            <p className="font-accent italic text-2xl md:text-3xl text-white/90 mt-4">
+            <p className={`font-accent italic text-2xl md:text-3xl ${heroTextSoft} mt-4`}>
               {flavor.tagline}
             </p>
-            <p className="text-white/85 text-base md:text-lg mt-6 leading-relaxed max-w-xl whitespace-pre-line">
-              {flavor.description}
-            </p>
+            {descriptionRest && (
+              <p
+                className={`${heroTextSoft} text-base md:text-lg mt-6 leading-relaxed max-w-xl whitespace-pre-line`}
+              >
+                {descriptionRest}
+              </p>
+            )}
 
             <div className="flex flex-wrap gap-2 mt-7">
               {flavor.isVegan && <Badge kind="vegan" />}

@@ -6,6 +6,7 @@ import Navbar from './components/layout/Navbar'
 import CookieConsent from './components/ui/CookieConsent'
 import { pageTransition } from './design-system/animations'
 import { useMotionSafe } from './hooks/useMotionSafe'
+import { initAnalytics, trackPageView } from './lib/analytics'
 import ContactPage from './pages/ContactPage'
 import FlavorDetailPage from './pages/FlavorDetailPage'
 import HomePage from './pages/HomePage'
@@ -27,6 +28,14 @@ function ScrollToTop() {
 export default function App() {
   const location = useLocation()
   const transition = useMotionSafe(pageTransition)
+
+  // Analytics: init for returning consented visitors, page-view per route
+  useEffect(() => {
+    initAnalytics()
+  }, [])
+  useEffect(() => {
+    trackPageView(location.pathname)
+  }, [location.pathname])
 
   return (
     <div className="min-h-screen flex flex-col">
